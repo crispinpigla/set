@@ -1,0 +1,100 @@
+{% load static %}
+
+
+
+
+<!--------------------------   ajout d'un utilisateur    ------------------------------------------>
+
+
+<div style="margin: auto; width:500px; min-height:40px; margin-bottom: 30px; border-radius: 5px; display: flex; justify-content: center; align-items: center;" ><button style="margin: auto; background: rgb(0, 187, 255); font-size: 80%; border-radius: 5px; border: solid rgb(0, 187, 255); padding: 5px; color: white;" >Ajouter un utilisateur</button></div>
+
+
+
+<!--------------------------   affichage des utilisateurs    ------------------------------------------>
+
+
+{% for user_set in users_set %}
+
+
+
+
+	<div style="margin: auto; width:500px; min-height:80px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+
+
+		<div style="height: 80px; display: flex; justify-content: space-between;" >
+			<div style=" display: flex;" >
+				<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
+					
+					{% if user_set.utilisateur.image_profil == "" %}
+					<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+						<img style="width: 80%;" src="{% static 'img/default_user_profil.png' %}">
+					</a>
+					{% else %}
+					<div><img src="{{  user_set.utilisateur.image_profil  }}"></div>
+					{% endif %}
+
+				</div>
+				<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+					{{  user_set.utilisateur.nom  }}
+				</a>
+			</div>
+
+			<!---------------   Administrateur  -------------------->
+			<div style=" width: 140px; display: block;" >
+				<div style="border: solid 1px; height: 35%; display: flex; justify-content: center; align-items: center;" >
+					<div style="font-size: 80%; width: 90%; background: rgb(255, 163, 163); color: white; cursor: pointer; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: solid rgb(255, 163, 163) 1px;" >
+						Supprimer du set
+					</div> 
+				</div>
+
+				<div style="display: flex; height: 65%;" >
+					<div style="border: solid 1px; width: 50%; display: flex; justify-content: center; align-items: center;" >
+						<div style="border: solid rgb(209, 201, 201) 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(255, 163, 163); cursor: pointer;" >
+							<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
+							<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: red;" >-</div>
+						</div>
+					</div>
+					<div style="border: solid 1px; width: 50%; display: flex; justify-content: center; align-items: center;" >
+						<div style="border: solid 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: ; cursor: pointer;" >
+							<img style="height: 100%;" src="{% static 'img/logo_message.png' %}">
+						</div>
+					</div>
+				</div>
+				
+			</div>
+
+
+			<!---------------   Soi  -------------------->
+			<div style=" width: 140px; display: none;" >
+				<div style="border: solid 1px; height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
+					<div style="font-size: 80%; width: 90%; background: rgb(255, 163, 163); color: white; cursor: pointer; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: solid rgb(255, 163, 163) 1px;" >
+						Sortir du set
+					</div> 
+
+					<div style="font-size: 80%; width: 90%; background: rgb(0, 184, 95); color: white; cursor: pointer; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: solid rgb(0, 184, 95) 1px;" >
+						Entrez dans le set
+					</div> 
+				</div>
+				
+			</div>
+			
+		</div>
+
+
+	</div>
+
+
+
+
+
+{% endfor %}
+
+
+
+<script type="text/javascript">
+	
+
+			//--------------------------        --    ----------------------------//
+
+
+</script>

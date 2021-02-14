@@ -1,0 +1,30 @@
+{% extends 'base_authentification.html' %}
+
+{% block authentification_title %}Connexion{% endblock %}
+
+
+{% block content %}
+
+<div class="col-10" style="margin: auto;" >
+	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post" action="../connexion/" >
+		{% csrf_token %}
+		<div style="margin: auto; margin-top: 30px;" >{{ connexion_form.email }}</div>
+		<div style="margin: auto; margin-top: 30px;" >{{ connexion_form.password }}</div>
+		<button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Se connecter</button>
+	</form>
+	
+	<div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 50px;" >
+		<div style="border-top: solid rgb(163, 144, 144) 1px; border-bottom: solid rgb(163, 144, 144) 1px; display: flex; flex-direction: column; align-items: center;margin-bottom: 20px;" >
+			<div style="color: rgb(163, 144, 144); font-size: 70%; margin-top: 20px; margin-bottom: 10px;" >Ou se connecter avec google</div>
+			<div class="g-signin2" data-onsuccess="onSignIn" style=" margin-top: 10px; margin-bottom: 20px;" ></div>
+			<a href="#" onclick="signOut();" style="display: none;" >Sign out</a>
+		</div>
+		<div style="display: flex; flex-direction: column;" >
+			<a href="../envoie_lien_reinitialisation_password/" style="font-size: 80%; text-align: center; margin-top: 20px;" >Mot de passe oublié</a>
+			<a href="../inscription/" style="font-size: 80%; text-align: center; margin-top: 20px;" >S'inscrire</a>
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}

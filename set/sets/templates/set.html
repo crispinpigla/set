@@ -1,0 +1,130 @@
+{% extends 'base_set.html' %}
+
+{% load static %}
+
+{% block cover_set_content %}../..{{ set.image_couverture.url }}{% endblock %}
+{% block cover0_set_content %}../..{{ set.image_couverture.url }}{% endblock %}
+
+{% block name_set_content %}{{ set.nom }}{% endblock %}
+
+
+{% block type_and_description %}
+	<div style=" background: white;" >
+		<div style="width: 75%; height: 40px;  margin-left: 24%;display: flex; justify-content: center; align-items: center;" >{{ set.type0 }}</div>
+		<div style="width: 75%; min-height: 10px;  margin-left: 24%;display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px; padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px;  color: rgb(156, 156, 156);" >Type du set</div>
+		<div style="width: 75%; height: ;  margin-left: 24%;display: flex; flex-direction: column; justify-content: center; align-items: center;" >
+			<div style="width: 90%; min-height: 60px; display: flex; justify-content: center; align-items: center;" >
+				<div id="contain_description" > {{ set.description }} </div>
+				<form action="../../update_description_set/?set_id={{set.id}}" method="post" enctype=multipart/form-data >
+					{% csrf_token %}
+					<div id="set_description_input" style="display: none;" >{{ set_description_form.description }}</div>
+					<button id="submit_change_description" type="submit" class="btn btn-success" style="display: none;" ></button>	
+				</form>
+			</div>
+			{% if administrator_status %}
+				<div style="width: 10%; min-height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center; margin-top: 10px;" >
+					<div id="modification_description" style="background: white; border-radius: 50%; overflow: hidden; width: 50px; height: 50px; display: block; cursor: pointer;" >
+						<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+					</div>
+					<label id="submit_set_description" for="submit_change_description" style="background: rgb(36, 255, 134); border-radius: 5px; padding: 5px; font-size: 80%; cursor: pointer;display: none;" >Mettre à jour</label>
+					<div id="cancel_set_description" style="background: rgb(255, 153, 153); border-radius: 5px; padding: 5px; font-size: 80%; cursor: pointer;display: none;" >Annuler</div>
+				</div>
+			{% endif %}
+		</div>
+		<div style="width: 75%; min-height: 10px;  margin-left: 24%;display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px;  padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px; color: rgb(156, 156, 156);" >
+			Description du set
+		</div>
+	</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+	{% if section == 'publications' %}
+		{% include "section_publications_set.html" %}
+	{% elif section == 'evenements' %}
+		{% include "section_evenements_set.html" %}
+	{% elif section == 'personnes' %}
+		{% include "section_personnes_set.html" %}
+	{% endif %}
+
+{% endblock %}
+
+
+
+{% block update_cover %}
+
+	<div style="position: absolute; top: 240px; left: 26%; min-width: 300px; display: flex; justify-content: space-around; align-items: center;" >
+
+		<form action="../../update_cover/?set_id={{set.id}}" method="post" enctype=multipart/form-data >
+			{% csrf_token %}
+			<div style="display: none;" >{{ image_cover_form.file }}</div>
+			<label id="label_for_id_file" style="background: rgb(194, 217, 255); text-align: center; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; padding-top: 5px; padding-bottom: 5px; font-size: 80%; padding-left: 35px; padding-right: 35px;" for="id_file" >Mettre à jour l'image de couverture</label>
+			<button id="submit_change_image_cover" type="submit" class="btn btn-success" style="display: none;" >Mettre à jour</button>	
+		</form>
+
+		<div style="background: white; border-radius: 50%; overflow: hidden; width: 80px; height: 80px; display: none;" >
+			<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+		</div>
+		<div>
+			<div  id="cancel_change_image_cover"  style="background: rgb(255, 89, 89); color: white; text-align: center; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; padding:7px; display: none;" >Annuler</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+
+
+
+{% block delete_set %}
+
+	<div style="position: absolute; top: 240px; right: 0px; margin-right: 50px;" >
+		<div>
+			<div id="suppression_set" style="background: rgb(255, 117, 117); color: white; text-align: center; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; padding:7px; display: block; font-size: 80%;" >Supprimer le set</div>
+		</div>
+		<div style="display: flex;" >
+			<a id="submit_suppression_set" href="" style="background: rgb(255, 117, 117); color: white; text-align: center; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; padding:7px;  font-size: 80%; display: none;" >Confirmer</a>
+			<div id="cancel_suppression_set" style="background: rgb(163, 163, 163); color: white; text-align: center; margin:10px; border-radius: 5px; cursor: pointer; padding:7px; font-size: 80%; display: none;" >Annuler</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+
+
+
+
+
+{% block sections %}
+
+	<div style="position: fixed; top: 50px; width: 24%; height: 100%;" >
+		<div style="top: 50px;  width: 100%; height: 100%; " >
+    		<div style="margin: auto; width: 100%; height: 400px;  display: flex; flex-direction: column; justify-content: flex-start; align-items: center;" >
+    			
+				{% if section == 'publications' %}
+					<a style="border: solid 1px; background: black; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
+				{% else %}
+	    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
+				{% endif %}
+
+
+				{% if section == 'evenements' %}
+					<a style="border: solid 1px; background: black; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
+				{% else %}
+	    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
+				{% endif %}
+
+    			
+    			{% if section == 'personnes' %}
+					<a style="border: solid 1px; background: black; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>
+				{% else %}
+	    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>
+				{% endif %}
+    		</div>
+    	</div>
+	</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,137 @@
+
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>set</title>
+    </head>
+
+    <body>
+
+    	<div class="row" style="">
+	    	<!-------------       partie_1          ----------->
+	    	<div class="col-12" style="position: fixed; border: solid 1px; height: 50px; background: rgb(0, 153, 255); display: flex; justify-content: space-between; align-items: center; position: absolute;" >
+	    		<form style="width: 30%; margin-left: 50px;" method="get" action="../sets/search/" >
+	    			<div style="width: 100%; " >{{ search_form.search_input }}</div>
+	    		</form>
+	    		<div style="height: 80%; display: flex;" >
+	    			<a href="" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}"></a>
+	    			<a href="deconnexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
+	    		</div>
+	    		
+	    	</div>
+	    	<!-------------       partie_1          ----------->
+	    	<!-------------       partie_2          ----------->
+	    	<div class="col-12" style="margin-top: 50px; width: 100%; min-height: 700px; " >
+		    	<!-------------       partie_2_1          ----------->
+		    	<div style="position: fixed; top: 50px; border: solid 1px; width: 24%; height: 100%; " >
+		    		<div style=" margin: auto; width: 200px; height: 200px; border: solid 1px; display: flex; justify-content: center; align-items: center;" >
+		    			<a href="" style=" width: 100px; height: 100px; border-radius: 50%;" >
+		    				<img style="max-width: 100%; max-height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}">
+		    			</a>
+		    		</div>
+		    	</div>
+		    	<!-------------       partie_2_1          ----------->
+		    	<!-------------       partie_2_2          ----------->
+		    	<div style="position: absolute; left: 24.5%; border: solid 1px; width: 51%; min-height: 100%; display: none;" ></div>
+		    	<!-------------       partie_2_2          -----------> 
+
+
+					<!--------------------------   titre de la recherche   ------------------------------------------>
+
+
+					<div style="margin: auto; width:500px; min-height:40px; margin-bottom: 30px; border-radius: 5px; display: flex; justify-content: center; align-items: center;" >
+						<div style="margin: auto; font-size: 80%;" >
+							Résultat(s) de la recherche pour : {{  recherche  }}
+						</div>
+					</div>
+
+
+					<!------------------    sections   ---------------->
+
+					<div style="margin: auto; width: 650px; min-height:40px;" >
+						<div style="top: 50px;  width: 100%; height: 100%; " >
+				    		<div style="margin: auto; width: 100%; height: 100px;  display: flex; justify-content: space-around; align-items: center;" >
+				    			
+								{% if section == 'sets' %}
+									<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=sets">Sets</a>
+								{% else %}
+					    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=sets">Sets</a>
+								{% endif %}
+
+
+								{% if section == 'evenements' %}
+									<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=evenements">Evènements</a>
+								{% else %}
+					    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=evenements">Evènements</a>
+								{% endif %}
+
+				    			
+				    			{% if section == 'personnes' %}
+									<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=personnes">Personnes</a>
+								{% else %}
+					    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=personnes">Personnes</a>
+								{% endif %}
+				    		</div>
+				    	</div>
+					</div>
+
+
+
+					<!--------------------------   affichage des résultats    ------------------------------------------>
+
+
+					{% block content %}
+
+						{% if section == 'sets' %}
+							{% include "section_sets_search.html" %}
+						{% elif section == 'evenements' %}
+							{% include "section_evenements_search.html" %}
+						{% elif section == 'personnes' %}
+							{% include "section_personnes_search.html" %}
+						{% endif %}
+
+					{% endblock %}
+
+		    	<!-------------       partie_2_3          ----------->
+		    	<div style="position: fixed; top: 50px; border: solid red 1px; width: 24%; height: 100%; right: 0px;" >
+		    		<div style="position: fixed; top: 50px; border: solid 1px; width: 24%; height: 100%; " >
+			    		<div style=" margin: auto; width: 100%; height: 200px; border: solid 1px; display: flex; flex-direction: column; justify-content: center; align-items: center;" >
+			    			
+			    			<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center;" href="">Contacts</a>
+			    			<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center;" href="">Messagerie</a>
+
+			    		</div>
+			    	</div>
+		    	</div>
+		    	<!-------------       partie_2_3          -----------> 
+	    	</div>
+	    	<!-------------       partie_2          ----------->
+	    	<div class="footer" style="width: 100%; height: 70px; background: rgb(235, 235, 235); display: flex; justify-content: center; align-items: center; color: rgb(150, 150, 150);" >
+
+	    		set-group
+	    		
+	    	</div>
+    	</div>
+    
+
+
+
+    </body>
+</html>
+
+                        
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+{% load static %}
+
+
+
+
+
+<!--------------------------   affichage de publications    ------------------------------------------>
+
+
+{% for contenu in contenus %}
+
+
+
+
+	<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px; background: rgb(237, 255, 255)" >
+
+
+		<div style=" display: flex; justify-content: center;" >
+			<div style="height: 100px; width: 80%; margin: auto; overflow: hidden; margin-top: 5px; margin-bottom: 5px;" >
+				<img style="width: 100%;" src="../../media/{{ contenu.image_couverture }}">		
+			</div>
+		</div>
+
+		<div style=" text-align: center;" > {{ contenu.nom }} </div>
+
+		<div style=" text-align: center; font-size: 80%; color: rgb(161, 161, 161); margin: auto; margin-bottom: 10px; border: solid silver 1px; border-radius: 5px; width: 40%;"  > {{ contenu.type0 }} </div>
+
+		<div style=" text-align: center; font-size: 80%; margin-bottom: 10px;"  > {{ contenu.description }} </div>
+
+		<div style="margin: auto; border-top: solid 1px; color: silver; font-size: 60%; text-align: center; width: 60%; padding: 7px;" > Crée le {{ contenu.date }} </div>
+
+
+
+
+
+	</div>
+
+
+
+
+
+{% endfor %}
+
+
+

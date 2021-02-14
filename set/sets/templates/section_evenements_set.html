@@ -1,0 +1,50 @@
+{% load static %}
+
+
+
+
+<!--------------------------   creation d'un nouvel évènement    ------------------------------------------>
+
+<div style="margin: auto; margin-bottom: 10px; width:500px; min-height:50px; display: flex; justify-content: center; align-items: center;" >
+	<a href="../../../user/creation_evenement/{{set.id}}/" style=" background: rgb(173, 225, 255); margin: 20px; padding: 10px; border-radius: 5px; text-decoration: none;" >Créer un nouvel évènement</a>
+</div>
+
+
+
+<!--------------------------   affichage de publications    ------------------------------------------>
+
+
+{% for event in events %}
+
+
+
+
+	<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+
+
+		<div style=" display: flex; justify-content: center; " >
+			<div style="height: 100px; width: 100px;" >
+				<img style="width: 100%;" src="{% static 'img/logo_evenement.png' %}">		
+			</div>
+		</div>
+
+		<div style=" text-align: center;" > {{ event.nom }} </div>
+
+		<div style=" text-align: center; font-size: 80%; color: rgb(161, 161, 161); margin-bottom: 10px;"  > {{ event.description }} </div>
+
+		<div style="margin: auto; border-top: solid 1px; color: silver; font-size: 60%; text-align: center; width: 60%; padding: 7px;" > Crée le {{ event.date }} </div>
+
+
+
+
+
+	</div>
+
+
+
+
+
+{% endfor %}
+
+
+

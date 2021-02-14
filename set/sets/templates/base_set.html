@@ -1,0 +1,285 @@
+
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="google-signin-client_id" content="672134652663-5hmqa4u9pc63aigfvu5dl2r491q7v60v.apps.googleusercontent.com">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>set</title>
+    </head>
+
+    <body>
+
+    	<div class="" style="">
+	    	<!-------------       partie_1          ----------->
+	    	<div class="col-12" style="position: fixed; height: 50px; background: rgb(0, 153, 255); display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0px; " >
+	    		<div style="width: 30%; margin-left: 50px;" >{{ set_description_form. }}</div>
+	    		<div style="height: 80%; display: flex;" >
+	    			<a href="" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}"></a>
+	    			<a href="" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
+	    		</div>
+	    	</div>
+	    	<!-------------       partie_1          ----------->
+	    	<!-------------       partie_2          ----------->
+	    	<div class="col-12" style="margin-top: 50px; width: 100%; min-height: 700px; " >
+
+	    		<div style="background: rgb(0,0,0,0.3); width: 100%; min-height: 400px;" >
+
+	    			<div style="height: 300px; overflow: hidden;" >
+	    				<img id="image_cover" style="width: 100%;" src="{% block cover_set_content %}{% endblock %}" original_src="{% block cover0_set_content %}{% endblock %}" >
+	    				<div style="position: absolute; top: 0px; width: 26%; height: 40px; margin-left: 0%; background: linear-gradient(rgb(0, 153, 255), white);" ></div>
+	    				<div style="position: absolute; top: 0px; margin: auto; width: 76%; height: 40px; margin-left: 23.5%;display: flex; justify-content: center; align-items: center; background: linear-gradient(rgb(0, 153, 255), white);" >
+	    				{% block name_set_content %}{% endblock %}
+	    				</div>
+	    				<!------->
+
+	    				{% if administrator_status %}
+	    					{% block update_cover %}{% endblock %}
+						{% endif %}
+
+	    				<!------->
+	    				<!------->
+	    				{% if administrator_status %}
+	    					{% block delete_set %}{% endblock %}
+						{% endif %}
+	    				
+	    				<!------->
+	    			</div>
+
+	    			<!------->
+	    				{% block type_and_description %}{% endblock %}
+	    				{% block specify_event %}{% endblock %}
+	    			<!------->
+	    			
+	    			
+	    		</div>
+
+	    		<div>
+		    		<!-------------       partie_2_1          ----------->
+		    		{% block sections %}{% endblock %}
+			    	<!-------------       partie_2_1          ----------->
+			    	<!-------------       partie_2_2          ----------->
+			    	<div style="position: absolute; left: 24.5%;  width: 51%; /*min-height: 100%;*/ display: inline;" ></div>
+			    	<!-------------       partie_2_2          -----------> 
+			    		{% block content %}{% endblock %}
+			    	<!-------------       partie_2_3          ----------->
+			    	<div style="position: fixed; top: 470px; border: solid red 1px; width: 24%; height: 100%; right: 0px; display: none;" >
+			    		aaaaaaaaaaaaa
+			    	</div>
+			    	<!-------------       partie_2_3          -----------> 
+	    		</div>
+
+		    	
+	    	</div>
+	    	<!-------------       partie_2          ----------->
+	    	<div class="footer" style="width: 100%; height: 70px; background: rgb(235, 235, 235); display: flex; justify-content: center; align-items: center; color: rgb(150, 150, 150);" >
+
+	    		set-group
+	    		
+	    	</div>
+    	</div>
+
+    	
+		{% if section %}
+			<script type="text/javascript">
+
+		        function createThumbnail0(file) {
+		            var reader = new FileReader();
+		            reader.addEventListener('load', function() {
+		                document.querySelector('#image_cover').src = this.result;
+		            }, false);
+		            reader.readAsDataURL(file);
+		        }
+
+		        var allowedTypes = ['png', 'jpg', 'jpeg', 'gif'],
+		            fileInput = document.querySelector('#id_file'),
+		            loadInput = document.querySelector('#label_for_id_file'),
+		            submitInput = document.querySelector('#submit_change_image_cover'),
+		            cancelInput = document.querySelector('#cancel_change_image_cover');
+		 
+		        fileInput.addEventListener('change', function() {
+
+		            var files = this.files,
+		                filesLen = files.length,
+		                imgType;
+		 
+		            for (var i = 0 ; i < filesLen ; i++) {
+		                imgType = files[i].name.split('.');
+		                imgType = imgType[imgType.length - 1];
+
+		                if(allowedTypes.indexOf(imgType) != -1) {
+		                    createThumbnail0(files[i]);
+		                }
+		 
+		            }
+
+		            loadInput.style.display = "none";
+		            submitInput.style.display = "block";
+		            cancelInput.style.display = "block";
+		        }, false);
+
+
+
+		        cancelInput.addEventListener('click', function() {
+
+		            document.querySelector('#image_cover').setAttribute("src", document.querySelector('#image_cover').getAttribute("original_src"));
+
+		            loadInput.style.display = "block";
+		            submitInput.style.display = "none";
+		            cancelInput.style.display = "none";
+
+		 
+		        }, false);
+
+		        //--------------------------------  Description set   ---------------------------------------//
+
+		        var modification_description = document.querySelector('#modification_description'),
+		            set_description_input = document.querySelector('#set_description_input'),
+		            submit_set_description = document.querySelector('#submit_set_description'),
+		            cancel_set_description = document.querySelector('#cancel_set_description'),
+		            contain_description = document.querySelector('#contain_description');
+
+
+
+		        modification_description.addEventListener('click', function() {
+
+		        	contain_description.style.display = "none";
+		        	modification_description.style.display = "none";
+		        	submit_set_description.style.display = "block";
+		            cancel_set_description.style.display = "block";
+		            set_description_input.style.display = "block";
+
+		 
+		        }, false);
+
+
+		        cancel_set_description.addEventListener('click', function() {
+
+		        	submit_set_description.style.display = "none";
+		            cancel_set_description.style.display = "none";
+		            set_description_input.style.display = "none";
+		            contain_description.style.display = "block";
+		        	modification_description.style.display = "block";
+		        	
+		        }, false);
+
+
+		        //--------------------------------  Suppression set   ---------------------------------------//
+
+
+		        var suppression_set = document.querySelector('#suppression_set'),
+		            submit_suppression_set = document.querySelector('#submit_suppression_set'),
+		            cancel_suppression_set = document.querySelector('#cancel_suppression_set');
+
+
+
+		        suppression_set.addEventListener('click', function() {
+
+		        	suppression_set.style.display = "none";
+		            submit_suppression_set.style.display = "block";
+		            cancel_suppression_set.style.display = "block";
+
+		 
+		        }, false);
+
+
+		        cancel_suppression_set.addEventListener('click', function() {
+
+		        	submit_suppression_set.style.display = "none";
+		            cancel_suppression_set.style.display = "none";
+		            suppression_set.style.display = "block";
+		        	
+		        }, false);
+
+			</script>
+		{%  else  %}
+
+			<script type="text/javascript">
+
+
+		        //--------------------------------  Description Evènement   ---------------------------------------//
+
+		        var modification_description = document.querySelector('#modification_description_event'),
+		            set_description_input = document.querySelector('#set_description_input_event'),
+		            submit_set_description = document.querySelector('#submit_set_description_event'),
+		            cancel_set_description = document.querySelector('#cancel_set_description_event'),
+		            contain_description = document.querySelector('#contain_description_event');
+
+
+
+		        modification_description.addEventListener('click', function() {
+
+		        	contain_description.style.display = "none";
+		        	modification_description.style.display = "none";
+		        	submit_set_description.style.display = "block";
+		            cancel_set_description.style.display = "block";
+		            set_description_input.style.display = "block";
+
+		 
+		        }, false);
+
+
+		        cancel_set_description.addEventListener('click', function() {
+
+		        	submit_set_description.style.display = "none";
+		            cancel_set_description.style.display = "none";
+		            set_description_input.style.display = "none";
+		            contain_description.style.display = "block";
+		        	modification_description.style.display = "block";
+		        	
+		        }, false);
+
+
+		        //--------------------------------  Suppression Evènement set   ---------------------------------------//
+
+
+		        var suppression_event = document.querySelector('#suppression_event'),
+		            submit_suppression_event = document.querySelector('#submit_suppression_event'),
+		            cancel_suppression_event = document.querySelector('#cancel_suppression_event');
+
+
+
+		        suppression_event.addEventListener('click', function() {
+
+		        	suppression_event.style.display = "none";
+		            submit_suppression_event.style.display = "block";
+		            cancel_suppression_event.style.display = "block";
+
+		 
+		        }, false);
+
+
+		        cancel_suppression_event.addEventListener('click', function() {
+
+		        	submit_suppression_event.style.display = "none";
+		            cancel_suppression_event.style.display = "none";
+		            suppression_event.style.display = "block";
+		        	
+		        }, false);
+
+			</script>
+
+		{% endif %}
+
+
+
+
+    
+
+
+
+    </body>
+</html>
+
+                        
+
+
+
+
+
+

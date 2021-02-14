@@ -1,0 +1,24 @@
+{% extends 'base_authentification.html' %}
+
+{% block authentification_title %}Envoie d'un lien de réinitialisation du mot de passe{% endblock %}
+
+{% block content %}
+
+<div class="col-10" style="margin: auto;" >
+	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" >
+		{% csrf_token %}
+		<div style="margin: auto; margin-top: 30px;" >{{ link_reset_form.email }}</div>
+		<button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Envoyer le lien</button>
+	</form>
+	
+	<div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 50px;" >
+
+		<div style="display: flex; flex-direction: column;" >
+			<a href="../connexion/" style="font-size: 80%; text-align: center; margin-top: 20px;" >Se connecter</a>
+			<a href="../inscription/" style="font-size: 80%; text-align: center; margin-top: 20px;" >S'inscrire</a>
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}
