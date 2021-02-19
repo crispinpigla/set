@@ -1,1 +1,153 @@
-je suis dans les messages
+{% extends 'base_user.html' %}
+
+
+{% load static %}
+
+
+
+
+
+{% block action_search_form %}../../sets/search/{% endblock %}
+{% block link_home %}../home/{% endblock %}
+{% block link_deconnexion %}../deconnexion/{% endblock %}
+{% block link_contact %}../contacts/{% endblock %}
+{% block link_messages %}../messages/{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block content %}
+
+
+<div style="margin: auto; width:500px; height:50px; display: flex; justify-content: center; align-items: center;" >Messages</div>
+
+
+
+
+<!--------------------------   affichage des derniers messages    ------------------------------------------>
+
+	<div style="margin: auto; width:90%; height:680px; margin-top: 0px; display: flex; flex-direction: column; justify-content: center; align-items: center;" >
+
+		<div id="contain_message" style="width: 100%; border-left: solid silver 1px; border-right: solid silver 1px; height: 90%; overflow-y: scroll; scroll-behavior: smooth; padding: 10px;" >
+
+
+
+			{% if messages|length == 0 %}
+
+				{% include 'aucun_resultat.html' %}
+
+			{% else %}
+
+				{%  for message in messages  %}
+
+
+					{%  if message.last_message  %}
+					
+
+
+						{% if user == message.message.which_from %}
+
+
+							<div message_id="{{message.message.id}}" style="margin: auto; width:100%; min-height:140px;  margin-bottom: 30px; border-radius: 5px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; border: solid silver 1px; cursor: pointer; background: rgb(176, 227, 255); transition: background 0.1s; padding-left: 5px; padding-right: 10px;" onmouseover="this.style.background='rgb(66, 170, 255)';" onmouseout="this.style.background='rgb(176, 227, 255)';" onclick="window.location.replace('../messages_exchanges/{{message.message.which_to.id}}/')" >
+
+								<div style="width: 100%; text-align: center; font-size: 80%; color: rgb(140, 140, 140);" >Avec {{message.message.which_to.nom}}</div>
+
+								<div style=" display: flex; max-width: 80%;" >
+									<div style=" max-width: 90%; margin-right: 5px; display: flex; flex-direction: column;" >
+										<div style="width: 100%; display: flex; justify-content: flex-end;" >
+											<a href="" style="font-weight: bold;  text-align: right; max-width: 100%; overflow: hidden; text-overflow: ellipsis;" >
+												{{message.message.which_from.nom}}
+											</a>
+										</div>
+										<div style="border: solid 1px; border-bottom-right-radius: 10px; border-bottom-left-radius:10px; border-top-left-radius: 10px; max-width: 100%; overflow-x: hidden; word-wrap: break-word; padding: 5px; margin: 2px; text-align: center; background: white;" >
+											{{message.message.contenu_text}}
+											<div style="color: silver; font-size: 60%;" >{{message.message.date}}</div>
+										</div>
+									</div>
+
+									<div style="" >
+										<div style="height: 50px; width: 50px; border: solid 1px; border-radius: 50%; background: white; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+											<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.message.which_from.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}{{  message.message.which_from.image_profil  }}{% endif %}"></a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						{% else %}
+
+							<div message_id="{{message.message.id}}" style="margin: auto; width:100%; min-height:140px; margin-bottom: 30px; border-radius: 5px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;  border: solid silver 1px; cursor: pointer; background: rgb(176, 227, 255);  transition: background 0.1s; padding-left: 5px; padding-right: 10px;" onmouseover="this.style.background='rgb(66, 170, 255)';" onmouseout="this.style.background='rgb(176, 227, 255)';" onclick="window.location.replace('../messages_exchanges/{{message.message.which_from.id}}/')" >
+
+								<div style="width: 100%; text-align: center; font-size: 80%; color: rgb(140, 140, 140);" >Avec {{message.message.which_from.nom}}</div>
+
+								<div style="display: flex; max-width: 80%;" >
+									<div style="" >
+										<div style="height: 50px; width: 50px; border: solid 1px; border-radius: 50%; background: white; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+											<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.message.which_from.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}{{  message.message.which_from.image_profil  }}{% endif %}"></a>
+										</div>
+									</div>
+									<div style="max-width: 90%; margin-left: 5px; display: flex; flex-direction: column;" >
+										<div style="width: 100%; display: flex; justify-content: flex-start;" >
+											<a href="" style=" font-weight: bold;  text-align: left; max-width: 100%; overflow: hidden; text-overflow: ellipsis;" >
+												{{message.message.which_from.nom}}
+											</a>
+										</div>
+										<div style="border: solid 1px; max-width: 100%; overflow-x: hidden; word-wrap: break-word; padding: 5px; margin: 2px; text-align: center; border-bottom-right-radius: 10px; border-bottom-left-radius:10px; border-top-right-radius: 10px; background: white;" >
+											{{message.message.contenu_text}}
+											<div style="color: silver; font-size: 60%;" >{{message.message.date}}</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+
+						{% endif %}
+
+					{%  endif  %}
+
+
+				{%  endfor %}
+
+			{% endif %}
+
+
+
+
+
+
+
+		</div>
+
+
+	</div>
+
+
+<!-------                                    ---------->
+
+</div>
+
+
+{% endblock %}
+
+
+
+
+{% block sections_user_connected %}
+
+
+		<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px; color: white; background: #007bff; " href="../contacts/" >
+    		Contacts
+    	</a>
+
+    	<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px;" href="../messages/">
+			Messagerie
+		</a>
+
+
+{% endblock %}

@@ -51,95 +51,88 @@
 <!--------------------------   affichage de publications    ------------------------------------------>
 
 
-{% for publication_likeurs in publications_likeurs %}
+{% if publications_likeurs|length == 0 %}
+	{% include 'aucun_resultat.html' %}
+{% else %}
 
+	{% for publication_likeurs in publications_likeurs %}
 
+		<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
 
+			<div style="height: 80px; display: flex;" >
+				<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
+					
+					<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+						<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+					</a>
 
-	<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
-
-
-		<div style="height: 80px; display: flex;" >
-			<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
-				
-				{% if publication_likeurs.0.auteur.image_profil == "" %}
-				<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-					<img style="width: 80%;" src="{% static 'img/default_user_profil.png' %}">
+				</div>
+				<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+					{{  publication_likeurs.0.auteur.nom  }}
 				</a>
+			</div>
+
+			<div style="margin: auto; width: 100%; margin-top: 10px;" >
+				<div style=" margin: auto; width: 80%; margin-top: 10px; word-wrap: break-word;" >
+					{{  publication_likeurs.0.contenu_text  }}
+				</div>
+
+				<div style="margin: auto; width: 80%; margin-top: 10px;" >
+					{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
+
+					{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
+					    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+						<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+					{% else %}
+					    {%  if publication_likeurs.0.media1 != '' %}
+					    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+					    {%  elif publication_likeurs.0.media2 != ''  %}
+					    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+					    {%  endif  %}
+					{% endif %}
+
+				</div>
+			</div>
+
+			<div style="display: flex; flex-direction: column; align-items: center;" >
+
+
+				{% if publication_likeurs.2|length  == 0 %}
+					<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
+						J'aime
+					</div>
+					<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
+						Je n'aime plus
+					</div>
 				{% else %}
-				<div><img src="{{  publication_likeurs.0.auteur.image_profil  }}"></div>
+					<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
+						J'aime
+					</div>
+					<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
+						Je n'aime plus
+					</div>
 				{% endif %}
 
-			</div>
-			<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
-				{{  publication_likeurs.0.auteur.nom  }}
-			</a>
-		</div>
-
-		<div style="margin: auto; width: 100%; margin-top: 10px;" >
-			<div style=" margin: auto; width: 80%; margin-top: 10px; word-wrap: break-word;" >
-				{{  publication_likeurs.0.contenu_text  }}
+				
+				<div style="font-size: 80%; color: rgb(0, 204, 255);" >
+					{{  publication_likeurs.1|length  }}
+				</div>
+				
+				
 			</div>
 
-			<div style="margin: auto; width: 80%; margin-top: 10px;" >
-				{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
-
-				{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
-				    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
-					<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
-				{% else %}
-				    {%  if publication_likeurs.0.media1 != '' %}
-				    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
-				    {%  elif publication_likeurs.0.media2 != ''  %}
-				    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
-				    {%  endif  %}
-				{% endif %}
-
+			<div style="text-align: center; font-size: 80%; color: silver;" >
+				{{  publication_likeurs.0.date  }}
 			</div>
+
 		</div>
 
-		<div style="display: flex; flex-direction: column; align-items: center;" >
+	{% endfor %}
 
 
-			{% if publication_likeurs.2|length  == 0 %}
-				<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
-					J'aime
-				</div>
-				<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
-					Je n'aime plus
-				</div>
-			{% else %}
-				<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
-					J'aime
-				</div>
-				<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
-					Je n'aime plus
-				</div>
-			{% endif %}
-
-			
-			<div style="font-size: 80%; color: rgb(0, 204, 255);" >
-				{{  publication_likeurs.1|length  }}
-			</div>
-			
-			
-		</div>
-
-		<div style="text-align: center; font-size: 80%; color: silver;" >
-			{{  publication_likeurs.0.date  }}
-		</div>
+{% endif %}
 
 
-
-
-
-	</div>
-
-
-
-
-
-{% endfor %}
 
 
 

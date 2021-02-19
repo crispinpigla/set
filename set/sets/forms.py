@@ -1,6 +1,65 @@
 from django import forms
 
 
+
+
+
+
+
+
+class CreateSetForm(forms.Form):
+    """Create set form"""
+
+    CHOICES = [
+        ("Entreprise", "Entreprise"),
+        ("Association", "Association"),
+        ("Autres", "Autres"),
+    ]
+    file = forms.FileField()
+    name = forms.CharField(
+        label="",
+        widget=forms.TextInput(attrs={"class": "col-12", "placeholder": "Nom du set"}),
+    )
+    type_set = forms.ChoiceField(choices=CHOICES)
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "class": "col-12",
+                "placeholder": "Description du set",
+                "size": "200",
+                "style": "width:100%; border-radius:5px; height: 90%; resize: none; border: solid silver 1px;",
+            }
+        )
+    )
+
+
+##############################
+
+
+class CreateEventForm(forms.Form):
+    """Create event form"""
+
+    name = forms.CharField(
+        label="",
+        widget=forms.TextInput(
+            attrs={"class": "col-12", "placeholder": "Nom de l'évènement"}
+        ),
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "class": "col-12",
+                "placeholder": "Description de l'évènement",
+                "size": "200",
+                "style": "width:100%; border-radius:5px; height: 90%; resize: none; border: solid silver 1px;",
+            }
+        )
+    )
+
+
+##############################
+
+
 class SearchForm(forms.Form):
     """Search form"""
 

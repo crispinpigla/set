@@ -1,0 +1,67 @@
+
+{% load static %}
+
+{%  for message in messages  %}
+
+			{% if user == message.which_from %}
+
+				<div message_id="{{message.id}}" style="margin: auto; width:100%; min-height:140px;  margin-bottom: 30px; border-radius: 5px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;" >
+
+					<div style=" display: flex; max-width: 80%;" >
+						<div style=" max-width: 90%; margin-right: 5px; display: flex; flex-direction: column;" >
+							<div style="width: 100%; display: flex; justify-content: flex-end;" >
+								<a href="" style="font-weight: bold;  text-align: right; max-width: 100%; overflow: hidden; text-overflow: ellipsis;" >
+									{{message.which_from.nom}}
+								</a>
+							</div>
+							<div style="border: solid 1px; border-bottom-right-radius: 10px; border-bottom-left-radius:10px; border-top-left-radius: 10px; max-width: 100%; overflow-x: hidden; word-wrap: break-word; padding: 5px; margin: 2px; text-align: center; background: white;" >
+								{{message.contenu_text}}
+								<div style="color: silver; font-size: 60%;" >{{message.date}}</div>
+							</div>
+						</div>
+
+						<div style="" >
+							<div style="height: 50px; width: 50px; border: solid 1px; border-radius: 50%; background: white; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+								<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.which_from.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}{{  message.which_from.image_profil  }}{% endif %}"></a>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+			{% else %}
+
+				<div message_id="{{message.id}}" style="margin: auto; width:100%; min-height:140px; margin-bottom: 30px; border-radius: 5px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;" >
+
+					<div style="display: flex; max-width: 80%;" >
+						<div style="" >
+							<div style="height: 50px; width: 50px; border: solid 1px; border-radius: 50%; background: white; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+								<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.which_from.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}{{  message.which_from.image_profil  }}{% endif %}"></a>
+							</div>
+						</div>
+						<div style="max-width: 90%; margin-left: 5px; display: flex; flex-direction: column;" >
+							<div style="width: 100%; display: flex; justify-content: flex-start;" >
+								<a href="" style=" font-weight: bold;  text-align: left; max-width: 100%; overflow: hidden; text-overflow: ellipsis;" >
+									{{message.which_from.nom}}
+								</a>
+							</div>
+							<div style="border: solid 1px; max-width: 100%; overflow-x: hidden; word-wrap: break-word; padding: 5px; margin: 2px; text-align: center; border-bottom-right-radius: 10px; border-bottom-left-radius:10px; border-top-right-radius: 10px; background: white;" >
+								{{message.contenu_text}}
+								<div style="color: silver; font-size: 60%;" >{{message.date}}</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+
+			{% endif %}
+
+
+{%  endfor  %}
+
+
+
+
+
+

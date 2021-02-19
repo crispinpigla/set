@@ -19,10 +19,11 @@ class Sets(models.Model):
 class Evenements(models.Model):
 	""""""
 	set0 = models.ForeignKey(Sets, on_delete=models.CASCADE)
+	administrateur = models.ForeignKey(Utilisateurs, on_delete=models.CASCADE, null=True)
 	nom = models.CharField(max_length=200)
 	description = models.CharField(max_length=200)
 	date = models.DateTimeField(auto_now=True, null=True)
-	#publication = models.ManyToManyField(Utilisateurs, through='PublicationEvenement',)
+
 
 
 

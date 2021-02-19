@@ -10,9 +10,9 @@
 
 {% block type_and_description %}
 	<div style=" background: white;" >
-		<div style="width: 75%; height: 40px;  margin-left: 24%;display: flex; justify-content: center; align-items: center;" >{{ set.type0 }}</div>
-		<div style="width: 75%; min-height: 10px;  margin-left: 24%;display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px; padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px;  color: rgb(156, 156, 156);" >Type du set</div>
-		<div style="width: 75%; height: ;  margin-left: 24%;display: flex; flex-direction: column; justify-content: center; align-items: center;" >
+		<div style="width:100%; height: 40px;  margin-left: 0%;display: flex; justify-content: center; align-items: center;" >{{ set.type0 }}<br></div>
+		<div style="width: 100%; min-height: 10px;  margin-left: 0%;display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px; padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px;  color: rgb(156, 156, 156);" >Type du set</div>
+		<div style="width: 100%; height: ;  margin-left: 0%;display: flex; flex-direction: column; justify-content: center; align-items: center;" >
 			<div style="width: 90%; min-height: 60px; display: flex; justify-content: center; align-items: center;" >
 				<div id="contain_description" > {{ set.description }} </div>
 				<form action="../../update_description_set/?set_id={{set.id}}" method="post" enctype=multipart/form-data >
@@ -31,7 +31,7 @@
 				</div>
 			{% endif %}
 		</div>
-		<div style="width: 75%; min-height: 10px;  margin-left: 24%;display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px;  padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px; color: rgb(156, 156, 156);" >
+		<div style="width: 100%; min-height: 10px;  margin-left: 0%;display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px;  padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px; color: rgb(156, 156, 156);" >
 			Description du set
 		</div>
 	</div>
@@ -103,23 +103,23 @@
     		<div style="margin: auto; width: 100%; height: 400px;  display: flex; flex-direction: column; justify-content: flex-start; align-items: center;" >
     			
 				{% if section == 'publications' %}
-					<a style="border: solid 1px; background: black; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
+					<a style="border: solid 1px; border-radius: 10px; background: white; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
 				{% else %}
-	    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
+	    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
 				{% endif %}
 
 
 				{% if section == 'evenements' %}
-					<a style="border: solid 1px; background: black; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
+					<a style="border: solid 1px; border-radius: 10px; background: white; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
 				{% else %}
-	    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
+	    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
 				{% endif %}
 
     			
     			{% if section == 'personnes' %}
-					<a style="border: solid 1px; background: black; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>
+					<a style="border: solid 1px; border-radius: 10px; background: white; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>
 				{% else %}
-	    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>
+	    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>
 				{% endif %}
     		</div>
     	</div>

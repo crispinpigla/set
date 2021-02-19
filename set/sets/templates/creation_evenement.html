@@ -1,0 +1,29 @@
+{% extends 'base_user.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+
+<div style="margin: auto; width:500px; height:50px; display: flex; justify-content: center; align-items: center;" >Création d'un évènement dans le set {{  set.nom  }}</div>
+
+
+<form style="margin: auto; margin-top: 50px; margin-bottom: 30px; width:700px; display: flex; flex-direction: column; align-items: center;"  method="post" action="../../creation_evenement/{{ set.id }}/" >
+	{% csrf_token %}
+	<div id="ecran_previsualisation" style=" width:600px; height: 150px; overflow: hidden;" >
+		<div style="height: 100%; min-width: 50px; margin: auto; display: flex; justify-content: center; align-items: center;" >
+			<img id="image_ecran_previsualisation" style="height: 100%;" src="{% static 'img/logo_evenement.png' %}">
+		</div> 
+	</div>
+	<div style="margin-top: 25px;" >{{  create_event_form.name  }}</div>
+	<div style="margin-top: 25px;" >{{  create_event_form.description  }}</div>
+
+	<button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Créer l'évènement</button>
+
+</form>
+
+
+
+{% endblock %}

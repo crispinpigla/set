@@ -1,0 +1,400 @@
+{% extends 'base_user.html' %}
+
+{% load static %}
+
+
+{% block action_search_form %}../../sets/search/{% endblock %}
+{% block link_home %}../../home/{% endblock %}
+{% block link_deconnexion %}../../deconnexion/{% endblock %}
+{% block link_contact %}../../contacts/{% endblock %}
+{% block link_messages %}../../messages/{% endblock %}
+
+
+
+{% block sections_user_connected %}
+
+		<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px; color: white; background: #007bff;" href="../../contacts/" >
+    		Contacts
+    	</a>
+
+    	<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px; color: white; background: #007bff; " href="../../messages/">
+			Messagerie
+		</a>
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block content %}
+
+	<div style="margin: auto; width:500px; height:50px; display: flex; justify-content: center; align-items: center;" >Profil</div>
+
+
+
+		<!--------------------------   affichage de publications    ------------------------------------------>
+
+
+
+		{% if section_profil == 'sets' %}
+
+
+			{% if sets_user_profil|length == 0 %}
+
+				{% include 'aucun_resultat.html' %}
+
+			{% else %}
+
+				{% for contenu in sets_user_profil %}
+
+					<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px; background: rgb(237, 255, 255); cursor: pointer;" onmouseover="this.style.background='rgb(176, 238, 255)';" onmouseout="this.style.background='rgb(237, 255, 255)';" onclick="window.location.replace('../../../sets/set/{{contenu.set0.id}}/')" >
+
+						<div style=" display: flex; justify-content: center;" >
+							<div style="height: 100px; width: 80%; margin: auto; overflow: hidden; margin-top: 5px; margin-bottom: 5px;" >
+								<img style="width: 100%;" src="../../media/{{ contenu.set0.image_couverture }}">		
+							</div>
+						</div>
+
+						<div style=" text-align: center;" > {{ contenu.set0.nom }}</div>
+
+						<div style=" text-align: center; font-size: 80%; color: rgb(161, 161, 161); margin: auto; margin-bottom: 10px; border: solid silver 1px; border-radius: 5px; width: 40%;"  > {{ contenu.set0.type0 }} </div>
+
+						<div style=" text-align: center; font-size: 80%; margin-bottom: 10px;"  > {{ contenu.set0.description }} </div>
+
+						<div style="margin: auto; border-top: solid 1px; color: silver; font-size: 60%; text-align: center; width: 60%; padding: 7px;" > Crée le {{ contenu.set0.date }} </div>
+
+					</div>
+
+				{% endfor %}
+
+			{% endif %}
+
+
+
+
+
+		{% elif section_profil == 'coordonees' %}
+
+				<div style="margin: auto; width:700px; min-height: 100px; border-bottom: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+
+					<div style=" display: flex; justify-content: center;" >
+						<div style="height: 300px; width: 80%; margin: auto; overflow: hidden; margin-top: 5px; margin-bottom: 5px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
+							<div style="height: 250px; width: 250px;" >
+
+								<div style=" margin: auto; width: 200px; height: 200px; border: solid 1px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
+					    			<div style=" width: 100px; height: 100px; border-radius: 50%; border: solid 1px; overflow: hidden; display: flex; justify-content: center; align-items: center; " >
+					    				<img id="profil_image" style="max-width: 70%; max-height: 70%;" src="{% if user_profil.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{user_profil.image_profil.url}}{% endif %}" original_src="{% if user_profil.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{ user_profil.image_profil.url }}{% endif %}" >
+					    			</div>
+					    		</div>
+
+							</div>
+							<div style="height: 50px; width: 250px; display: flex; justify-content: center; align-items: center;" >
+
+								{%  if user_profil == user  %}
+
+									<div style="display: flex; justify-content: center; align-items: center;" >
+										<form style="display: flex; justify-content: center; align-items: center;" action="../../update_image_cover/" method="post" enctype=multipart/form-data >
+											{% csrf_token %}
+											{{ image_cover_form.file }}
+											<label id="label_for_id_file" for="id_file" style="text-align: center; font-size: 80%; display: flex; justify-content: center; align-items: center; cursor: pointer;" >
+												Modifier l'image de profil
+											</label>
+											<button id="submit_change_photo_profil" type="submit" class="btn btn-success" style=" display: none;" >Confirmer</button>	
+											<div id="cancel_change_photo_profil" style="border: solid 1px; font-size: 90%; border-radius: 5px; margin: 3px; padding: 8px; background: rgb(255, 87, 87); color: white; cursor: pointer; display: none;" >Annuler</div>
+										</form>
+									</div>
+
+								{%  else  %}
+
+
+
+								{%  endif  %}
+								
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+
+
+
+				<div style="margin: auto; width:700px; min-height: 100px; margin-bottom: 30px; border-radius: 5px;" >
+
+					<div style=" display: flex; justify-content: center;" >
+
+					</div>
+
+						{% if user_profil == user %}
+							<form action="../../update_profil_name/" method="post" >
+								{% csrf_token %}
+								<div style=" text-align: center;" >
+									<div id="contain_name" style="display: block;" > {{ user_profil.nom }}</div>
+									<div style="width: 50%; margin: auto;" >  {{ set_name_form.name }}  </div>
+								</div>
+								<div style="min-width: 10%; min-height: 100%; display: flex; justify-content: space-around; align-items: center; margin-top: 10px;  margin: auto; margin-top: 10px;" >
+									<div id="modification_name" style="background: white; border-radius: 50%; overflow: hidden; width: 50px; height: 50px; display: block; cursor: pointer;" >
+										<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+									</div>
+									<button id="submit_change_name" type="submit" class="btn btn-success" style=" display: none;" >Mettre à jour</button>
+									<div id="cancel_change_name" style="background: rgb(255, 153, 153); border-radius: 5px; padding: 9px; font-size: 80%; cursor: pointer;display: none; color: white;" >Annuler</div>
+								</div>
+							</form>
+						{% else %}
+							<div style=" text-align: center;" >
+								{{ user_profil.nom }}
+							</div>
+						{% endif %}
+
+					<div style=" text-align: center; font-size: 80%; color: rgb(161, 161, 161); margin: auto; margin-bottom: 10px; border-bottom: solid silver 1px; border-radius: 5px; width: 40%;"  >
+						nom
+					</div>
+
+
+				</div>
+
+		<!-----      --------->
+
+
+				<div style="margin: auto; width:700px; min-height: 100px; margin-bottom: 30px; border-radius: 5px;" >
+
+					<div style=" display: flex; justify-content: center;" >
+
+					</div>
+
+						{% if user_profil == user %}
+							<form action="../../update_profil_mail/" method="post" >
+								{% csrf_token %}
+								<div style=" text-align: center;" >
+									<div id="contain_mail" style="" >{{ user_profil.adresse_mail }}</div>
+									<div style="width: 50%; margin: auto;" >{{ set_mail_form.mail }}</div>
+								</div>
+								<div style="min-width: 10%; min-height: 100%; display: flex; justify-content: space-around; align-items: center; margin-top: 10px;  margin: auto;  margin-top: 10px;" >
+									<div id="modification_mail" style="background: white; border-radius: 50%; overflow: hidden; width: 50px; height: 50px; display: block; cursor: pointer;" >
+										<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+									</div>
+									<button id="submit_change_mail" type="submit" class="btn btn-success" style=" display: none;" >Mettre à jour</button>
+									<div id="cancel_change_mail" style="background: rgb(255, 153, 153); border-radius: 5px; padding: 9px; font-size: 80%; cursor: pointer;display: none; color: white;" >Annuler</div>
+								</div>
+							</form>
+						{% else %}
+							<div style=" text-align: center;" >
+								{{ user_profil.adresse_mail }}
+							</div>
+						{% endif %}
+						
+						
+
+
+					<div style=" text-align: center; font-size: 80%; color: rgb(161, 161, 161); margin: auto; margin-bottom: 10px; border-bottom: solid silver 1px; border-radius: 5px; width: 40%;"  >
+						e-mail
+					</div>
+
+
+				</div>
+
+
+				{% if user_profil == user %}
+				<div style="margin: auto; width:700px; min-height: 100px; border-bottom: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+					<div style=" display: flex; justify-content: center;" >
+						<div style="max-height: 100px; width: 80%; margin: auto; overflow: hidden; margin-top: 5px; margin-bottom: 5px; display: flex; justify-content: space-around;" >
+							<button id="suppression_compte" style="display: block;font-size: 80%;" class="btn btn-danger" >Supprimer le compte</button>
+							<a id="confirmation_suppression_compte" href="../../suppression_compte/" style="display: none; font-size: 80%;" class="btn btn-danger" >Confirmer la suppression du compte</a>
+							<button id="annulation_suppression_compte" style="display: none; font-size: 80%;" class="btn btn-success" >Annuler la suppression du compte </button>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+
+		{% endif %}
+
+
+
+
+
+
+
+
+
+
+		<script type="text/javascript" >
+			
+
+
+					// ---------    Prévisualisation de la photo de couverture
+
+				        function createThumbnail0(file) {
+			            var reader = new FileReader();
+			            reader.addEventListener('load', function() {
+			                document.querySelector('#profil_image').src = this.result;
+			            }, false);
+			            reader.readAsDataURL(file);
+				        }
+
+				        var allowedTypes = ['png', 'jpg', 'jpeg', 'gif'],
+				            fileInput = document.querySelector('#id_file'),
+				            loadInput = document.querySelector('#label_for_id_file'),
+				            submitInput = document.querySelector('#submit_change_photo_profil'),
+				            cancelInput = document.querySelector('#cancel_change_photo_profil');
+				 
+				        fileInput.addEventListener('change', function() {
+
+				            var files = this.files,
+				                filesLen = files.length,
+				                imgType;
+				 
+				            for (var i = 0 ; i < filesLen ; i++) {
+				                imgType = files[i].name.split('.');
+				                imgType = imgType[imgType.length - 1];
+
+				                if(allowedTypes.indexOf(imgType) != -1) {
+				                    createThumbnail0(files[i]);
+				                }
+				 
+				            }
+
+				            loadInput.style.display = "none";
+				            submitInput.style.display = "block";
+				            cancelInput.style.display = "block";
+				        }, false);
+
+
+
+				        cancelInput.addEventListener('click', function() {
+
+				            document.querySelector('#profil_image').setAttribute("src", document.querySelector('#profil_image').getAttribute("original_src"));
+
+				            loadInput.style.display = "flex";
+				            submitInput.style.display = "none";
+				            cancelInput.style.display = "none";
+
+				 
+				        }, false);
+
+
+
+				       	//--------------------------------  Modification du nom   ---------------------------------------//
+
+				        var modification_name = document.querySelector('#modification_name'),
+				            change_name_input = document.querySelector('#id_name'),
+				            submit_change_name = document.querySelector('#submit_change_name'),
+				            cancel_change_name = document.querySelector('#cancel_change_name'),
+				            contain_name = document.querySelector('#contain_name');
+
+
+				        modification_name.addEventListener('click', function() {
+				        	contain_name.style.display = "none";
+				        	modification_name.style.display = "none";
+				        	submit_change_name.style.display = "block";
+				            cancel_change_name.style.display = "block";
+				            change_name_input.style.display = "block";
+				        }, false);
+
+
+				        cancel_change_name.addEventListener('click', function() {
+				        	submit_change_name.style.display = "none";
+				            cancel_change_name.style.display = "none";
+				            change_name_input.style.display = "none";
+				            contain_name.style.display = "block";
+				        	modification_name.style.display = "block";
+				        }, false);
+
+
+				        //--------------------------------  Modification du mail   ---------------------------------------//
+
+				        var modification_mail = document.querySelector('#modification_mail'),
+				            change_mail_input = document.querySelector('#id_mail'),
+				            submit_change_mail = document.querySelector('#submit_change_mail'),
+				            cancel_change_mail = document.querySelector('#cancel_change_mail'),
+				            contain_mail = document.querySelector('#contain_mail');
+
+
+				        modification_mail.addEventListener('click', function() {
+				        	contain_mail.style.display = "none";
+				        	modification_mail.style.display = "none";
+				        	submit_change_mail.style.display = "block";
+				            cancel_change_mail.style.display = "block";
+				            change_mail_input.style.display = "block";
+				        }, false);
+
+
+				        cancel_change_mail.addEventListener('click', function() {
+				        	submit_change_mail.style.display = "none";
+				            cancel_change_mail.style.display = "none";
+				            change_mail_input.style.display = "none";
+				            contain_mail.style.display = "block";
+				        	modification_mail.style.display = "block";
+				        }, false);
+
+
+				        //--------------------------------  Suppression compte   ---------------------------------------//
+
+				        var suppression_compte = document.querySelector('#suppression_compte'),
+				            confirmation_suppression_compte = document.querySelector('#confirmation_suppression_compte'),
+				            annulation_suppression_compte = document.querySelector('#annulation_suppression_compte');
+
+
+				        suppression_compte.addEventListener('click', function() {
+				        	suppression_compte.style.display = "none";
+				        	confirmation_suppression_compte.style.display = "block";
+				            annulation_suppression_compte.style.display = "block";
+				        }, false);
+
+
+				        annulation_suppression_compte.addEventListener('click', function() {
+				        	confirmation_suppression_compte.style.display = "none";
+				            annulation_suppression_compte.style.display = "none";
+				        	suppression_compte.style.display = "block";
+				        }, false);
+
+
+
+		</script>
+
+{% endblock %}
+
+
+
+
+
+{% block sections_profil %}
+
+	<div style="min-height: 100px; margin-top: 10px;" >
+
+
+	{% if section_profil == 'sets' %}
+
+		<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px; " href="?section_profil=sets" >
+    		Sets
+    	</a>
+
+    	<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px; color: white; background: #007bff; " href="?section_profil=coordonees">
+			Coordonnées
+		</a>
+
+
+	{% elif section_profil == 'coordonees' %}
+
+
+		<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px; color: white;  background: #007bff; " href="?section_profil=sets" >
+    		Sets
+    	</a>
+
+		<a style="width: 100%; height: 50px; border: solid 1px; display: flex; justify-content: center; align-items: center; border-radius: 10px; margin-top: 5px; " href="?section_profil=coordonees">
+			Coordonnées
+		</a>
+
+
+	{% endif %}
+
+
+		
+	</div>
+
+
+
+{% endblock %}

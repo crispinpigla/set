@@ -7,15 +7,16 @@
 
 
 
-<div style="margin: auto; width:500px; height:50px; border: solid 1px; display: flex; justify-content: center; align-items: center;" >Création d'un set</div>
+<div style="margin: auto; width:500px; height:50px;  display: flex; justify-content: center; align-items: center;" >Création d'un set</div>
 
 
-<form style="margin: auto; margin-top: 50px; margin-bottom: 30px; width:700px; border: solid 1px; display: flex; flex-direction: column; align-items: center;"  method="post" action="../creation_set/" enctype="multipart/form-data" >
+<form style="margin: auto; margin-top: 50px; margin-bottom: 30px; width:700px; display: flex; flex-direction: column; align-items: center;"  method="post" action="../creation_set/" enctype="multipart/form-data" >
 	{% csrf_token %}
 	<div id="ecran_previsualisation" style="background: silver; width:600px; height: 150px; overflow: hidden; border: solid rgb(173, 225, 255) 1px;" >
 		<img id="image_ecran_previsualisation" style="width: 100%;" src="">
 	</div>
-	<div style="margin-top: 25px;" >{{  create_set_form.file  }}</div>
+	<div style="margin-top: 25px; display: none;" >{{  create_set_form.file  }}</div>
+    <label for="id_file" style="color: gray; border: solid rgb(110, 209, 255) 1px; padding: 5px; margin-top: 30px; background: rgb(186, 233, 255); font-size: 90%; border-radius: 5px; cursor: pointer;" >Ajouter une image de couverture</label>
 	<div style="margin-top: 25px;" >{{  create_set_form.name  }}</div>
 	<div style="margin-top: 25px;" >{{  create_set_form.type_set  }}</div>
 	<div style="margin-top: 25px;" >{{  create_set_form.description  }}</div>

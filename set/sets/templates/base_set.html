@@ -18,10 +18,12 @@
     	<div class="" style="">
 	    	<!-------------       partie_1          ----------->
 	    	<div class="col-12" style="position: fixed; height: 50px; background: rgb(0, 153, 255); display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0px; " >
-	    		<div style="width: 30%; margin-left: 50px;" >{{ set_description_form. }}</div>
+	    		<form style="width: 30%; margin-left: 50px;" method="get" action="{% block action_search_form %}{% endblock %}" >
+	    			<div style="width: 100%; " >{{ search_form.search_input }}</div>
+	    		</form>
 	    		<div style="height: 80%; display: flex;" >
-	    			<a href="" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}"></a>
-	    			<a href="" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
+	    			<a href="../../../user/home/" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}"></a>
+	    			<a href="../../../user/deconnexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
 	    		</div>
 	    	</div>
 	    	<!-------------       partie_1          ----------->
@@ -87,6 +89,9 @@
     	
 		{% if section %}
 			<script type="text/javascript">
+
+
+				// ----------------   Prévisualisation de l'image de couverture    ------------  //
 
 		        function createThumbnail0(file) {
 		            var reader = new FileReader();

@@ -1,28 +1,24 @@
 from django import forms
 
 
-
-
-
-
-
-
 class SearchForm(forms.Form):
     """Search form"""
 
     search_input = forms.CharField(
         label="",
-        widget=forms.TextInput(
-            attrs={"class": "col-12", "placeholder": "Recherche"}
-        ),
+        widget=forms.TextInput(attrs={"class": "col-12", "placeholder": "Recherche"}),
     )
+
+
 ##############################
 
 
 class ProfilImageForm(forms.Form):
     """Set profil image form"""
 
-    file = forms.FileField()
+    file = forms.FileField(
+        widget=forms.FileInput(attrs={ "style": "display:none;"})
+    )
 
 
 class SetNameForm(forms.Form):
@@ -30,10 +26,9 @@ class SetNameForm(forms.Form):
 
     name = forms.CharField(
         label="",
-        widget=forms.TextInput(
-            attrs={"class": "col-12", "placeholder": "Nouveau nom"}
-        ),
+        widget=forms.TextInput(attrs={"class": "col-12", "placeholder": "Nouveau nom",  "style": "display:none;"}),
     )
+
 
 class SetMailForm(forms.Form):
     """set mail form"""
@@ -41,29 +36,11 @@ class SetMailForm(forms.Form):
     mail = forms.CharField(
         label="",
         widget=forms.TextInput(
-            attrs={"class": "col-12", "placeholder": "Nouveau mail"}
+            attrs={"class": "col-12", "placeholder": "Nouveau mail",  "style": "display:none;"}
         ),
     )
-##############################
-
-class CreateSetForm(forms.Form):
-    """Create set form"""
-
-    CHOICES = [('Entreprise', 'Entreprise'), ('Association', 'Association'),  ('Autres', 'Autres')]
-    file = forms.FileField()
-    name = forms.CharField(label="",widget=forms.TextInput(attrs={"class": "col-12", "placeholder": "Nom du set"}),)
-    type_set = forms.ChoiceField(choices=CHOICES)
-    description = forms.CharField(widget=forms.Textarea(attrs={"class": "col-12", "placeholder": "Description du set", 'size': '200'}))
 
 
-##############################
-
-
-class CreateEventForm(forms.Form):
-    """Create event form"""
-
-    name = forms.CharField(label="",widget=forms.TextInput(attrs={"class": "col-12", "placeholder": "Nom de l'évènement"}),)
-    description = forms.CharField(widget=forms.Textarea(attrs={"class": "col-12", "placeholder": "Description de l'évènement", 'size': '200'}))
 
 
 ##############################
@@ -72,4 +49,12 @@ class CreateEventForm(forms.Form):
 class MessageForm(forms.Form):
     """Message form"""
 
-    message = forms.CharField(widget=forms.Textarea(attrs={"class": "col-12", "placeholder": "Ecrire ..."}))
+    message = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "Ecrire un message ...",
+                "style": "width:90%; border-radius:5px; height: 90%; resize: none; border: solid silver 1px;",
+            }
+        ),
+    )

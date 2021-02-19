@@ -1,0 +1,96 @@
+
+
+
+
+
+
+
+
+						<div id="confirmation_entree_set_{{user_set.id}}" style="font-size: 80%; width: 90%; background: rgb(0, 184, 95); color: white; cursor: pointer; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: solid rgb(0, 184, 95) 1px;" >
+							Entrez dans le set
+						</div> 
+
+						<div id="refus_entree_set_{{user_set.id}}" style="font-size: 80%; width: 90%; background: rgb(255, 163, 163); color: white; cursor: pointer; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: solid rgb(255, 163, 163) 1px;" >
+							Refuser l'invitation
+						</div> 
+
+
+						<div id="sortir_set_{{user_set.id}}" style="font-size: 80%; width: 90%; background: rgb(255, 163, 163); color: white; cursor: pointer; border-radius: 5px; display: none; justify-content: center; align-items: center; border: solid rgb(255, 163, 163) 1px;" >
+							Sortir du set
+						</div> 
+
+
+						<script type="text/javascript">
+
+							var confirmation_entree_set_{{user_set.id}} = document.querySelector('#confirmation_entree_set_{{ user_set.id }}'),
+								refus_entree_set_{{user_set.id}} = document.querySelector('#refus_entree_set_{{ user_set.id }}'),
+								sortir_set_{{user_set.id}} = document.querySelector('#sortir_set_{{ user_set.id }}') ;
+							
+							confirmation_entree_set_{{user_set.id}}.addEventListener('click', function() {
+
+						    	// envoie de la requete d'ajout/suppression contact 
+								var xhr = new XMLHttpRequest();
+								xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/?confirm_enter=yes' );
+								xhr.send(null);
+
+								xhr.addEventListener('readystatechange', function()
+								{ // On gère ici une requête asynchrone
+							        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+						            { // Si le fichier est chargé sans erreur
+							        	console.log(xhr.response);
+							        	//confirmation_entree_set_{{user_set.id}}.parentElement.innerHTML = xhr.response;
+							        	if ( xhr.response == 'confirmation_done' ) 
+							        	{
+							        		confirmation_entree_set_{{user_set.id}}.style.display = 'none';
+											refus_entree_set_{{user_set.id}}.style.display = 'none';
+							        		sortir_set_{{user_set.id}}.style.display = 'flex';
+							        	}
+							        }
+								});
+						    }, false);
+
+						    refus_entree_set_{{user_set.id}}.addEventListener('click', function() {
+
+						    	// envoie de la requete d'ajout/suppression contact 
+								var xhr = new XMLHttpRequest();
+								xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/?confirm_enter=no' );
+								xhr.send(null);
+
+								xhr.addEventListener('readystatechange', function()
+								{ // On gère ici une requête asynchrone
+							        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+						            { // Si le fichier est chargé sans erreur
+							        	console.log(xhr.response);
+							        	id_target = refus_entree_set_{{user_set.id}}.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+							        	id_target.remove()
+							        	console.log(xhr.response);
+							        }
+								});
+						    }, false);
+
+
+						    sortir_set_{{user_set.id}}.addEventListener('click', function() {
+						    	// envoie de la requete d'ajout/suppression contact 
+								var xhr = new XMLHttpRequest();
+								xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/?confirm_enter=no' );
+								xhr.send(null);
+								xhr.addEventListener('readystatechange', function()
+								{ // On gère ici une requête asynchrone
+							        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+						            { // Si le fichier est chargé sans erreur
+							        	console.log(xhr.response);
+							        	if ( xhr.response == 'delete_user_and_set_done' ) 
+							        	{
+							        		window.location.href = "../../user/home/";
+							        	}
+							        	else if (  xhr.response == 'delete_done' ) 
+							        	{
+								        	id_target = sortir_set_{{user_set.id}}.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+								        	id_target.remove()
+								        	console.log(xhr.response);
+							        	}
+							        }
+								});
+						    }, false);
+
+						</script>

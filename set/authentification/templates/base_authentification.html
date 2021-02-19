@@ -18,7 +18,9 @@
     	<div class="row" style="">
 	    	<!-------------       partie_1          ----------->
 	    	<div class="col-12" style="border: solid 1px; height: 50px; background: rgb(0, 153, 255); display: flex; justify-content: space-between; align-items: center;" >
-	    		<div style="width: 30%; margin-left: 50px;" >{{ search_form.search_input }}</div>
+	    		<form style="width: 30%; margin-left: 50px;" method="get" action="../../../sets/search/" >
+	    			<div style="width: 100%; " >{{ search_form.search_input }}</div>
+	    		</form>
 	    		<a href="" style="height: 80%; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}"></a>
 	    	</div>
 	    	<!-------------       partie_1          ----------->

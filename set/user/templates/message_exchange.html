@@ -1,0 +1,139 @@
+{% extends 'base_user.html' %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+
+<!--------------------------   affichage des messages    ------------------------------------------>
+
+
+<div style="margin: auto; width:90%; height:680px; margin-top: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;" >
+
+	<div id="contain_message" style="width: 100%; border-left: solid silver 1px; border-right: solid silver 1px; height: 90%; overflow-y: scroll; scroll-behavior: smooth; padding: 10px; background: rgb(235, 248, 255);" >
+		{% include 'un_message.html' %}
+	</div>
+
+
+	<div style="width: 100%; height: 3%; display: flex; justify-content: center; align-items: center;" >
+		<div id="chargement" style="height: 90%; display: none; justify-content: center; align-items: center;" ><img style="height: 100%; background: white; " src="{% static 'img/chargement.png' %}"></div>
+	</div>
+
+	<div style="width: 90%; height: 7%; display: flex; justify-content: center; align-items: center;" >
+		{{ message_form.message }}
+		<div style=" width: 10%; height: 100%; display: flex; justify-content: center; align-items: center;" >
+			<img id="envoie_message" src="{% static 'img/envoyer.png' %}" style="height: 100%; border: solid rgb(199, 199, 199); border-radius: 50%; cursor: pointer;" title="Envoyer" last_message_id="{% if messages|length == 0 %}0{% else %}{{ messages.last.id }}{% endif %}" >
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	
+
+	var sender = document.querySelector('#envoie_message'),
+		input_message = document.querySelector('#id_message'),
+		contain_message = document.querySelector('#contain_message'),
+		chargement = document.querySelector('#chargement');
+
+    sender.addEventListener('click', function() {
+
+    	message = input_message.value;
+    	message = message.trim();
+
+    	last_message_id = sender.getAttribute('last_message_id');
+
+    	if ( message == "" ) 
+    	{
+    		// rien
+    	}
+    	else
+    	{
+			// envoie du message
+			var xhr = new XMLHttpRequest();
+			request = '../../../user/send_message/' + '{{ user_to.id }}' + '/?message_text=' + message + '&last_message_id=' + last_message_id;
+			console.log('la requete : ', request);
+			xhr.open('GET', request);
+			xhr.send(null);
+			chargement.style.display = 'flex';
+
+
+			xhr.addEventListener('readystatechange', function()
+			{ // On gère ici une requête asynchrone
+		        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+		        { // Si le fichier est chargé sans erreur
+		        	console.log(xhr.response);
+		        }
+			});
+    	}
+
+	}, false);
+
+
+    //----------------------      updates
+
+	setInterval(function(){
+
+
+			if ( (contain_message.children).length == 0 ) 
+			{
+				last_message_id = 0
+			}
+			else
+			{
+				last_message_id = contain_message.children[(contain_message.children).length-1].getAttribute('message_id');
+			}
+
+
+			
+
+			// envoie du message
+			var xhr0 = new XMLHttpRequest();
+			request = '../../../user/updates_messages_user/' + '{{ user_to.id }}' + '/?last_message_id=' + last_message_id;
+			xhr0.open('GET', request);
+			xhr0.send(null);
+
+
+			xhr0.addEventListener('readystatechange', function()
+			{ // On gère ici une requête asynchrone
+		        if (xhr0.readyState === XMLHttpRequest.DONE && xhr0.status === 200) 
+		        { // Si le fichier est chargé sans erreur
+		        	if ( (xhr0.response).trim() == "" ) 
+		        	{
+		        		// rien
+		        	}
+		        	else
+		        	{
+		        		chargement.style.display = 'none';
+		        		console.log((xhr0.response).trim());
+		        		var node = document.createRange().createContextualFragment( (xhr0.response).trim() );
+		        		contain_message.appendChild( node );
+		        		new_last_message_id = contain_message.children[(contain_message.children).length-1].getAttribute('message_id');
+		        		sender.setAttribute('last_message_id', new_last_message_id);
+		        		contain_message.scrollTop = contain_message.scrollHeight;
+		        		input_message.value = "";
+		        	}
+		        	
+		        }
+			});
+
+
+
+
+	}, 3000);
+
+
+	contain_message.scrollTop = contain_message.scrollHeight;
+
+
+
+</script>
+
+
+{% endblock %}
+
+
+
+
