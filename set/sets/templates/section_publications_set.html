@@ -1,361 +1,366 @@
-{% load static %}
+
+
+{% extends 'set.html' %}
 
 
 
+{% block content_central_page %}
 
-<!--------------------------   creation de publication    ------------------------------------------>
 
-<div style="margin: auto; margin-bottom: 10px; width:500px;" >
-	<form enctype="multipart/form-data" id="publication_form" action="../../make_post_set/{{set.id}}/" method="post"  >
-		{% csrf_token %}
-		<div style=" margin-top: 10px; margin-bottom: 10px;" >
-			{{new_post_form.publication_text}}
-		</div>
-		<div style="display: flex; justify-content: space-around;" >
-			<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px; display: flex; align-items: center;" >
-				<label id="label_for_id_file_1" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_1" >
-					<img style="max-width: 100%; max-height: 85%;" src="{% static 'img/logo_ajout_media.png' %}">
-					<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
-				</label>
-				<div id="preview_file_post_form_1" style="border: solid 1px; width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
-					<img id="image_preview_file_post_form_1" style="max-width: 100%; max-height: 85%;" src=""> 
-					<div style="color: gray; font-size: 65%; text-align: center; cursor: pointer; height: 15%;" id="cancel_preview_file_post_form_1" >
-						Annuler
-					</div>
-				</div>
-				<div style="display: none;" >{{new_post_form.file_1}}</div>
+
+	{% load static %}
+
+
+	<!--------------------------   creation de publication    ------------------------------------------>
+
+	<div style="margin: auto; margin-bottom: 10px; width:500px;" >
+		<form enctype="multipart/form-data" id="publication_form" action="../../make_post_set/{{set.id}}/" method="post"  >
+			{% csrf_token %}
+			<div style=" margin-top: 10px; margin-bottom: 10px;" >
+				{{new_post_form.publication_text}}
 			</div>
-			<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px;" >
-				<label id="label_for_id_file_2" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_2" >
-					<img style="max-width: 100%; max-height: 85%;" src="{% static 'img/logo_ajout_media.png' %}">
-					<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
-				</label>
-				<div id="preview_file_post_form_2" style="border: solid 1px; width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
-					<img id="image_preview_file_post_form_2" style="max-width: 100%; max-height: 85%;" src=""> 
-					<div style=" color: gray; font-size: 65%; text-align: center; cursor: pointer; height: 15%;" id="cancel_preview_file_post_form_2" >
-						Annuler
+			<div style="display: flex; justify-content: space-around;" >
+				<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px; display: flex; align-items: center;" >
+					<label id="label_for_id_file_1" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_1" >
+						<img style="max-width: 100%; max-height: 85%;" src="{% static 'sets/img/logo_ajout_media.png' %}">
+						<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
+					</label>
+					<div id="preview_file_post_form_1" style="border: solid 1px; width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
+						<img id="image_preview_file_post_form_1" style="max-width: 100%; max-height: 85%;" src=""> 
+						<div style="color: gray; font-size: 65%; text-align: center; cursor: pointer; height: 15%;" id="cancel_preview_file_post_form_1" >
+							Annuler
+						</div>
 					</div>
+					<div style="display: none;" >{{new_post_form.file_1}}</div>
 				</div>
-				<div style="display: none;" >{{new_post_form.file_2}}</div>
+				<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px;" >
+					<label id="label_for_id_file_2" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_2" >
+						<img style="max-width: 100%; max-height: 85%;" src="{% static 'sets/img/logo_ajout_media.png' %}">
+						<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
+					</label>
+					<div id="preview_file_post_form_2" style="border: solid 1px; width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
+						<img id="image_preview_file_post_form_2" style="max-width: 100%; max-height: 85%;" src=""> 
+						<div style=" color: gray; font-size: 65%; text-align: center; cursor: pointer; height: 15%;" id="cancel_preview_file_post_form_2" >
+							Annuler
+						</div>
+					</div>
+					<div style="display: none;" >{{new_post_form.file_2}}</div>
+				</div>
 			</div>
-		</div>
-		<div style="width: 100%; display: flex; justify-content: center; border-bottom: solid silver 1px;" >
-			<div id="poster" style="padding: 5px; border-radius: 5px; background: silver; margin-top: 10px; margin-bottom: 10px; cursor: pointer; border: solid rgb(227, 227, 227) 1px; font-size: 80%;" >Publier</div>
-			<button style="display: none;" class="btn btn-success" type="submit" ></button>
-		</div>
-	</form>
-</div>
+			<div style="width: 100%; display: flex; justify-content: center; border-bottom: solid silver 1px;" >
+				<div id="poster" style="padding: 5px; border-radius: 5px; background: silver; margin-top: 10px; margin-bottom: 10px; cursor: pointer; border: solid rgb(227, 227, 227) 1px; font-size: 80%;" >Publier</div>
+				<button style="display: none;" class="btn btn-success" type="submit" ></button>
+			</div>
+		</form>
+	</div>
 
 
+	<!--------------------------   affichage de publications    ------------------------------------------>
 
-<!--------------------------   affichage de publications    ------------------------------------------>
 
+	{% if publications_likeurs|length == 0 %}
+		{% include 'aucun_resultat.html' %}
+	{% else %}
 
-{% if publications_likeurs|length == 0 %}
-	{% include 'aucun_resultat.html' %}
-{% else %}
+		{% for publication_likeurs in publications_likeurs %}
 
-	{% for publication_likeurs in publications_likeurs %}
+			<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
 
-		<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+				<div style="height: 80px; display: flex;" >
+					<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
+						
+						<a href="../../../user/profil/{{publication_likeurs.0.auteur.id}}/" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+							<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+						</a>
 
-			<div style="height: 80px; display: flex;" >
-				<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
-					
-					<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-						<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+					</div>
+					<a href="../../../user/profil/{{publication_likeurs.0.auteur.id}}/" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+						{{  publication_likeurs.0.auteur.nom  }}
 					</a>
-
-				</div>
-				<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
-					{{  publication_likeurs.0.auteur.nom  }}
-				</a>
-			</div>
-
-			<div style="margin: auto; width: 100%; margin-top: 10px;" >
-				<div style=" margin: auto; width: 80%; margin-top: 10px; word-wrap: break-word;" >
-					{{  publication_likeurs.0.contenu_text  }}
 				</div>
 
-				<div style="margin: auto; width: 80%; margin-top: 10px;" >
-					{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
+				<div style="margin: auto; width: 100%; margin-top: 10px;" >
+					<div style=" margin: auto; width: 80%; margin-top: 10px; word-wrap: break-word;" >
+						{{  publication_likeurs.0.contenu_text  }}
+					</div>
 
-					{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
-					    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
-						<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+					<div style="margin: auto; width: 80%; margin-top: 10px;" >
+						{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
+
+						{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
+						    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+							<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+						{% else %}
+						    {%  if publication_likeurs.0.media1 != '' %}
+						    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+						    {%  elif publication_likeurs.0.media2 != ''  %}
+						    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+						    {%  endif  %}
+						{% endif %}
+
+					</div>
+				</div>
+
+				<div style="display: flex; flex-direction: column; align-items: center;" >
+
+
+					{% if publication_likeurs.2|length  == 0 %}
+						<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
+							J'aime
+						</div>
+						<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
+							Je n'aime plus
+						</div>
 					{% else %}
-					    {%  if publication_likeurs.0.media1 != '' %}
-					    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
-					    {%  elif publication_likeurs.0.media2 != ''  %}
-					    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
-					    {%  endif  %}
+						<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
+							J'aime
+						</div>
+						<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
+							Je n'aime plus
+						</div>
 					{% endif %}
 
+					
+					<div style="font-size: 80%; color: rgb(0, 204, 255);" >
+						{{  publication_likeurs.1|length  }}
+					</div>
+					
+					
 				</div>
-			</div>
 
-			<div style="display: flex; flex-direction: column; align-items: center;" >
-
-
-				{% if publication_likeurs.2|length  == 0 %}
-					<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
-						J'aime
-					</div>
-					<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
-						Je n'aime plus
-					</div>
-				{% else %}
-					<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
-						J'aime
-					</div>
-					<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
-						Je n'aime plus
-					</div>
-				{% endif %}
-
-				
-				<div style="font-size: 80%; color: rgb(0, 204, 255);" >
-					{{  publication_likeurs.1|length  }}
+				<div style="text-align: center; font-size: 80%; color: silver;" >
+					{{  publication_likeurs.0.date  }}
 				</div>
-				
-				
+
 			</div>
 
-			<div style="text-align: center; font-size: 80%; color: silver;" >
-				{{  publication_likeurs.0.date  }}
-			</div>
+		{% endfor %}
 
-		</div>
-
-	{% endfor %}
+	{% endif %}
 
 
-{% endif %}
+	<script type="text/javascript">
+		
+
+				//--------------------------        Gestion d'images d'une publication     ----------------------------//
+
+			    function createThumbnail1(file) {
+		            var reader = new FileReader();
+		            reader.addEventListener('load', function() {
+		                document.querySelector('#image_preview_file_post_form_1').src = this.result;
+		            }, false);
+		            reader.readAsDataURL(file);
+		        }
 
 
+		        function createThumbnail2(file) {
+		            var reader = new FileReader();
+		            reader.addEventListener('load', function() {
+		                document.querySelector('#image_preview_file_post_form_2').src = this.result;
+		            }, false);
+		            reader.readAsDataURL(file);
+		        }
 
 
+		        var allowedTypes = ['png', 'jpg', 'jpeg', 'gif'],
+		            fileInput_1 = document.querySelector('#id_file_1'),
+		            loadInput_1 = document.querySelector('#label_for_id_file_1'),
+		            preview_file_post_form_1 = document.querySelector('#preview_file_post_form_1'),
+		            cancel_preview_file_post_form_1 = document.querySelector('#cancel_preview_file_post_form_1'),
+		            fileInput_2 = document.querySelector('#id_file_2'),
+		            loadInput_2 = document.querySelector('#label_for_id_file_2'),
+		            preview_file_post_form_2 = document.querySelector('#preview_file_post_form_2'),
+		            cancel_preview_file_post_form_2 = document.querySelector('#cancel_preview_file_post_form_2');
 
-<script type="text/javascript">
-	
+		        fileInput_1.value = "";
+		        fileInput_2.value = "";
+		 
+		        fileInput_1.addEventListener('change', function() {
 
-			//--------------------------        Gestion d'images d'une publication     ----------------------------//
+		            var files = this.files,
+		                filesLen = files.length,
+		                imgType;
 
-		    function createThumbnail1(file) {
-	            var reader = new FileReader();
-	            reader.addEventListener('load', function() {
-	                document.querySelector('#image_preview_file_post_form_1').src = this.result;
-	            }, false);
-	            reader.readAsDataURL(file);
-	        }
+		            for (var i = 0 ; i < filesLen ; i++) {
+		                imgType = files[i].name.split('.');
+		                imgType = imgType[imgType.length - 1];
+		                if(allowedTypes.indexOf(imgType) != -1) {
+		                    createThumbnail1(files[i]);
+		                }
+		            }
 
+		            loadInput_1.style.display = "none";
+		            preview_file_post_form_1.style.display = "flex";
 
-	        function createThumbnail2(file) {
-	            var reader = new FileReader();
-	            reader.addEventListener('load', function() {
-	                document.querySelector('#image_preview_file_post_form_2').src = this.result;
-	            }, false);
-	            reader.readAsDataURL(file);
-	        }
-
-
-	        var allowedTypes = ['png', 'jpg', 'jpeg', 'gif'],
-	            fileInput_1 = document.querySelector('#id_file_1'),
-	            loadInput_1 = document.querySelector('#label_for_id_file_1'),
-	            preview_file_post_form_1 = document.querySelector('#preview_file_post_form_1'),
-	            cancel_preview_file_post_form_1 = document.querySelector('#cancel_preview_file_post_form_1'),
-	            fileInput_2 = document.querySelector('#id_file_2'),
-	            loadInput_2 = document.querySelector('#label_for_id_file_2'),
-	            preview_file_post_form_2 = document.querySelector('#preview_file_post_form_2'),
-	            cancel_preview_file_post_form_2 = document.querySelector('#cancel_preview_file_post_form_2');
-
-	        fileInput_1.value = "";
-	        fileInput_2.value = "";
-	 
-	        fileInput_1.addEventListener('change', function() {
-
-	            var files = this.files,
-	                filesLen = files.length,
-	                imgType;
-
-	            for (var i = 0 ; i < filesLen ; i++) {
-	                imgType = files[i].name.split('.');
-	                imgType = imgType[imgType.length - 1];
-	                if(allowedTypes.indexOf(imgType) != -1) {
-	                    createThumbnail1(files[i]);
-	                }
-	            }
-
-	            loadInput_1.style.display = "none";
-	            preview_file_post_form_1.style.display = "flex";
-
-	        }, false);
+		        }, false);
 
 
-	        cancel_preview_file_post_form_1.addEventListener('click', function() {
-	            document.querySelector('#image_preview_file_post_form_1').setAttribute("src", "");
-	            fileInput_1.value = "";
-	            preview_file_post_form_1.style.display = "none";
-	            loadInput_1.style.display = "flex";
-	        }, false);
+		        cancel_preview_file_post_form_1.addEventListener('click', function() {
+		            document.querySelector('#image_preview_file_post_form_1').setAttribute("src", "");
+		            fileInput_1.value = "";
+		            preview_file_post_form_1.style.display = "none";
+		            loadInput_1.style.display = "flex";
+		        }, false);
 
-	        	        
+		        	        
 
-	       	fileInput_2.addEventListener('change', function() {
+		       	fileInput_2.addEventListener('change', function() {
 
-	            var files = this.files,
-	                filesLen = files.length,
-	                imgType;
+		            var files = this.files,
+		                filesLen = files.length,
+		                imgType;
 
-	            for (var i = 0 ; i < filesLen ; i++) {
-	                imgType = files[i].name.split('.');
-	                imgType = imgType[imgType.length - 1];
-	                if(allowedTypes.indexOf(imgType) != -1) {
-	                    createThumbnail2(files[i]);
-	                }
-	            }
+		            for (var i = 0 ; i < filesLen ; i++) {
+		                imgType = files[i].name.split('.');
+		                imgType = imgType[imgType.length - 1];
+		                if(allowedTypes.indexOf(imgType) != -1) {
+		                    createThumbnail2(files[i]);
+		                }
+		            }
 
-	            loadInput_2.style.display = "none";
-	            preview_file_post_form_2.style.display = "flex";
+		            loadInput_2.style.display = "none";
+		            preview_file_post_form_2.style.display = "flex";
 
-	        }, false);
-
-
-	        cancel_preview_file_post_form_2.addEventListener('click', function() {
-	            document.querySelector('#image_preview_file_post_form_2').setAttribute("src", "");
-	            fileInput_2.value = "";
-	            preview_file_post_form_2.style.display = "none";
-	            loadInput_2.style.display = "flex";
-	        }, false);
+		        }, false);
 
 
-	        //--------------------------        Envoie d'une publication     ----------------------------//
+		        cancel_preview_file_post_form_2.addEventListener('click', function() {
+		            document.querySelector('#image_preview_file_post_form_2').setAttribute("src", "");
+		            fileInput_2.value = "";
+		            preview_file_post_form_2.style.display = "none";
+		            loadInput_2.style.display = "flex";
+		        }, false);
 
 
-	        var poster = document.querySelector('#poster'),
-	        	text_input_publication = document.querySelector('#id_publication_text'),
-	        	publication_form = document.querySelector('#publication_form');
+		        //--------------------------        Envoie d'une publication     ----------------------------//
 
-	        poster.addEventListener('click', function() {
-	            
-	        	if ( text_input_publication.value == '' ) 
-	        	{
-	        		if ( fileInput_1.value == ''  ) 
-	        		{
-	        			if ( fileInput_2.value == ''  ) 
-	        			{
-	        				console.log('formulaire vide')
-	        			}
-	        			else 
+
+		        var poster = document.querySelector('#poster'),
+		        	text_input_publication = document.querySelector('#id_publication_text'),
+		        	publication_form = document.querySelector('#publication_form');
+
+		        poster.addEventListener('click', function() {
+		            
+		        	if ( text_input_publication.value == '' ) 
+		        	{
+		        		if ( fileInput_1.value == ''  ) 
+		        		{
+		        			if ( fileInput_2.value == ''  ) 
+		        			{
+		        				console.log('formulaire vide')
+		        			}
+		        			else 
+				        	{
+				        		console.log('le formulaire a du contenu fichier 2')
+				        		publication_form.submit();
+				        	}
+		        		}
+		        		else 
 			        	{
-			        		console.log('le formulaire a du contenu fichier 2')
+			        		console.log('le formulaire a du contenu fichier 1')
 			        		publication_form.submit();
 			        	}
-	        		}
-	        		else 
+		        	}
+		        	else 
 		        	{
-		        		console.log('le formulaire a du contenu fichier 1')
+		        		console.log('le formulaire a du contenu text')
 		        		publication_form.submit();
 		        	}
-	        	}
-	        	else 
-	        	{
-	        		console.log('le formulaire a du contenu text')
-	        		publication_form.submit();
-	        	}
 
 
 
-	        }, false);
+		        }, false);
 
 
 
 
-	        //--------------------------        Gestionnaire de like     ----------------------------//
+		        //--------------------------        Gestionnaire de like     ----------------------------//
 
-	        var likes = document.querySelectorAll('.make_like'),
-	        	un_likes = document.querySelectorAll('.make_unlike');
-
-
-	        	for (var i = 0; i < likes.length; i++) 
-	        	{
-	        		
-	        		likes[i].addEventListener('click', function() {
-
-			        	var post_id = this.getAttribute('post_id');
-
-			        	console.log(post_id);
-
-			        	// envoie de la requete ajax et reinitialisation du formulaire
-						var xhr = new XMLHttpRequest();
-						xhr.open('GET', '../../manage_like_post_set/' + post_id + '/' );
-						xhr.send(null);
+		        var likes = document.querySelectorAll('.make_like'),
+		        	un_likes = document.querySelectorAll('.make_unlike');
 
 
-						xhr.addEventListener('readystatechange', function()
-						{ // On gère ici une requête asynchrone
+		        	for (var i = 0; i < likes.length; i++) 
+		        	{
+		        		
+		        		likes[i].addEventListener('click', function() {
 
-					        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-			                { // Si le fichier est chargé sans erreur
-					        	
-			                	if ( xhr.response == "like_make" ) 
-			                	{
-			                		console.log('#make_like_' + post_id);
-			                		document.querySelector('#make_like_' + post_id).style.display = "none";
-			                		document.querySelector('#make_unlike_' + post_id).style.display = "block";
-			                	}
-			                	else if ( xhr.response == "like_make" ) 
-			                	{
-			                		// rien
-			                	}
-					        }
-						});
+				        	var post_id = this.getAttribute('post_id');
+
+				        	console.log(post_id);
+
+				        	// envoie de la requete ajax et reinitialisation du formulaire
+							var xhr = new XMLHttpRequest();
+							xhr.open('GET', '../../manage_like_post_set/' + post_id + '/' );
+							xhr.send(null);
 
 
-			        }, false);
+							xhr.addEventListener('readystatechange', function()
+							{ // On gère ici une requête asynchrone
 
-	        	}
-
-
-	        	for (var i = 0; i < un_likes.length; i++) 
-	        	{
-	        		
-	        		un_likes[i].addEventListener('click', function() {
-
-			        	var post_id = this.getAttribute('post_id');
-
-			        	console.log(post_id);
-
-			        	// envoie de la requete ajax et reinitialisation du formulaire
-						var xhr = new XMLHttpRequest();
-						xhr.open('GET', '../../manage_like_post_set/' + post_id + '/' );
-						xhr.send(null);
-
-
-						xhr.addEventListener('readystatechange', function()
-						{ // On gère ici une requête asynchrone
-
-					        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-			                { // Si le fichier est chargé sans erreur
-					        	
-			                	if ( xhr.response == "unlike_make" ) 
-			                	{
-			                		console.log('#make_unlike_' + post_id);
-			                		document.querySelector('#make_unlike_' + post_id).style.display = "none";
-			                		document.querySelector('#make_like_' + post_id).style.display = "block";
-			                	}
-			                	else if ( xhr.response == "like_make" ) 
-			                	{
-			                		// rien
-			                	}
-					        }
-						});
+						        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+				                { // Si le fichier est chargé sans erreur
+						        	
+				                	if ( xhr.response == "like_make" ) 
+				                	{
+				                		console.log('#make_like_' + post_id);
+				                		document.querySelector('#make_like_' + post_id).style.display = "none";
+				                		document.querySelector('#make_unlike_' + post_id).style.display = "block";
+				                	}
+				                	else if ( xhr.response == "like_make" ) 
+				                	{
+				                		// rien
+				                	}
+						        }
+							});
 
 
-			        }, false);
+				        }, false);
 
-	        	}
+		        	}
+
+
+		        	for (var i = 0; i < un_likes.length; i++) 
+		        	{
+		        		
+		        		un_likes[i].addEventListener('click', function() {
+
+				        	var post_id = this.getAttribute('post_id');
+
+				        	console.log(post_id);
+
+				        	// envoie de la requete ajax et reinitialisation du formulaire
+							var xhr = new XMLHttpRequest();
+							xhr.open('GET', '../../manage_like_post_set/' + post_id + '/' );
+							xhr.send(null);
+
+
+							xhr.addEventListener('readystatechange', function()
+							{ // On gère ici une requête asynchrone
+
+						        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+				                { // Si le fichier est chargé sans erreur
+						        	
+				                	if ( xhr.response == "unlike_make" ) 
+				                	{
+				                		console.log('#make_unlike_' + post_id);
+				                		document.querySelector('#make_unlike_' + post_id).style.display = "none";
+				                		document.querySelector('#make_like_' + post_id).style.display = "block";
+				                	}
+				                	else if ( xhr.response == "like_make" ) 
+				                	{
+				                		// rien
+				                	}
+						        }
+							});
+
+
+				        }, false);
+
+		        	}
 
 
 
-</script>
+	</script>
+
+{% endblock %}

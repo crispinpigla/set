@@ -1,0 +1,13 @@
+[run] 
+source  = 
+	set.settings
+	set.urls
+	authentification
+	set
+	sets
+	user
+
+
+
+[html]
+directory = coverage_html

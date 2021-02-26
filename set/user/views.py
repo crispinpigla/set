@@ -1,9 +1,11 @@
 import json
 import copy
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from django.db.models import Q
+
+from .auxilliaries_user.auxilliaries_user import AuxilliariesUser
 
 from .forms import SearchForm, MessageForm, ProfilImageForm, SetNameForm, SetMailForm
 
@@ -19,7 +21,7 @@ from sets.models import (
 from django.shortcuts import redirect
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 
 def home(request):
@@ -70,26 +72,33 @@ def home(request):
 def contacts(request):
     """"""
 
-    search_form = SearchForm()
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        user = Utilisateurs.objects.get(id=request.session["user_id"])
+        search_form = SearchForm()
         contacts = Contact.objects.filter(contact_owner_id=request.session["user_id"])
         contenus = [contact.contact for contact in contacts]
-        print(contenus)
-        context = {"contenus": contenus, "search_form": search_form, "user":user}
+        users_in_contact = list(contenus)
+        context = {"contenus": contenus, "users_in_contact":users_in_contact, "search_form": search_form, "user":user}
         return render(request, "contact.html", context)
-    except Exception as e:
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
 
 
 def message(request):
     """"""
-    search_form = SearchForm()
-    try:
+
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
+        search_form = SearchForm()
         request.session["user_id"]
         user = Utilisateurs.objects.get(id=request.session["user_id"])
         messages0 = Message.objects.filter(
@@ -98,7 +107,7 @@ def message(request):
         ).order_by("-date")
         users_messages = []
 
-        # rangement des messages par autre utilisateur du message
+        # rangement des messages par auteur du message
         for message in messages0:
             if message.which_from.id == request.session["user_id"]:
                 users_messages.append({"other": message.which_to, "message": message})
@@ -113,155 +122,184 @@ def message(request):
             elif user_messages["other"] not in users_already_messages:
                 user_messages["last_message"] = True
                 users_already_messages.append(user_messages["other"])
-
-        print("Le user message : ", users_messages)
         context = {"search_form": search_form, "messages": users_messages, "user": user}
         return render(request, "message.html", context)
-    except Exception as e:
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
+
 
 
 def messages_exchanges(request, user_id):
     """"""
-    search_form = SearchForm()
-    message_form = MessageForm()
-    try:
+
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+    correspondant = auxilliary_user.user_in_application(user_id)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        if int(user_id) == request.session["user_id"]:
-            return redirect("../../authentification/connexion/")
+        if correspondant:
+            # Le correspondant est un utilisateur existant dans l'application
+            if correspondant != user:
+                # Le correspondant est différent de l'utilisateur
+                search_form = SearchForm()
+                message_form = MessageForm()
+                messages = Message.objects.filter(
+                    (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
+                    | (Q(which_from=user_id) & Q(which_to=request.session["user_id"]))
+                ).order_by("date")
+                context = {
+                    "search_form": search_form,
+                    "message_form": message_form,
+                    "messages": messages,
+                    "user_to": correspondant,
+                    "user": user,
+                }
+                return render(request, "message_exchange.html", context)
+            else:
+                # Le correspondant est égal à l'utilisateur
+                raise Http404()
         else:
-            user = Utilisateurs.objects.get(id=request.session["user_id"])
-            user_to = Utilisateurs.objects.get(id=user_id)
-            messages = Message.objects.filter(
-                (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
-                | (Q(which_from=user_id) & Q(which_to=request.session["user_id"]))
-            ).order_by("date")
-            print(messages)
-            context = {
-                "search_form": search_form,
-                "message_form": message_form,
-                "messages": messages,
-                "user_to": user_to,
-                "user": user,
-            }
-            return render(request, "message_exchange.html", context)
-    except Exception as e:
+            # Le contact n'est pas un utilisateur existant de l'application
+            raise Http404()
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
+
 
 
 def updates_messages(request, user_id):
     """Mises à jour des messages d'une discussion"""
 
-    try:
+
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+    correspondant = auxilliary_user.user_in_application(user_id)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        if int(user_id) == request.session["user_id"]:
-            return HttpResponse("l'expéditeur est le destinataire")
-        else:
-            user = Utilisateurs.objects.get(id=request.session["user_id"])
-            user_to = Utilisateurs.objects.get(id=user_id)
-            last_message = Message.objects.filter(id=request.GET["last_message_id"])
-            if len(last_message) == 0:
-                messages = Message.objects.filter(
-                    (
-                        (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
-                        | (
-                            Q(which_from=user_id)
-                            & Q(which_to=request.session["user_id"])
+        if correspondant:
+            # Le correspondant est un utilisateur existant dans l'application
+            if correspondant != user:
+                # Le correspondant est différent de l'utilisateur
+                last_message = auxilliary_user.message_in_application(request.GET["last_message_id"])
+                if last_message:
+                    # Un dernier message n'existe pas avec l'id recu
+                    #last_message = last_message[0]
+                    messages = Message.objects.filter(
+                        (
+                            (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
+                            | (
+                                Q(which_from=user_id)
+                                & Q(which_to=request.session["user_id"])
+                            )
                         )
-                    )
-                ).order_by("date")
+                        & Q(date__gt=last_message.date)
+                    ).order_by("date")
+                else:
+                    # Un dernier message existe avec l'id recu
+                    messages = Message.objects.filter(
+                        (
+                            (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
+                            | (
+                                Q(which_from=user_id)
+                                & Q(which_to=request.session["user_id"])
+                            )
+                        )
+                    ).order_by("date")
+                context = {"messages": messages, "user": user}
+                return render(request, "un_message.html", context)
             else:
-                last_message = last_message[0]
-                messages = Message.objects.filter(
-                    (
-                        (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
-                        | (
-                            Q(which_from=user_id)
-                            & Q(which_to=request.session["user_id"])
-                        )
-                    )
-                    & Q(date__gt=last_message.date)
-                ).order_by("date")
-                print(messages)
-            context = {"messages": messages, "user": user}
-            return render(request, "un_message.html", context)
-    except Exception as e:
+                # Le correspondant est égal à l'utilisateur
+                raise Http404()
+        else:
+            # Le contact n'est pas un utilisateur existant de l'application
+            raise Http404()
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
+
 
 
 def send_message(request, user_id):
     """"""
 
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+    correspondant = auxilliary_user.user_in_application(user_id)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        sender = Utilisateurs.objects.get(id=request.session["user_id"])
-        receiver = Utilisateurs.objects.get(id=user_id)
-        message_text = request.GET["message_text"]
-        last_message_id = request.GET["last_message_id"]
-        message = Message.objects.create(
-            which_from=sender, which_to=receiver, contenu_text=message_text
-        )
-        print(message)
-        context = {}
-        reponse = (
-            "le message text : "
-            + message_text
-            + " Le last message id"
-            + str(last_message_id)
-        )
-        return HttpResponse(reponse)
-        # return render(request, "message_exchange.html", context)
-    except Exception as e:
+        if correspondant:
+            # Le correspondant est un utilisateur existant dans l'application
+            if correspondant != user:
+                # Le correspondant est différent de l'utilisateur
+                message_text = request.GET["message_text"]
+                message = Message.objects.create(
+                    which_from=user, which_to=correspondant, contenu_text=message_text
+                )
+                return HttpResponse('send')
+            else:
+                # Le correspondant est égal à l'utilisateur
+                raise Http404()
+        else:
+            # Le contact n'est pas un utilisateur existant de l'application
+            raise Http404()
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
+
 
 
 def deconnexion(request):
     """"""
 
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
         del request.session["user_id"]
         return redirect("../../")
-    except Exception as e:
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
+
 
 
 def manage_contact(request, contact_id):
     """"""
 
-    user = Utilisateurs.objects.get(id=request.session["user_id"])
-    contact = Utilisateurs.objects.filter(id=contact_id)
-    if len(contact) == 0:
-        return HttpResponse("aucun contact avec cet id")
-    else:
-        contact = contact[0]
-        check = Contact.objects.filter(contact_owner_id=user.id, contact_id=contact.id)
-        if len(check) == 0:
-            print("not in contacts")
-            new_contact = Contact.objects.create(contact_owner=user, contact=contact)
-            contacts = Contact.objects.filter(
-                contact_owner_id=request.session["user_id"]
-            )
-            users_in_contact = [contact.contact for contact in contacts]
-            print(contacts)
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+    contact = auxilliary_user.user_in_application(contact_id)
+
+    if user:
+        # Utilisateur connecté
+        if contact:
+            # Le contact est un utilisateur existant dans l'application
+            check = Contact.objects.filter(contact_owner_id=user.id, contact_id=contact.id)
+            if len(check) == 0:
+                new_contact = Contact.objects.create(contact_owner=user, contact=contact)
+                return HttpResponse("contact_added")
+            else:
+                check[0].delete()
+                return HttpResponse("contact_deleted")
         else:
-            print("in contacts")
-            check[0].delete()
-            contacts = Contact.objects.filter(
-                contact_owner_id=request.session["user_id"]
-            )
-            users_in_contact = [contact.contact for contact in contacts]
-            print(contacts)
-        context = {"contenu": contact, "users_in_contact": users_in_contact}
-        return render(request, "delete_add_contact.html", context)
+            # Le contact n'est pas un utilisateur existant de l'application
+            raise Http404()
+    else:
+        # Utilisateur non connecté
+        raise Http404()
+
+
+
 
 
 
@@ -272,142 +310,173 @@ def manage_contact(request, contact_id):
 def profil(request, user_id):
     """"""
 
-    user = Utilisateurs.objects.get(id=request.session["user_id"]) 
-    user_profil = Utilisateurs.objects.filter(id=user_id)
-    context = { "user": user }
 
-    if len(user_profil) == 0 :
-        pass
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+    target = auxilliary_user.user_in_application(user_id)
+
+    if user:
+        # Utilisateur connecté
+        context = { "user": user }
+        if target:
+            # La cible est un utilisateur existant dans l'application
+            context['user_profil'] = target
+            search_form = SearchForm()
+            context['search_form'] = search_form
+            # section du profil
+            try:
+                section_profil = request.GET["section_profil"]
+            except Exception as e:
+                section_profil = "sets"
+            context['section_profil'] = section_profil
+
+            if target != user:
+                # La cible est différente de l'utilisateur
+                if section_profil == 'sets':
+                    sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=target)
+                    context['sets_user_profil'] = sets_user_profil
+                elif section_profil == 'coordonees':
+                    pass
+                else:
+                    raise Http404()
+            else:
+                # La cible est égal à l'utilisateur
+                image_cover_form = ProfilImageForm()
+                context['image_cover_form'] = image_cover_form
+                if section_profil == 'sets':
+                    sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=target)
+                    context['sets_user_profil'] = sets_user_profil
+                elif section_profil == 'coordonees':
+                    set_name_form = SetNameForm()
+                    set_mail_form = SetMailForm()
+                    context['set_name_form'] = set_name_form
+                    context['set_mail_form'] = set_mail_form
+                else:
+                    raise Http404()
+            return render(request, "profil.html", context)
+        else:
+            # La cible n'est pas un utilisateur existant de l'application
+            raise Http404()
     else:
-        user_profil = user_profil[0]
-        context['user_profil'] = user_profil
+        # Utilisateur non connecté
+        context = { }
+        if target:
+            # La cible est un utilisateur existant dans l'application
+            context['user_profil'] = target
+            search_form = SearchForm()
+            context['search_form'] = search_form
+            # section du profil
+            try:
+                section_profil = request.GET["section_profil"]
+            except Exception as e:
+                section_profil = "sets"
+            context['section_profil'] = section_profil
 
-    print(user_profil)
+            # La cible est différente de l'utilisateur
+            if section_profil == 'sets':
+                sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=target)
+                context['sets_user_profil'] = sets_user_profil
+            elif section_profil == 'coordonees':
+                pass
+            else:
+                raise Http404()
 
-    
+            return render(request, "profil.html", context)
+        else:
+            # La cible n'est pas un utilisateur existant de l'application
+            raise Http404()
 
 
-    image_cover_form = ProfilImageForm()
-    search_form = SearchForm()
-    context['image_cover_form'] = image_cover_form
-    context['search_form'] = search_form
-
-    print(0)
-
-
-    # section du set
-    try:
-        section_profil = request.GET["section_profil"]
-    except Exception as e:
-        section_profil = "sets"
-
-    print(section_profil)
-    print(context)
-    print(1)
-
-    context['section_profil'] = section_profil
-
-    if section_profil == 'sets':
-        sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=user_profil)
-        context['sets_user_profil'] = sets_user_profil
-    elif section_profil == 'coordonees':
-        set_name_form = SetNameForm()
-        set_mail_form = SetMailForm()
-        context['set_name_form'] = set_name_form
-        context['set_mail_form'] = set_mail_form
-
-    print(2)
-    print(context)
-
-    return render(request, "profil.html", context)
 
 
 
 def update_image_cover(request):
     """"""
 
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
         form = ProfilImageForm(request.POST, request.FILES)
-        print(form)
         if form.is_valid():
             user = Utilisateurs.objects.get(id=request.session["user_id"])
             user.image_profil = request.FILES["file"]
             user.save()
-            print("ok")
             return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
-            #return HttpResponse('done')
         else:
-            return HttpResponse('formulaire invalide')
-        # return render(request, "message_exchange.html", context)
-    except Exception as e:
+            # Formulaire invalide
+            raise Http404()
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
 
 
 
 def update_profil_name(request):
     """"""
 
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
         form = SetNameForm(request.POST)
-        print(form)
         if form.is_valid():
-            user = Utilisateurs.objects.get(id=request.session["user_id"])
             user.nom = request.POST["name"]
             user.save()
-            print("ok")
             return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
-            #return HttpResponse('done')
         else:
-            return HttpResponse('formulaire invalide')
-        # return render(request, "message_exchange.html", context)
-    except Exception as e:
+            # Formulaire invalide
+            raise Http404()
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
+
+
 
 def update_profil_mail(request):
     """"""
 
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
         form = SetMailForm(request.POST)
-        print(form)
         if form.is_valid():
-            user = Utilisateurs.objects.get(id=request.session["user_id"])
             user.adresse_mail = request.POST["mail"]
             user.save()
-            print("ok")
             return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
-            #return HttpResponse('done')
         else:
-            return HttpResponse('formulaire invalide')
-        # return render(request, "message_exchange.html", context)
-    except Exception as e:
+            # Formulaire invalide
+            raise Http404()
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
-
+        raise Http404()
 
 
 
 def suppression_compte(request):
     """"""
 
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        user = Utilisateurs.objects.get(id=request.session["user_id"])
         del request.session["user_id"]
-        #return HttpResponse('done')
         user.delete()
         return redirect("../../authentification/connexion/")
-    except Exception as e:
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        raise Http404()
+
 
 
 

@@ -1,77 +1,210 @@
-{% load static %}
-
-
-{% if administrator_status %}	
-
-	<!--------------------------   ajout d'un utilisateur    ------------------------------------------>
-
-
-		<div style="margin: auto; width:500px; min-height:40px; margin-bottom: 30px; border-radius: 5px; display: flex; justify-content: center; align-items: center;" >
-			<button  id="display_contacts" style="margin: auto; background: rgb(0, 187, 255); font-size: 80%; border-radius: 5px; border: solid rgb(0, 187, 255); padding: 5px; color: white;" >
-				Ajouter un utilisateur
-			</button>
-
-			<button id="hide_contacts" style="margin: auto; background: rgb(0, 187, 255); font-size: 80%; border-radius: 5px; border: solid rgb(0, 187, 255); padding: 5px; color: white; display: none;" >
-				Fermer
-			</button>
-		</div>
-
-
-
-	<!--------------------------  contacts pour ajout d'un utilisateur    ------------------------------------------>
 
 
 
 
-		<div id="contacts_add_user_sets" style="margin: auto; width:600px; min-height:; margin-bottom: 30px; border-radius: 5px; display: none;  flex-direction: column; justify-content: flex-start; align-items: center; border: solid 1px; background: rgb(194, 194, 194); " >
 
-			<div style="margin: auto; font-size: 60%; color: gray; text-align: center; min-height: 10px;" >
-				Contatcs
+{% extends 'set.html' %}
+
+
+
+
+
+
+
+{% block content_central_page %}
+
+
+
+	{% load static %}
+
+
+	{% if administrator_status %}	
+
+		<!--------------------------   ajout d'un utilisateur    ------------------------------------------>
+
+
+			<div style="margin: auto; width:500px; min-height:40px; margin-bottom: 30px; border-radius: 5px; display: flex; justify-content: center; align-items: center;" >
+				<button  id="display_contacts" style="margin: auto; background: rgb(0, 187, 255); font-size: 80%; border-radius: 5px; border: solid rgb(0, 187, 255); padding: 5px; color: white;" >
+					Ajouter un utilisateur
+				</button>
+
+				<button id="hide_contacts" style="margin: auto; background: rgb(0, 187, 255); font-size: 80%; border-radius: 5px; border: solid rgb(0, 187, 255); padding: 5px; color: white; display: none;" >
+					Fermer
+				</button>
 			</div>
 
-			<div style=" max-height: 400px; overflow-y: scroll; width: 100%; background: rgb(240, 240, 240);" >
 
 
-				{% for contact in contacts %}
+		<!--------------------------  contacts pour ajout d'un utilisateur    ------------------------------------------>
 
-					<div class="contact_delete_add_set" style="height: 80px; width: 498px; margin: auto; margin-top: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; border: solid 1px; border-radius: 5px; background: white;" >
-						<div style=" display: flex;" >
-							<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
-								
-								<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-									<img style="width: 80%;" src="{% if contact.contact.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{contact.contact.image_profil.url}}{% endif %}">
+
+
+
+			<div id="contacts_add_user_sets" style="margin: auto; width:600px; min-height:; margin-bottom: 30px; border-radius: 5px; display: none;  flex-direction: column; justify-content: flex-start; align-items: center; border: solid 1px; background: rgb(194, 194, 194); " >
+
+				<div style="margin: auto; font-size: 60%; color: gray; text-align: center; min-height: 10px;" >
+					Contatcs
+				</div>
+
+				<div style=" max-height: 400px; overflow-y: scroll; width: 100%; background: rgb(240, 240, 240);" >
+
+
+					{% for contact in contacts %}
+
+						<div class="contact_delete_add_set" style="height: 80px; width: 498px; margin: auto; margin-top: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; border: solid 1px; border-radius: 5px; background: white;" >
+							<div style=" display: flex;" >
+								<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
+									
+									<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+										<img style="width: 80%;" src="{% if contact.contact.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{contact.contact.image_profil.url}}{% endif %}">
+									</a>
+
+
+								</div>
+								<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+									{{  contact.contact.nom  }}
 								</a>
-
-
 							</div>
-							<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
-								{{  contact.contact.nom  }}
-							</a>
+
+							<!---------------   Autre  -------------------->
+							<div style=" width: 140px; display: block;" >
+
+								<!---------------   Administrateur  -------------------->
+								
+								<div class="" style="height: 35%; display: flex; justify-content: center; align-items: center;  height: 100%;" >
+									<div id="delete_add_set_{{ contact.contact.id }}" style="height: 50%; width: 100%;" >
+									{% if contact.contact in users_set_list %}
+										{% include 'delete_user_set.html' %}
+									{% else %}
+										{% include 'add_user_set.html' %}
+									{% endif %}
+									</div>
+								</div>
+
+
+								<script type="text/javascript">
+							
+									var delete_add_set_{{contact.contact.id}} = document.querySelector('#delete_add_set_{{ contact.contact.id }}');
+									delete_add_set_{{contact.contact.id}}.addEventListener('click', function() {
+								    	// envoie de la requete d'ajout/suppression contact 
+										var xhr = new XMLHttpRequest();
+										xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ contact.contact.id }}' + '/' );
+										xhr.send(null);
+
+										xhr.addEventListener('readystatechange', function()
+										{ // On gère ici une requête asynchrone
+									        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+								            { // Si le fichier est chargé sans erreur
+									        	console.log(xhr.response);
+									        	if ( xhr.response == 'user_added' ) 
+									        	{
+									        		document.querySelector('#add_user_{{contact.contact.id}}').style.display = "none";
+									        		document.querySelector('#delete_user_{{contact.contact.id}}').style.display = "flex";
+									        	}
+									        	else if ( xhr.response == 'user_deleted' ) 
+									        	{
+									        		document.querySelector('#delete_user_{{contact.contact.id}}').style.display = "none";
+									        		document.querySelector('#add_user_{{contact.contact.id}}').style.display = "flex";
+									        	}
+									        }
+										});
+								    }, false);
+
+								</script>
+								
+							</div>
+							
 						</div>
 
-						<!---------------   Autre  -------------------->
-						<div style=" width: 140px; display: block;" >
 
-							<!---------------   Administrateur  -------------------->
+
+					{% endfor %}
+				</div>
+			</div>
+
+	{% endif %}
+
+
+	<script type="text/javascript">
+		
+
+		var contacts_add_user_sets = document.querySelector('#contacts_add_user_sets'),
+			display_contacts = document.querySelector('#display_contacts'),
+			hide_contacts = document.querySelector('#hide_contacts'),
+			contact_delete_add_set = document.querySelectorAll('.contact_delete_add_set');
+
+		display_contacts.addEventListener('click', function() {
+	    	// envoie de la requete d'ajout/suppression contact 
+			display_contacts.style.display = 'none';
+			contacts_add_user_sets.style.display = 'flex';
+			hide_contacts.style.display = 'block';
+
+
+	    }, false);
+
+
+	    hide_contacts.addEventListener('click', function() {
+	    	// envoie de la requete d'ajout/suppression contact 
+			contacts_add_user_sets.style.display = 'none';
+			hide_contacts.style.display = 'none';
+			display_contacts.style.display = 'block';
+
+
+	    }, false);
+
+
+	</script>
+
+
+	<!--------------------------   affichage des utilisateurs    ------------------------------------------>
+
+
+	{% if users_set|length == 0 %}
+		{% include 'aucun_resultat.html' %}
+	{% else %}
+
+
+		{% for user_set in users_set %}
+
+			<div style="margin: auto; width:500px; min-height:80px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+
+
+				<div style="height: 80px; display: flex; justify-content: space-between;" >
+					<div style=" display: flex;" >
+						<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
 							
-							<div class="" style="height: 35%; display: flex; justify-content: center; align-items: center;  height: 100%;" >
-								<div id="delete_add_set_{{ contact.contact.id }}" style="height: 50%; width: 100%;" >
-								{% if contact.contact in users_set_list %}
-									{% include 'delete_user_set.html' %}
-								{% else %}
-									{% include 'add_user_set.html' %}
-								{% endif %}
-								</div>
-							</div>
+							<a href="../../../user/profil/{{user_set.utilisateur.id}}/" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+								<img style="width: 80%;" src="{% if user_set.utilisateur.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{user_set.utilisateur.image_profil.url}}{% endif %}">
+							</a>
 
+						</div>
+						<a href="../../../user/profil/{{user_set.utilisateur.id}}/" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+							{{  user_set.utilisateur.nom  }}
+						</a>
+					</div>
 
+					<!---------------   Autre  -------------------->
+					<div style=" width: 140px; display: block;" >
+
+						<div {% if administrator_status %}id="delete_add_set_insets_{{ user_set.utilisateur.id }}"{% endif %} style=" height: 35%; display: flex; justify-content: center; align-items: center;" >
+
+							{% if administrator_status and user_set.utilisateur != user %}					
+								<!---------------   Administrateur  -------------------->
+								<div style="font-size: 80%; width: 90%; background: rgb(255, 163, 163); color: white; cursor: pointer; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: solid rgb(255, 163, 163) 1px;" >
+									Supprimer du set
+								</div> 
+							{% endif %}
+
+						</div>
+
+						{% if administrator_status %}	
 							<script type="text/javascript">
-						
-								var delete_add_set_{{contact.contact.id}} = document.querySelector('#delete_add_set_{{ contact.contact.id }}');
-								delete_add_set_{{contact.contact.id}}.addEventListener('click', function() {
+								var delete_add_set_insets_{{user_set.utilisateur.id}} = document.querySelector('#delete_add_set_insets_{{ user_set.utilisateur.id }}');
+								delete_add_set_insets_{{user_set.utilisateur.id}}.addEventListener('click', function() {
+
 							    	// envoie de la requete d'ajout/suppression contact 
 									var xhr = new XMLHttpRequest();
-									xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ contact.contact.id }}' + '/' );
+									xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/' );
 									xhr.send(null);
 
 									xhr.addEventListener('readystatechange', function()
@@ -79,231 +212,121 @@
 								        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
 							            { // Si le fichier est chargé sans erreur
 								        	console.log(xhr.response);
-								        	delete_add_set_{{contact.contact.id}}.innerHTML = xhr.response;
+								        	delete_add_set_insets_{{user_set.utilisateur.id}}.innerHTML = xhr.response;
 								        }
 									});
 							    }, false);
-
 							</script>
-							
-						</div>
-						
-					</div>
-
-
-
-				{% endfor %}
-			</div>
-		</div>
-
-{% endif %}
-
-
-
-
-
-<script type="text/javascript">
-	
-
-	var contacts_add_user_sets = document.querySelector('#contacts_add_user_sets'),
-		display_contacts = document.querySelector('#display_contacts'),
-		hide_contacts = document.querySelector('#hide_contacts'),
-		contact_delete_add_set = document.querySelectorAll('.contact_delete_add_set');
-
-	display_contacts.addEventListener('click', function() {
-    	// envoie de la requete d'ajout/suppression contact 
-		display_contacts.style.display = 'none';
-		contacts_add_user_sets.style.display = 'flex';
-		hide_contacts.style.display = 'block';
-
-
-    }, false);
-
-
-    hide_contacts.addEventListener('click', function() {
-    	// envoie de la requete d'ajout/suppression contact 
-		contacts_add_user_sets.style.display = 'none';
-		hide_contacts.style.display = 'none';
-		display_contacts.style.display = 'block';
-
-
-    }, false);
-
-
-</script>
-
-
-<!--------------------------   affichage des utilisateurs    ------------------------------------------>
-
-
-{% if users_set|length == 0 %}
-	{% include 'aucun_resultat.html' %}
-{% else %}
-
-
-	{% for user_set in users_set %}
-
-		<div style="margin: auto; width:500px; min-height:80px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
-
-
-			<div style="height: 80px; display: flex; justify-content: space-between;" >
-				<div style=" display: flex;" >
-					<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
-						
-						<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-							<img style="width: 80%;" src="{% if user_set.utilisateur.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{user_set.utilisateur.image_profil.url}}{% endif %}">
-						</a>
-
-					</div>
-					<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
-						{{  user_set.utilisateur.nom  }}
-					</a>
-				</div>
-
-				<!---------------   Autre  -------------------->
-				<div style=" width: 140px; display: block;" >
-
-					<div {% if administrator_status %}id="delete_add_set_insets_{{ user_set.utilisateur.id }}"{% endif %} style=" height: 35%; display: flex; justify-content: center; align-items: center;" >
-
-						{% if administrator_status and user_set.utilisateur != user %}					
-							<!---------------   Administrateur  -------------------->
-							<div style="font-size: 80%; width: 90%; background: rgb(255, 163, 163); color: white; cursor: pointer; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: solid rgb(255, 163, 163) 1px;" >
-								Supprimer du set
-							</div> 
 						{% endif %}
 
-					</div>
 
-					{% if administrator_status %}	
-						<script type="text/javascript">
-							var delete_add_set_insets_{{user_set.utilisateur.id}} = document.querySelector('#delete_add_set_insets_{{ user_set.utilisateur.id }}');
-							delete_add_set_insets_{{user_set.utilisateur.id}}.addEventListener('click', function() {
-
-						    	// envoie de la requete d'ajout/suppression contact 
-								var xhr = new XMLHttpRequest();
-								xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/' );
-								xhr.send(null);
-
-								xhr.addEventListener('readystatechange', function()
-								{ // On gère ici une requête asynchrone
-							        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-						            { // Si le fichier est chargé sans erreur
-							        	console.log(xhr.response);
-							        	delete_add_set_insets_{{user_set.utilisateur.id}}.innerHTML = xhr.response;
-							        }
-								});
-						    }, false);
-						</script>
-					{% endif %}
+						<div style="display: flex; height: 65%;" >
 
 
-					<div style="display: flex; height: 65%;" >
+							{% if  user_set.utilisateur == user %}	
 
 
-						{% if  user_set.utilisateur == user %}	
+								<!---------------   Soi  -------------------->
+								<div style=" width: 140px; display: block;" >
+									<div style="height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
 
+										{% if  user_set.statut == 'attente_validation' %}	
 
-							<!---------------   Soi  -------------------->
-							<div style=" width: 140px; display: block;" >
-								<div style="height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
+											{% include 'entree_set.html' %}
 
-									{% if  user_set.statut == 'attente_validation' %}	
+										{% elif user_set.statut == 'dans_set' or user_set.statut == 'administrateur'  %}	
+											
+											{% include 'sortie_set.html' %}
 
-										{% include 'entree_set.html' %}
+										{% endif %}	
 
-									{% elif user_set.statut == 'dans_set' or user_set.statut == 'administrateur'  %}	
 										
-										{% include 'sortie_set.html' %}
-
-									{% endif %}	
-
+									</div>
 									
 								</div>
-								
-							</div>
 
 
 
-						{% else %}	
+							{% else %}	
 
 
-							<div id="manage_contact_{{ user_set.utilisateur.id }}" style=" width: 50%; display: flex; justify-content: center; align-items: center;" >
-								{% if user_set.utilisateur in contacts_list %}
-									<!------------            Bouton suppression contact   --------------->
-										<div style="border: solid red 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(255, 163, 163); cursor: pointer;" >
-											<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
-											<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: red;" >-</div>
-										</div>
-								{% else %}
-									<!------------            Bouton ajout contact   --------------->
-										<div style="border: solid blue 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(138, 208, 255); cursor: pointer;" >
-											<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
-											<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: blue;" >+</div>
-										</div>
-								{% endif %}
-							</div>
+								<div id="manage_contact_{{ user_set.utilisateur.id }}" style=" width: 50%; display: flex; justify-content: center; align-items: center;" >
+									{% if user_set.utilisateur in contacts_list %}
+										<!------------            Bouton suppression contact   --------------->
+											<div style="border: solid red 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(255, 163, 163); cursor: pointer;" >
+												<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
+												<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: red;" >-</div>
+											</div>
+									{% else %}
+										<!------------            Bouton ajout contact   --------------->
+											<div style="border: solid blue 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(138, 208, 255); cursor: pointer;" >
+												<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
+												<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: blue;" >+</div>
+											</div>
+									{% endif %}
+								</div>
 
-							<script type="text/javascript">
-							    var manage_contact_{{user_set.utilisateur.id}} = document.querySelector('#manage_contact_{{ user_set.utilisateur.id }}');
+								<script type="text/javascript">
+								    var manage_contact_{{user_set.utilisateur.id}} = document.querySelector('#manage_contact_{{ user_set.utilisateur.id }}');
 
-							    manage_contact_{{user_set.utilisateur.id}}.addEventListener('click', function() {
+								    manage_contact_{{user_set.utilisateur.id}}.addEventListener('click', function() {
 
-							    	// envoie de la requete d'ajout/suppression contact 
-									var xhr = new XMLHttpRequest();
-									xhr.open('GET', '../../../user/manage_contact/' + '{{ user_set.utilisateur.id }}' + '/' );
-									xhr.send(null);
-
-
-									xhr.addEventListener('readystatechange', function()
-									{ // On gère ici une requête asynchrone
-
-								        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-							            { // Si le fichier est chargé sans erreur
-								        	console.log(xhr.response);
-								        	manage_contact_{{user_set.utilisateur.id}}.innerHTML = xhr.response;
-								        }
-									});
-
-							    }, false);
-							</script>
-
-							<div style=" width: 50%; display: flex; justify-content: center; align-items: center;" >
-								<a href="../../../user/messages_exchanges/{{ user_set.utilisateur.id }}/" style="border: solid 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: ; cursor: pointer;" >
-									<img style="height: 100%;" src="{% static 'img/logo_message.png' %}">
-								</a>
-							</div>
+								    	// envoie de la requete d'ajout/suppression contact 
+										var xhr = new XMLHttpRequest();
+										xhr.open('GET', '../../../user/manage_contact/' + '{{ user_set.utilisateur.id }}' + '/' );
+										xhr.send(null);
 
 
-						{% endif %}	
+										xhr.addEventListener('readystatechange', function()
+										{ // On gère ici une requête asynchrone
+
+									        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+								            { // Si le fichier est chargé sans erreur
+									        	console.log(xhr.response);
+									        	manage_contact_{{user_set.utilisateur.id}}.innerHTML = xhr.response;
+									        }
+										});
+
+								    }, false);
+								</script>
+
+								<div style=" width: 50%; display: flex; justify-content: center; align-items: center;" >
+									<a href="../../../user/messages_exchanges/{{ user_set.utilisateur.id }}/" style="border: solid 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: ; cursor: pointer;" >
+										<img style="height: 100%;" src="{% static 'img/logo_message.png' %}">
+									</a>
+								</div>
 
 
+							{% endif %}	
+
+
+						</div>
+
+						
 					</div>
-
 					
 				</div>
-				
+
+
 			</div>
 
 
-		</div>
+		{% endfor %}
 
 
-	{% endfor %}
-
-
-{% endif %}
+	{% endif %}
 
 
 
 
+	<script type="text/javascript">
+		
+
+				//--------------------------        --    ----------------------------//
+
+
+	</script>
 
 
 
-
-<script type="text/javascript">
-	
-
-			//--------------------------        --    ----------------------------//
-
-
-</script>
+{% endblock %}

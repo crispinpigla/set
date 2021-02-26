@@ -30,7 +30,7 @@
 
 						    	// envoie de la requete d'ajout/suppression contact 
 								var xhr = new XMLHttpRequest();
-								xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/?confirm_enter=yes' );
+								xhr.open('GET', '../../../sets/manage_enter_user_set/' + '{{ set.id }}' + '/?confirm_enter=yes' );
 								xhr.send(null);
 
 								xhr.addEventListener('readystatechange', function()
@@ -39,7 +39,7 @@
 						            { // Si le fichier est chargé sans erreur
 							        	console.log(xhr.response);
 							        	//confirmation_entree_set_{{user_set.id}}.parentElement.innerHTML = xhr.response;
-							        	if ( xhr.response == 'confirmation_done' ) 
+							        	if ( xhr.response == 'added_done' ) 
 							        	{
 							        		confirmation_entree_set_{{user_set.id}}.style.display = 'none';
 											refus_entree_set_{{user_set.id}}.style.display = 'none';
@@ -53,7 +53,7 @@
 
 						    	// envoie de la requete d'ajout/suppression contact 
 								var xhr = new XMLHttpRequest();
-								xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/?confirm_enter=no' );
+								xhr.open('GET', '../../../sets/manage_enter_user_set/' + '{{ set.id }}' + '/?confirm_enter=no' );
 								xhr.send(null);
 
 								xhr.addEventListener('readystatechange', function()
@@ -72,14 +72,14 @@
 						    sortir_set_{{user_set.id}}.addEventListener('click', function() {
 						    	// envoie de la requete d'ajout/suppression contact 
 								var xhr = new XMLHttpRequest();
-								xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/?confirm_enter=no' );
+								xhr.open('GET', '../../../sets/exit_set/' + '{{ set.id }}' + '/' );
 								xhr.send(null);
 								xhr.addEventListener('readystatechange', function()
 								{ // On gère ici une requête asynchrone
 							        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
 						            { // Si le fichier est chargé sans erreur
 							        	console.log(xhr.response);
-							        	if ( xhr.response == 'delete_user_and_set_done' ) 
+							        	if ( xhr.response == 'delete_done_and_set_delete_done' ) 
 							        	{
 							        		window.location.href = "../../user/home/";
 							        	}

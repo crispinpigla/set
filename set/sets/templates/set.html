@@ -8,6 +8,25 @@
 {% block name_set_content %}{{ set.nom }}{% endblock %}
 
 
+
+
+
+
+{% block action_search_form %}../../../sets/search/{% endblock %}
+{% block link_home %}../home/{% endblock %}
+{% block link_deconnexion %}../deconnexion/{% endblock %}
+{% block link_contact %}../contacts/{% endblock %}
+{% block link_messages %}../messages/{% endblock %}
+
+{% block profil_user_account_link %}../profil/{{user.id}}/{% endblock %}
+{% block profil_user_account_link_image %}../profil/{{user.id}}/{% endblock %}
+
+
+
+
+
+
+
 {% block type_and_description %}
 	<div style=" background: white;" >
 		<div style="width:100%; height: 40px;  margin-left: 0%;display: flex; justify-content: center; align-items: center;" >{{ set.type0 }}<br></div>
@@ -24,7 +43,7 @@
 			{% if administrator_status %}
 				<div style="width: 10%; min-height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center; margin-top: 10px;" >
 					<div id="modification_description" style="background: white; border-radius: 50%; overflow: hidden; width: 50px; height: 50px; display: block; cursor: pointer;" >
-						<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+						<img style="width: 100%;" src="{% static 'sets/img/logo_modification.jpg' %}">
 					</div>
 					<label id="submit_set_description" for="submit_change_description" style="background: rgb(36, 255, 134); border-radius: 5px; padding: 5px; font-size: 80%; cursor: pointer;display: none;" >Mettre à jour</label>
 					<div id="cancel_set_description" style="background: rgb(255, 153, 153); border-radius: 5px; padding: 5px; font-size: 80%; cursor: pointer;display: none;" >Annuler</div>
@@ -39,15 +58,7 @@
 
 
 
-{% block content %}
-
-	{% if section == 'publications' %}
-		{% include "section_publications_set.html" %}
-	{% elif section == 'evenements' %}
-		{% include "section_evenements_set.html" %}
-	{% elif section == 'personnes' %}
-		{% include "section_personnes_set.html" %}
-	{% endif %}
+{% block content_central_page %}
 
 {% endblock %}
 
@@ -102,21 +113,21 @@
 		<div style="top: 50px;  width: 100%; height: 100%; " >
     		<div style="margin: auto; width: 100%; height: 400px;  display: flex; flex-direction: column; justify-content: flex-start; align-items: center;" >
     			
-				{% if section == 'publications' %}
+				{% if section_set == 'publications' %}
 					<a style="border: solid 1px; border-radius: 10px; background: white; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
 				{% else %}
 	    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=publications">Publications</a>
 				{% endif %}
 
 
-				{% if section == 'evenements' %}
+				{% if section_set == 'evenements' %}
 					<a style="border: solid 1px; border-radius: 10px; background: white; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
 				{% else %}
 	    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=evenements">Evènements</a>
 				{% endif %}
 
     			
-    			{% if section == 'personnes' %}
+    			{% if section_set == 'personnes' %}
 					<a style="border: solid 1px; border-radius: 10px; background: white; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>
 				{% else %}
 	    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 100%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?section=personnes">Personnes</a>

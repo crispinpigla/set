@@ -19,6 +19,9 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls import include, url
 
+from django.conf.urls.static import static
+
+#handler404 = 'substitutor.auxilliaries.home.my_custom_page_not_found_view'
 
 urlpatterns = [
 	url('authentification/', include('authentification.urls')),
@@ -29,6 +32,7 @@ urlpatterns = [
     url('', include('authentification.urls')),
 ]
 
+#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar

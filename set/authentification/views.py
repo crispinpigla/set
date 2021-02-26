@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from django.contrib.auth.models import User
+
 from django.core.mail import send_mail, EmailMessage
 
 from django.shortcuts import redirect
@@ -95,8 +97,6 @@ def inscription(request):
                     return HttpResponse("Formulaire pas valide")
                 elif request.POST["password"] != request.POST["confirmation_password"]:
                     return HttpResponse("Mot de passe different de la confirmation")
-
-
 
         except Exception as e:
             # Demande du formulaire d'inscription

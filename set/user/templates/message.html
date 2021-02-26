@@ -13,9 +13,19 @@
 {% block link_contact %}../contacts/{% endblock %}
 {% block link_messages %}../messages/{% endblock %}
 
+{% block profil_user_account_link %}../profil/{{user.id}}/{% endblock %}
+{% block profil_user_account_link_image %}../profil/{{user.id}}/{% endblock %}
 
 
+{% block profil_cover_src %}
 
+	{% if user.image_profil == '' %}
+		{% static 'img/default_user_profil.png' %}
+	{% else %}
+		..{{user.image_profil.url}}
+	{% endif %}
+
+{% endblock %}
 
 
 

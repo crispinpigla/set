@@ -1,0 +1,62 @@
+{% extends 'set.html' %}
+
+
+
+
+
+
+
+{% block content_central_page %}
+
+
+
+
+
+	{% load static %}
+
+
+
+
+	<!--------------------------   creation d'un nouvel évènement    ------------------------------------------>
+
+
+
+
+
+	<!--------------------------   affichage de publications    ------------------------------------------>
+
+
+	{% if events|length == 0 %}
+		{% include 'aucun_resultat.html' %}
+	{% else %}
+
+		{% for event in events %}
+
+			<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+
+				<div style=" display: flex; justify-content: center; " >
+					<div style="height: 100px; width: 100px;" >
+						<img style="width: 100%;" src="{% static 'img/logo_evenement.png' %}">		
+					</div>
+				</div>
+
+				<div style=" text-align: center;" > {{ event.nom }} </div>
+
+				<div style=" text-align: center; font-size: 80%; color: rgb(161, 161, 161); margin-bottom: 10px;"  > {{ event.description }} </div>
+
+				<div style="margin: auto; border-top: solid 1px; color: silver; font-size: 60%; text-align: center; width: 60%; padding: 7px;" > Crée le {{ event.date }} </div>
+
+			</div>
+
+		{% endfor %}
+
+
+
+
+
+	{% endif %}
+
+
+
+{% endblock %}
+

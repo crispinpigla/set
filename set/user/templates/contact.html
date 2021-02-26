@@ -13,11 +13,20 @@
 {% block link_contact %}../contacts/{% endblock %}
 {% block link_messages %}../messages/{% endblock %}
 
+{% block profil_user_account_link %}../profil/{{user.id}}/{% endblock %}
+{% block profil_user_account_link_image %}../profil/{{user.id}}/{% endblock %}
 
 
 
+{% block profil_cover_src %}
 
+	{% if user.image_profil == '' %}
+		{% static 'img/default_user_profil.png' %}
+	{% else %}
+		..{{user.image_profil.url}}
+	{% endif %}
 
+{% endblock %}
 
 
 
@@ -51,12 +60,12 @@
 						<div style=" display: flex;" >
 							<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
 								
-								<a href="../profil/{{contenu.id}}/" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+								<a href="../profil/{{contenu.id}}/?section_profil=coordonees" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
 									<img style="width: 80%;" src="{% if contenu.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}..{{contenu.image_profil.url}}{% endif %}">
 								</a>
 
 							</div>
-							<a href="../profil/{{contenu.id}}/" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+							<a href="../profil/{{contenu.id}}/?section_profil=coordonees" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
 								{{  contenu.nom  }}
 							</a>
 						</div>
@@ -72,7 +81,7 @@
 							<div style="display: flex; height: 100%;" >
 								<!---------------   Contact  -------------------->
 								<div id="manage_contact_{{ contenu.id }}" style="width: 50%; display: flex; justify-content: center; align-items: center;" >
-									{%  include './delete_add_contact_contacts.html'  %}
+									{%  include './delete_add_contact.html'  %}
 								</div>
 								<script type="text/javascript">
 								    var //contain_button_manage_contact = document.querySelector('#contain_button_manage_contact_{{ contenu.id }}'),
@@ -91,7 +100,18 @@
 									        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
 								            { // Si le fichier est chargé sans erreur
 									        	console.log(xhr.response);
-									        	manage_contact_{{contenu.id}}.innerHTML = xhr.response;
+									        	if ( xhr.response == 'contact_added' ) 
+									        	{
+									        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "none";
+									        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "flex";
+									        	}
+									        	else if ( xhr.response == 'contact_deleted' ) 
+									        	{
+									        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "none";
+									        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "flex";
+									        	}
+
+									        	//manage_contact_{{contenu.id}}.innerHTML = xhr.response;
 									        }
 										});
 

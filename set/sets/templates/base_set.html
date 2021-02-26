@@ -22,7 +22,7 @@
 	    			<div style="width: 100%; " >{{ search_form.search_input }}</div>
 	    		</form>
 	    		<div style="height: 80%; display: flex;" >
-	    			<a href="../../../user/home/" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}"></a>
+	    			<a href="../../../user/home/" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static '/img/logo_set.jpg' %}"></a>
 	    			<a href="../../../user/deconnexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
 	    		</div>
 	    	</div>
@@ -68,7 +68,7 @@
 			    	<!-------------       partie_2_2          ----------->
 			    	<div style="position: absolute; left: 24.5%;  width: 51%; /*min-height: 100%;*/ display: inline;" ></div>
 			    	<!-------------       partie_2_2          -----------> 
-			    		{% block content %}{% endblock %}
+			    		{% block content_central_page %}{% endblock %}
 			    	<!-------------       partie_2_3          ----------->
 			    	<div style="position: fixed; top: 470px; border: solid red 1px; width: 24%; height: 100%; right: 0px; display: none;" >
 			    		aaaaaaaaaaaaa
@@ -87,7 +87,7 @@
     	</div>
 
     	
-		{% if section %}
+		{% if section_set %}
 			<script type="text/javascript">
 
 

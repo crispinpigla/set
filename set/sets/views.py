@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect
+
+from user.auxilliaries_user.auxilliaries_user import AuxilliariesUser
+from .auxilliaries_sets.auxilliaries_sets import AuxilliariesSets
 
 from .models import Sets, SetUtilisateurs, PublicationSet, JaimePublicationSet, Evenements, PublicationEvenement, JaimePublicationEvenement
 from user.models import Utilisateurs, Contact
@@ -17,101 +20,107 @@ from .forms import (
 )
 
 
-
-
 def creation_set(request):
     """"""
 
-    try:
+    # Vérification connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        try:
-            # Reception du formulaire de creation de set
-            request.POST["csrfmiddlewaretoken"]
+        search_form = SearchForm()
+        if request.method == 'POST':
+            # Creation de set
             create_set_form = CreateSetForm(request.POST, request.FILES)
             if create_set_form.is_valid():
-                user = Utilisateurs.objects.get(pk=request.session["user_id"])
+                # formulaire valide
                 set0 = Sets.objects.create(
                     nom=request.POST["name"],
                     image_couverture=request.FILES["file"],
                     type0=request.POST["type_set"],
                     description=request.POST["description"],
                 )
-                set_user = SetUtilisateurs.objects.create(
-                    set0=set0, utilisateur=user, statut="administrateur"
-                )
+                set_user = SetUtilisateurs.objects.create(set0=set0, utilisateur=user, statut="administrateur")
                 return redirect("../../sets/set/" + str(set0.id) + "/")
             else:
-                if not create_set_form.is_valid():
-                    # Formulaire pas valide
-                    create_set_form.errors.items()
-                    print(create_set_form.errors.items())
-                    return HttpResponse("Formulaire pas valide")
-        except Exception as e:
-            # Demande du formulaire de creation de set
+                # formulaire pas valide
+                context = {"create_set_form": create_set_form, "search_form": search_form}
+                context['errors'] = create_set_form.errors.items()
+                return render(request, "creation_set.html", context)
+        else:
+            # Demande de page de création de set
             create_set_form = CreateSetForm()
-            search_form = SearchForm()
             context = {"create_set_form": create_set_form, "search_form": search_form}
-            # request.session["user_id"] = 1
             return render(request, "creation_set.html", context)
-
-        search_form = SearchForm()
-        create_set_form = CreateSetForm()
-        context = {"search_form": search_form, "create_set_form": create_set_form}
-        return render(request, "creation_set.html", context)
-
-    except Exception as e:
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
+        return redirect("../../authentification/connexion/" )
+
 
 
 def creation_evenement(request, set_id):
     """"""
 
-    set0 = Sets.objects.filter(id=set_id)
-    set0 = set0[0]
 
-    try:
+    # Vérification connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(set_id)
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    search_form = SearchForm()
+    context = {"search_form": search_form,"set": set0,"user":user,}
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        try:
-            # Reception du formulaire de creation de set
-            request.POST["csrfmiddlewaretoken"]
-            create_event_form = CreateEventForm(request.POST)
-            if create_event_form.is_valid():
-                user = Utilisateurs.objects.get(pk=request.session["user_id"])
-                event = Evenements.objects.create(
-                    set0=set0,
-                    nom=request.POST["name"],
-                    description=request.POST["description"],
-                )
-                return redirect("../../sets/evenement/" + str(event.id) + "/")
+        context['user'] = user
+        set0 = auxilliary_set.set_in_application(set0_id)
+        if set0 :
+            # Le set existe dans l'application
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # L'utilisateur appartient au set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'administrateur' or statut_user_in_set == 'dans_set' :
+                    # L'utilisateur n'est pas en attente
+                    search_form = SearchForm()
+                    if request.method == 'POST':
+                        # Creation d'un évènement
+                        create_event_form = CreateEventForm(request.POST)
+                        if create_event_form.is_valid():
+                            event = Evenements.objects.create(
+                                set0=set0,
+                                administrateur=user,
+                                nom=request.POST["name"],
+                                description=request.POST["description"],
+                            )
+                            return redirect("../../sets/event/" + str(event.id) + "/")
+                        else:
+                            # formulaire pas valide
+                            context = {"create_event_form": create_event_form,"search_form": search_form,"set": set0,}
+                            context['errors'] = create_event_form.errors.items()
+                            return render(request, "creation_evenement.html", context)
+                    else:
+                        # Page de création d'un évènement
+                        create_event_form = CreateEventForm()
+                        search_form = SearchForm()
+                        context = {"create_event_form": create_event_form,"search_form": search_form,"set": set0,}
+                        return render(request, "creation_evenement.html", context)
+                elif statut_user_in_set == 'attente_validation':
+                    # L'utilisateur est en attente
+                    return redirect("../../sets/set/" + str(set0.id) + "/")
             else:
-                if not create_event_form.is_valid():
-                    # Formulaire pas valide
-                    create_event_form.errors.items()
-                    print(create_event_form.errors.items())
-                    return HttpResponse("Formulaire pas valide")
-        except Exception as e:
-            # Demande du formulaire de creation de set
-            create_event_form = CreateEventForm()
-            search_form = SearchForm()
-            context = {
-                "create_event_form": create_event_form,
-                "search_form": search_form,
-                "set": set0,
-            }
-            return render(request, "creation_evenement.html", context)
-
-        # search_form = SearchForm()
-        # context = { "search_form":search_form }
-        # return render(request, "creation_evenement.html", context)
-
-    except Exception as e:
+                # L'utilisateur n'appartient pas au set
+                return redirect("../../sets/set/" + str(set0.id) + "/")
+        else:
+            # Le set n'existe pas dans l'application
+            raise Http404()
+    else:
         # Utilisateur non connecté
-        return redirect("../../authentification/connexion/")
-
-
+        return redirect("../../authentification/connexion/" )
 
 
 
@@ -121,78 +130,69 @@ def creation_evenement(request, set_id):
 
 def sets(request, set_id):
     """"""
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(set_id)
+    section_set = auxilliary_set.get_section_set(request)
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
 
-    try:
-        request.session["user_id"]
-        user = Utilisateurs.objects.get(id=request.session["user_id"])
+    search_form = SearchForm()
+    context = {
+        "search_form": search_form,
+        "set": set0,
+        "section_set": section_set,
+        "user":user,
+    }
 
-        set0 = Sets.objects.filter(id=set_id)
-
-
-        # Récupération des publications
-        publications = PublicationSet.objects.filter(set0_id=set_id)
-        publications_likeurs = []
-        for publication in publications:
-            publications_likeurs.append([publication, JaimePublicationSet.objects.filter(publication_set_id=publication.id), JaimePublicationSet.objects.filter(publication_set_id=publication.id, jaimeur_id=request.session["user_id"])])
-
-
-        if len(set0) != 0:
-            set0 = set0[0]
-
-            # Récupération des évènements
-            events = Evenements.objects.filter(set0_id=set0.id)
-
-            # Récupération des utilisateurs
-            users_set = SetUtilisateurs.objects.filter(set0_id=set0.id)
-            users_set_list = [ user_set.utilisateur for user_set in users_set ]
-            users_set_dictionnary = { user_set.utilisateur:user_set for user_set in users_set }
-            print(users_set_dictionnary)
-
-            # Récupération des contacts
-            contacts = Contact.objects.filter(contact_owner_id=request.session["user_id"])
-            contacts_list = [ contact.contact for contact in contacts ]
-
-            # statut set de l'utilisateur dans le set
-            administrator_status = False
-            if ( user in users_set_dictionnary ):
-                print(' le  ---- ', users_set_dictionnary[user].statut)
-                if users_set_dictionnary[user].statut == "administrateur":
-                    administrator_status = True
-                    print('est administrateur')
-
-
-            # section du set
-            try:
-                section = request.GET["section"]
-            except Exception as e:
-                section = "publications"
-
-            search_form = SearchForm()
-            image_cover_form = SetCoverImageForm()
-            set_description_form = SetDescriptionSetForm()
-            new_post_form = PublicationSetForm()
-            context = {
-                "search_form": search_form,
-                "image_cover_form": image_cover_form,
-                "set_description_form": set_description_form,
-                "new_post_form": new_post_form,
-                "set": set0,
-                "administrator_status": administrator_status,
-                "section": section,
-                "publications_likeurs": publications_likeurs,
-                "users_set": users_set,
-                "users_set_list":users_set_list,
-                "events":events,
-                "contacts":contacts,
-                "contacts_list":contacts_list,
-                "user":user,
-            }
-            return render(request, "set.html", context)
+    # -)   Vérification inscription utilisateur
+    if user :
+        context['user'] = user
+        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = auxilliary_set.set_in_application(set0_id) #get_object_or_404(Sets, id=set_id)
+        if set0 :
+            context['set'] = set0
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # -)   statut de l'utilisateur dans le set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'administrateur':
+                    # L'utilisateur est administrateur du set
+                    image_cover_form = SetCoverImageForm()
+                    set_description_form = SetDescriptionSetForm()
+                    new_post_form = PublicationSetForm()
+                    context['image_cover_form'] = image_cover_form
+                    context['set_description_form'] = set_description_form
+                    context['new_post_form'] = new_post_form
+                    context['administrator_status'] = True
+                elif statut_user_in_set == 'dans_set' :
+                    # L'utilisateur est simple membre du set
+                    new_post_form = PublicationSetForm()
+                    context['new_post_form'] = new_post_form
+                    context['administrator_status'] = False
+                elif statut_user_in_set == 'attente_validation' :
+                    # L'utilisateur est sur la liste d'attente du set
+                    context['administrator_status'] = False
+                return auxilliary_set.render_set_user_set(request, section_set, set0_id, context, statut_user_in_set)
+            else:
+                # l'utilisateur n'appartient pas au set
+                return auxilliary_set.render_set_user_no_set(request, section_set, set0_id, context)
         else:
-            return HttpResponse("Aucun set avec cet id")
-
-    except Exception as e:
-        return HttpResponse('Utilisateur non connecté')
+            # Aucun set avec cet id dans l'application
+            raise Http404()
+    else:
+        #      Utilisateur non-inscrit
+        # -)   Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = get_object_or_404(Sets, id=set0_id)
+        if set0 :
+            #   Le set existe dans l'application
+            return auxilliary_set.render_set_user_no_registred(request, section_set, set0_id, context)
+        else:
+            # Aucun set avec cet id dans l'application
+            raise Http404()
 
 
 
@@ -200,55 +200,84 @@ def evenements(request, event_id):
     """"""
 
     # evenement
-    event = Evenements.objects.filter(id=event_id)
 
-    if len(event) != 0:
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    event_id = auxilliary_set.get_int_parameter(event_id)
+    set0 = None
+    event0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
 
-        event = event[0]
+    search_form = SearchForm()
+    context = {
+        "search_form": search_form,
+        "set": set0,
+        "user":user,
+    }
 
-        # publications de l'évènement
-        publications = PublicationEvenement.objects.filter(evenement_id=event_id)
-        publications_likeurs = []
-        for publication in publications:
-            publications_likeurs.append([publication, JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id), JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id, jaimeur_id=request.session["user_id"])])
+    # -)   Vérification inscription utilisateur
+    if user :
+        context['user'] = user
+        # -)    Vérification si l'identifiant de l'évènement correspond à un évènement dans l'application
+        event0 = auxilliary_set.event_in_application(event_id)
+        context['event'] = event0
+        if event0 :
+            # L'évènement existe dans l'application
+            set0 = event0.set0
+            context['set'] = set0
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0.id)
+            context['user_set'] = user_set
+            if user_set:
+                #   L'utilisateur appartient au set
+                publications = PublicationEvenement.objects.filter(evenement_id=event_id)
+                publications_likeurs = []
+                for publication in publications:
+                    publications_likeurs.append([publication, JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id), JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id, jaimeur_id=request.session["user_id"])])
+                context['publications_likeurs'] = publications_likeurs
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'attente_validation':
+                    # L'utilisateur est en attente de validation du set
+                    return render(request, "evenement_await_enter_set.html", context)
+                else:
+                    # L'utilisateur est membre entier du set
+                    new_post_form = PublicationEventForm()
+                    context['new_post_form'] = new_post_form
+                    if user == event0.administrateur :
+                        # L'utilisateur est administrateur de l'évènement
+                        event_description_form = SetDescriptionSetEvent()
+                        context['event_description_form'] = event_description_form
+                        return render(request, "evenement_administrator_event.html", context)
+                    else:
+                        # L'utilisateur n'est pas administrateur de l'évènement
+                        return render(request, "evenement_no_administrator_event.html", context)
+            else:
+                # l'utilisateur n'appartient pas au set
+                return render(request, "evenement_no_access_event.html", context)
+        else:
+            # Aucun Evènement avec cet id dans l'application
+            raise Http404()
+    else:
+        #      Utilisateur non-inscrit
+        # -)   Vérification si l'identifiant du set correspond à un évènement dans l'application
+        event0 = auxilliary_set.event_in_application(event_id)
+        context['event'] = event0
+        if event0 :
+            #   L'évènement existe dans l'application
+            return render(request, "evenement_no_access_event.html", context)
+        else:
+            # Aucun Evènement avec set id dans l'application
+            raise Http404()
 
-        # set
-        set0 = event.set0
-
-        # Récupération des utilisateurs
-        users_set = SetUtilisateurs.objects.filter(set0_id=set0.id)
-
-        # statut évènement de l'utilisateur dans le set
-        administrator_status = False
-        for user_set in users_set:
-            if user_set.utilisateur_id == request.session["user_id"]:
-                user_intermedaire_table = SetUtilisateurs.objects.get(
-                    utilisateur_id=request.session["user_id"], set0_id=set0.id
-                )
-                if user_intermedaire_table.statut == "administrateur":
-                    administrator_status = True
-
-        search_form = SearchForm()
-        event_description_form = SetDescriptionSetEvent()
-        new_post_form = PublicationEventForm()
-        context = {
-            "search_form": search_form,
-            "event_description_form": event_description_form,
-            "new_post_form": new_post_form,
-            "set": set0,
-            "administrator_status": administrator_status,
-            "publications_likeurs": publications_likeurs,
-            "users_set": users_set,
-            "event":event,
-        }
-        return render(request, "evenement.html", context)
 
 
 
 def search(request):
     """"""
 
-    #print(request.GET["search_input"])
+
 
     context = { "recherche":request.GET["search_input"] }
 
@@ -297,76 +326,290 @@ def search(request):
 def update_cover(request):
     """"""
 
-    print(request.GET["set_id"])
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(request.GET["set_id"])
 
-    form = SetCoverImageForm(request.POST, request.FILES)
-    print(form)
-    if form.is_valid():
-        set0 = Sets.objects.get(id=request.GET["set_id"])
-        set0.image_couverture = request.FILES["file"]
-        set0.save()
-        print("ok")
-        return redirect("../../sets/set/" + str(set0.id) + "/")
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    context = { "set": set0, "user":user, }
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        context['user'] = user
+        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = auxilliary_set.set_in_application(set0_id) 
+        if set0 :
+            context['set'] = set0
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # -)   statut de l'utilisateur dans le set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'administrateur':
+                    # L'utilisateur est administrateur du set
+                    form = SetCoverImageForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        # formulaire valide
+                        set0.image_couverture = request.FILES["file"]
+                        set0.save()
+                        return redirect("../../sets/set/" + str(set0.id) + "/")
+                    else:
+                        # formulaire invalide
+                        raise Http404()
+                elif statut_user_in_set == 'attente_validation' or statut_user_in_set == 'dans_set':
+                    # L'utilisateur n'est pas administrateur du set
+                    return redirect("../../sets/set/" + str(set0.id) + "/")
+            else:
+                # l'utilisateur n'appartient pas au set
+                return redirect("../../user/home/")
+        else:
+            # Aucun set avec cet id dans l'application
+            raise Http404()
     else:
-        return HttpResponse("Formulaire invalide")
+        #      Utilisateur non-inscrit
+        return redirect("../../authentification/connexion/")
+
+
+
+def update_description_set(request):
+    """"""
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(request.GET["set_id"])
+
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    context = { "set": set0, "user":user, }
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        context['user'] = user
+        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = auxilliary_set.set_in_application(set0_id) 
+        if set0 :
+            context['set'] = set0
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # -)   statut de l'utilisateur dans le set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'administrateur':
+                    # L'utilisateur est administrateur du set
+                    form = SetDescriptionSetForm(request.POST)
+                    if form.is_valid():
+                        # formulaire valide
+                        set0.description = request.POST["description"]
+                        set0.save()
+                        return redirect("../../sets/set/" + str(set0.id) + "/")
+                    else:
+                        # formulaire invalide
+                        raise Http404()
+                elif statut_user_in_set == 'attente_validation' or statut_user_in_set == 'dans_set':
+                    # L'utilisateur n'est pas administrateur du set
+                    return redirect("../../sets/set/" + str(set0.id) + "/")
+            else:
+                # l'utilisateur n'appartient pas au set
+                return redirect("../../user/home/")
+        else:
+            # Aucun set avec set id dans l'application
+            raise Http404()
+    else:
+        #      Utilisateur non-inscrit
+        return redirect("../../authentification/connexion/")
 
 
 def make_post_set(request, set_id):
     """"""
 
-    post_form = PublicationSetForm(request.POST, request.FILES)
-    if post_form.is_valid():
-        set0 = Sets.objects.get(id=set_id)
-        user = Utilisateurs.objects.get(id=request.session["user_id"])
-        post = PublicationSet.objects.create(
-            set0=set0,
-            auteur=user,
-            contenu_text=request.POST["publication_text"],
-            media1=request.FILES.get("file_1", ""),
-            media2=request.FILES.get("file_2", ""),
-        )
-        return redirect("../../set/" + str(set0.id) + "/")
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(set_id)
+    section_set = auxilliary_set.get_section_set(request)
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = auxilliary_set.set_in_application(set0_id) #get_object_or_404(Sets, id=set_id)
+        if set0 :
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # -)   statut de l'utilisateur dans le set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'administrateur' or statut_user_in_set == 'dans_set' :
+                    # L'utilisateur est administrateur ou simple membre du set
+                    post_form = PublicationSetForm(request.POST, request.FILES)
+                    if post_form.is_valid():
+                        # Formulaire valide
+                        if auxilliary_set.form_is_not_empty(request):
+                            set0 = Sets.objects.get(id=set_id)
+                            user = Utilisateurs.objects.get(id=request.session["user_id"])
+                            post = PublicationSet.objects.create(
+                                set0=set0,
+                                auteur=user,
+                                contenu_text=request.POST["publication_text"],
+                                media1=request.FILES.get("file_1", ""),
+                                media2=request.FILES.get("file_2", ""),
+                            )
+                            return redirect("../../set/" + str(set0.id) + "/")
+                        else:
+                            raise Http404()
+                    else:
+                        raise Http404()
+                elif statut_user_in_set == 'attente_validation' :
+                    # L'utilisateur est sur la liste d'attente du set
+                    raise Http404()
+            else:
+                # l'utilisateur n'appartient pas au set
+                raise Http404()
+        else:
+            # Aucun set avec cet id dans l'application
+            raise Http404()
     else:
-        return HttpResponse("Formulaire invalide")
+        #      Utilisateur non-inscrit
+        raise Http404()
+
 
 
 
 def make_post_event(request, event_id):
     """"""
 
-    post_form = PublicationEventForm(request.POST, request.FILES)
-    if post_form.is_valid():
-        event = Evenements.objects.get(id=event_id)
-        user = Utilisateurs.objects.get(id=request.session["user_id"])
-        post = PublicationEvenement.objects.create(
-            evenement=event,
-            auteur=user,
-            contenu_text=request.POST["publication_text"],
-            media1=request.FILES.get("file_1", ""),
-            media2=request.FILES.get("file_2", ""),
-        )
-        return redirect("../../event/" + str(event.id) + "/")
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    event_id = auxilliary_set.get_int_parameter(event_id)
+    set0 = None
+    event0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    search_form = SearchForm()
+    context = {
+        "search_form": search_form,
+        "set": set0,
+        "user":user,
+    }
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        context['user'] = user
+        # -)    Vérification si l'identifiant de l'évènement correspond à un évènement dans l'application
+        event0 = auxilliary_set.event_in_application(event_id)
+        context['event'] = event0
+        if event0 :
+            # L'évènement existe dans l'application
+            set0 = event0.set0
+            context['set'] = set0
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0.id)
+            context['user_set'] = user_set
+            if user_set:
+                #   L'utilisateur appartient au set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'attente_validation':
+                    # L'utilisateur est en attente de validation du set
+                    raise Http404()
+                else:
+                    # L'utilisateur est membre entier du set
+                    post_form = PublicationEventForm(request.POST, request.FILES)
+                    if post_form.is_valid():
+                        # Formulaire valide
+                        if auxilliary_set.form_is_not_empty(request):
+                            # Formulaire non vide
+                            event = Evenements.objects.get(id=event_id)
+                            user = Utilisateurs.objects.get(id=request.session["user_id"])
+                            post = PublicationEvenement.objects.create(
+                                evenement=event,
+                                auteur=user,
+                                contenu_text=request.POST["publication_text"],
+                                media1=request.FILES.get("file_1", ""),
+                                media2=request.FILES.get("file_2", ""),
+                            )
+                            return redirect("../../event/" + str(event.id) + "/")
+                        else:
+                            # Formulaire vide
+                            raise Http404()
+                    else:
+                        # Formulaire invalide
+                        raise Http404()
+            else:
+                # l'utilisateur n'appartient pas au set
+                raise Http404()
+        else:
+            # Aucun Evènement avec cet id dans l'application
+            raise Http404()
     else:
-        return HttpResponse("Formulaire invalide")
+        #      Utilisateur non-inscrit
+        raise Http404()
+
+
 
 
 
 def manage_like_post_set(request, post_id):
     """"""
-    print(0)
-    user = Utilisateurs.objects.get(id=request.session["user_id"])
-    publication_set = PublicationSet.objects.get(id=post_id)
-    print(1)
-    check = JaimePublicationSet.objects.filter(publication_set_id=post_id, jaimeur_id=request.session["user_id"])
-    if len(check) == 0 :
-        like = JaimePublicationSet.objects.create(
-            publication_set=publication_set,
-            jaimeur=user,
-        )
-        return HttpResponse("like_make")
+
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    post0_id = auxilliary_set.get_int_parameter(post_id)
+    post0 = None
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        # -)    Vérification si l'identifiant du set correspond à un post dans l'application
+        post0 = auxilliary_set.post_set_in_application(post0_id)
+        if post0:
+            set0 = post0.set0
+            if set0 :
+                # -)   Vérification appartenance set utilisateur
+                user_set = auxilliary_set.get_user_set(user, set0.id)
+                if user_set:
+                    # -)   statut de l'utilisateur dans le set
+                    statut_user_in_set = user_set.statut
+                    if statut_user_in_set == 'attente_validation':
+                        # L'utilisateur est en attente de validation du set
+                        return HttpResponse("validate_enter_set_first")
+                    else:
+                        # L'utilisateur est membre entier du set
+                        check = JaimePublicationSet.objects.filter(publication_set_id=post_id, jaimeur_id=request.session["user_id"])
+                        if len(check) == 0 :
+                            like = JaimePublicationSet.objects.create(
+                                publication_set=post0,
+                                jaimeur=user,
+                            )
+                            return HttpResponse("like_make")
+                        else:
+                            check[0].delete()
+                            return HttpResponse("unlike_make")
+                else:
+                    # l'utilisateur n'appartient pas au set
+                    raise Http404()
+            else:
+                # Aucun set avec cet id dans l'application
+                raise Http404()
+        else:
+            # Aucune publication avec cet id
+            raise Http404()
     else:
-        check[0].delete()
-        return HttpResponse("unlike_make")
+        #      Utilisateur non-inscrit
+        raise Http404()
+
 
 
 
@@ -374,73 +617,212 @@ def manage_like_post_set(request, post_id):
 def manage_like_post_event(request, post_id):
     """"""
 
-    user = Utilisateurs.objects.get(id=request.session["user_id"])
-    publication_event = PublicationEvenement.objects.get(id=post_id)
-    print(publication_event)
-    check = JaimePublicationEvenement.objects.filter(publication_evenement_id=post_id, jaimeur_id=request.session["user_id"])
-    if len(check) == 0 :
-        like = JaimePublicationEvenement.objects.create(
-            publication_evenement=publication_event,
-            jaimeur=user,
-        )
-        return HttpResponse("like_make")
+
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    post0_id = auxilliary_set.get_int_parameter(post_id)
+    post0 = None
+    set0 = None
+    event0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        # -)    Vérification si l'identifiant de l'évènement correspond à un évènement dans l'application
+        post0 = auxilliary_set.post_event_in_application(post0_id)
+        if post0:
+            event0 = post0.evenement
+            if event0 :
+                # L'évènement existe dans l'application
+                set0 = event0.set0
+                # -)   Vérification appartenance set utilisateur
+                user_set = auxilliary_set.get_user_set(user, set0.id)
+                if user_set:
+                    #   L'utilisateur appartient au set
+                    # -)   statut de l'utilisateur dans le set
+                    statut_user_in_set = user_set.statut
+                    if statut_user_in_set == 'attente_validation':
+                        # L'utilisateur est en attente de validation du set
+                        return HttpResponse("validate_enter_set_first")
+                    else:
+                        # L'utilisateur est membre entier du set
+                        check = JaimePublicationEvenement.objects.filter(publication_evenement_id=post_id, jaimeur_id=request.session["user_id"])
+                        if len(check) == 0 :
+                            like = JaimePublicationEvenement.objects.create(
+                                publication_evenement=post0,
+                                jaimeur=user,
+                            )
+                            return HttpResponse("like_make")
+                        else:
+                            check[0].delete()
+                            return HttpResponse("unlike_make")
+                else:
+                    # l'utilisateur n'appartient pas au set
+                    raise Http404()
+            else:
+                # Aucun Evènement avec cet id dans l'application
+                raise Http404()
+        else:
+            # Aucune publication avec cet id
+            raise Http404()
     else:
-        check[0].delete()
-        return HttpResponse("unlike_make")
+        #      Utilisateur non-inscrit
+        raise Http404()
+
 
 
 def delete_add_user_set(request, set_id, user_delete_add_id):
     """"""
 
-    try:
-        confirm_enter = request.GET['confirm_enter']
-        set_user  = SetUtilisateurs.objects.get(set0_id=set_id, utilisateur_id=user_delete_add_id)
-        set0 = Sets.objects.get(id=set_id)
-        if confirm_enter == 'yes':
-            set_user.statut = 'dans_set'
-            set_user.save()
-            #return render(request, "sortie_set.html", { "user_set":set_user, 'set':set0 })
-            return HttpResponse('confirmation_done')
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(set_id)
+    user_to_delete_add_id = auxilliary_set.get_int_parameter(user_delete_add_id)
+    set0 = None
+    user_set = None
+    user_to_delete_add = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
 
-        elif confirm_enter == 'no':
-            print(0)
-            set_user.delete()
-            set_users_admin  = SetUtilisateurs.objects.filter(set0_id=set_id, statut='administrateur')
-            if len(set_users_admin) == 0:
-                print(1)
-                # Aucun administrateur dans le set après la sortie de l'utilisateur
-                set_users  = SetUtilisateurs.objects.filter(set0_id=set_id).order_by("date")
-                if len(set_users) == 0 :
-                    # Aucun utilisateur dans le set
-                    set0.delete()
-                    #set_envent = Evenements.objects.filter(set0_id=set_id)
-                    #set_posts = PublicationSet.objects.filter(set0_id=set_id)
-
-                    print(2)
-                    return HttpResponse("delete_user_and_set_done")
+    # -)   Vérification inscription utilisateur
+    if user :
+        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = auxilliary_set.set_in_application(set0_id)
+        user_to_delete_add = auxilliary_user.user_in_application(user_to_delete_add_id)
+        if set0 and user_to_delete_add :
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # -)   statut de l'utilisateur dans le set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'administrateur':
+                    # L'utilisateur est administrateur du set
+                    user_set_to_delete_add = auxilliary_set.get_user_set(user_to_delete_add, set0_id)
+                    if user_set_to_delete_add :
+                        # l'utilisateur à supprimer ou ajouter est dans le set
+                        user_set_to_delete_add.delete()
+                        return HttpResponse("user_deleted")
+                    else:
+                        # L'utilisateur à supprimer ou ajouter n'est pas dans le set
+                        user_set_to_delete_add = SetUtilisateurs.objects.create(set0=set0, utilisateur=user_to_delete_add, statut='attente_validation')
+                        return HttpResponse("user_added")
                 else:
-                    # Au moins un utilisateur dans le set
-                    print(3)
-                    set_users[0].statut = 'administrateur'
-                    set_users[0].save()
+                    # L'utilisateur n'est pas administrateur du set
+                    raise Http404()
+            else:
+                # l'utilisateur n'appartient pas au set
+                raise Http404()
+        else:
+            # Aucun set avec cet id dans l'application ou aucun utilisateur dans l'application avec l'id recu
+            raise Http404()
+    else:
+        #      Utilisateur non-inscrit
+        raise Http404()
+
+
+
+
+def manage_enter_user_set(request, set_id):
+    """"""
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(set_id)
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = auxilliary_set.set_in_application(set0_id)
+        if set0 :
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # -)   statut de l'utilisateur dans le set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'attente_validation':
+                    # L'utilisateur est en attente d'entrée dans le set
+                    if request.GET['confirm_enter'] == 'yes':
+                        # L'utilisateur confirme son entrée dans le set
+                        user_set.statut = 'dans_set'
+                        user_set.save()
+                        return HttpResponse('added_done')
+                    elif request.GET['confirm_enter'] == 'no':
+                        # L'utilisateur annule son entrée dans le set
+                        user_set.delete()
+                        return HttpResponse('delete_done')
+                else:
+                    # L'utilisateur n'est pas en attente d'entrée dans le set
+                    raise Http404()
+            else:
+                # l'utilisateur n'appartient pas au set
+                raise Http404()
+        else:
+            # Aucun set avec cet id dans l'application ou aucun utilisateur dans l'application avec l'id recu
+            raise Http404()
+    else:
+        #      Utilisateur non-inscrit
+        raise Http404()
+
+
+
+
+
+def exit_set(request, set_id):
+    """"""
+
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0_id = auxilliary_set.get_int_parameter(set_id)
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    # -)   Vérification inscription utilisateur
+    if user :
+        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
+        set0 = auxilliary_set.set_in_application(set0_id)
+        if set0 :
+            # -)   Vérification appartenance set utilisateur
+            user_set = auxilliary_set.get_user_set(user, set0_id)
+            if user_set:
+                # -)   statut de l'utilisateur dans le set
+                statut_user_in_set = user_set.statut
+                if statut_user_in_set == 'administrateur':
+                    # L'utilisateur est administrateur
+                    user_set.delete()
+                    if len(SetUtilisateurs.objects.filter(set0=set0)) == 0 :
+                        # Aucun utilisateur dans le set après la suppression
+                        set0.delete()
+                        return HttpResponse('delete_done_and_set_delete_done')
+                    else:
+                        # présense d'utilisateurs dans le set après la suppression
+                        next_admin = SetUtilisateurs.objects.filter(set0=set0).order_by('date')[0]
+                        next_admin.statut = 'administrateur'
+                        next_admin.save()
+                        return HttpResponse('delete_done')
+                else:
+                    # L'utilisateur n'est pas administrateur
+                    user_set.delete()
                     return HttpResponse('delete_done')
             else:
-                return HttpResponse('delete_done')
-
-    except Exception as e:
-        check  = SetUtilisateurs.objects.filter(set0_id=set_id, utilisateur_id=user_delete_add_id)
-        if len(check) == 0 :
-            # Aucun utilisateur de cet id n'appartient au set de cet id
-            user_delete_add = Utilisateurs.objects.filter(id=user_delete_add_id)
-            set0 = Sets.objects.filter(id=set_id)
-            if  len(user_delete_add) == 0 or len(set0) == 0 :
-                # Aucun utilisateur n'existe avec l'id utilisateur recue ou aucun set n'existe avec l'id de set recu
-                return HttpResponse("parametre(s) invalide(s)")
-            else:
-                SetUtilisateurs.objects.create(set0=set0[0], utilisateur=user_delete_add[0], statut='attente_validation')
-                return render(request, "delete_user_set.html", {})
+                # l'utilisateur n'appartient pas au set
+                raise Http404()
         else:
-            check[0].delete()
-            return render(request, "add_user_set.html", {})
+            # Aucun set avec cet id dans l'application ou aucun utilisateur dans l'application avec l'id recu
+            raise Http404()
+    else:
+        #      Utilisateur non-inscrit
+        raise Http404()
 
-        return HttpResponse("here")
+
+
+
+def redirect_home(self):
+    """"""
+    return redirect("../../../user/home/")

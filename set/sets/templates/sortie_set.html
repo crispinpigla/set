@@ -15,7 +15,7 @@
 			    sortir_set_{{user_set.id}}.addEventListener('click', function() {
 			    	// envoie de la requete d'ajout/suppression contact 
 					var xhr = new XMLHttpRequest();
-					xhr.open('GET', '../../../sets/delete_add_user_set/' + '{{ set.id }}' + '/'  + '{{ user_set.utilisateur.id }}' + '/?confirm_enter=no' );
+					xhr.open('GET', '../../../sets/exit_set/' + '{{ set.id }}' + '/' );
 					xhr.send(null);
 
 					xhr.addEventListener('readystatechange', function()
@@ -23,7 +23,7 @@
 				        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
 			            { // Si le fichier est chargé sans erreur
 				        	console.log(xhr.response);
-	        				if ( xhr.response == 'delete_user_and_set_done' ) 
+	        				if ( xhr.response == 'delete_done_and_set_delete_done' ) 
 				        	{
 				        		window.location.href = "../../user/home/";
 				        	}

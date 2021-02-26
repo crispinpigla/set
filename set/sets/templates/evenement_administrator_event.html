@@ -1,0 +1,68 @@
+{% extends 'base_set.html' %}
+
+{% load static %}
+
+{% block cover_set_content %}../..{{ set.image_couverture.url }}{% endblock %}
+
+{% block name_set_content %}{{ set.nom }}{% endblock %}
+
+{% block type_set_content %}{{ set.type0 }}{% endblock %}
+
+{% block description_content %}{{ set.description }}{% endblock %}
+
+
+{% block specify_event %}
+
+
+<div style="width: 100%; min-height: 40px;  margin-left: 0%;display: flex; flex-direction: column; justify-content: center; align-items: center;  background: white;" >
+	
+	<div style="" >
+		<div style="height: 150px; width: 150px; border-radius: 5px;" >
+			<img style="width: 100%;" src="{% static 'img/logo_evenement.png' %}">
+		</div>
+		<div id="suppression_event" style="position: absolute; background: rgb(255, 117, 117); top: 360px; right: 100px; padding: 5px; font-size: 80%; color: white; border-radius: 5px; cursor: pointer;" >
+			Supprimer l'évènement
+		</div>
+
+		<div style="display: flex; position: absolute; top: 348px; right: 100px; " >
+			<a id="submit_suppression_event" href="" style="background: rgb(255, 117, 117); color: white; text-align: center; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; padding:7px;  font-size: 80%; display: none;" >Confirmer</a>
+			<div id="cancel_suppression_event" style="background: rgb(163, 163, 163); color: white; text-align: center; margin:10px; border-radius: 5px; cursor: pointer; padding:7px; font-size: 80%; display: none;" >Annuler</div>
+		</div>
+
+	</div>
+
+	<div style=" margin-top: 5px; margin-bottom: 5px; width: 100%; text-align: center;" >
+		{{ event.nom }}
+	</div>
+	<div style="width: 100%; min-height: 10px; display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px; padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px;  color: rgb(156, 156, 156);" >Nom de l'évènement</div>
+
+	<div style="width: 100%; margin-top: 5px; margin-bottom: 5px;" >
+		<div style="width: 100%; height: ; display: flex; flex-direction: column; justify-content: center; align-items: center;" >
+			<div style="width: 90%; min-height: 60px; display: flex; justify-content: center; align-items: center;" >
+				<div id="contain_description_event" > {{ event.description }} </div>
+				<form action="../../update_description_event/{{event.id}}/" method="post" >
+					{% csrf_token %}
+					<div id="set_description_input_event" style="display: none;" >{{ event_description_form.description }}</div>
+					<button id="submit_change_description_event" type="submit" class="btn btn-success" style="display: none;" ></button>	
+				</form>
+			</div>
+				<div style="width: 10%; min-height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center; margin-top: 10px;" >
+					<div id="modification_description_event" style="background: white; border-radius: 50%; overflow: hidden; width: 50px; height: 50px; display: block; cursor: pointer;" >
+						<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+					</div>
+					<label id="submit_set_description_event" for="submit_change_description" style="background: rgb(36, 255, 134); border-radius: 5px; padding: 5px; font-size: 80%; cursor: pointer;display: none;" >Mettre à jour</label>
+					<div id="cancel_set_description_event" style="background: rgb(255, 153, 153); border-radius: 5px; padding: 5px; font-size: 80%; cursor: pointer;display: none;" >Annuler</div>
+				</div>
+			<div style="width: 100%; min-height: 10px; display: flex; justify-content: center; align-items: center; font-size: 55%; margin-bottom: 15px; padding-bottom: 5px; border-bottom: solid rgb(227, 227, 227) 1px;  color: rgb(156, 156, 156);" >Description de l'évènement</div>
+		</div>
+	</div>
+
+</div>
+	
+
+{% endblock %}
+
+
+{% block content %}
+	{% include "section_publications_event.html" %}
+{% endblock %}

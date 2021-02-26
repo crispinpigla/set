@@ -1,0 +1,27 @@
+
+
+{% extends 'set.html' %}
+
+
+
+{% block content_central_page %}
+
+
+
+	{% load static %}
+
+
+	<!--------------------------   creation de publication    ------------------------------------------>
+
+
+
+	<!--------------------------   affichage de publications    ------------------------------------------>
+
+
+	<div style=" display: flex; justify-content: center; align-items: center; margin: 100px;" >
+
+		<img style="margin: auto;" src="{% static 'img/logo_no_access.png' %}" >
+		
+	</div>
+
+{% endblock %}
