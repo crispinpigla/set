@@ -161,5 +161,5 @@ DEBUG_EMAIL = 'set@mailinator.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'crispinpigla@gmail.com'
-EMAIL_HOST_PASSWORD = 'SEeqDV6X6wXDPKj.'
+EMAIL_HOST_PASSWORD = 'UGS4DHhbcqWgmN7'
 EMAIL_USE_TLS = True
