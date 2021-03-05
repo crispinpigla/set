@@ -10,6 +10,12 @@ Django = "*"
 psycopg2-binary = "*"
 django-debug-toolbar = "*"
 pillow = "*"
+coverage = "*"
+google = "*"
+google-api-python-client = "*"
+google-auth-httplib2 = "*"
+google-auth-oauthlib = "*"
+sorl-thumbnail = "*"
 
 [requires]
 python_version = "3.8"
