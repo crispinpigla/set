@@ -27,7 +27,7 @@ SECRET_KEY = 'e_a4p0n6e9u2+q_!(!!e1c&f8$f36xczgthby!p(l_s9899!h3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '34.89.89.206']
 
 # Application definition
 
@@ -149,5 +149,5 @@ DEBUG_EMAIL = 'set@mailinator.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'crispinpigla@gmail.com'
-EMAIL_HOST_PASSWORD = 'Bbbbbb0.'
+EMAIL_HOST_PASSWORD = 'SEeqDV6X6wXDPKj.'
 EMAIL_USE_TLS = True
