@@ -6,8 +6,26 @@
 {% block content %}
 
 <div class="col-10" style="margin: auto;" >
-	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" >
+
+
+	{% if state_reinitialisation %}
+	<div style="width: 100%; color: green; text-align: center;" > Le mot de passe du compte {{user.adresse_mail}} a été mis à jour </div>
+	{% endif %}
+
+	{% if password_different_to_confirmation %}
+	<div style="width: 100%; color: red; text-align: center;" > Les mots de passe doivent être identiques</div>
+	{% endif %}
+
+
+
+	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post" >
 		{% csrf_token %}
+		<div>{{ reset_form.reset_key }}</div>
+		<div>{{ reset_form.email }}</div>
+		<script type="text/javascript">
+			document.querySelector('#id_email').value = '{{ user.adresse_mail }}';
+			document.querySelector('#id_reset_key').value = '{{ user.cle_de_reinitialisation_de_mot_de_passe }}';
+		</script>
 		<div style="margin: auto; margin-top: 30px;" >{{ reset_form.password }}</div>
 		<div style="margin: auto; margin-top: 30px;" >{{ reset_form.confirmation_password }}</div>
 		<button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Réinitialiser le mot de passe</button>

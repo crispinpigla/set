@@ -5,6 +5,26 @@
 {% block content %}
 
 <div class="col-10" style="margin: auto;" >
+
+	{% if already_mail_error %}
+		<div style="color: red; text-align: center;" >Un compte possédant cette adresse mail existe déjà</div>
+	{% endif %}
+
+	{% if no_match_password_error %}
+		<div style="color: red; text-align: center;" >Les mots de passe demandés doivent être identiques</div>
+	{% endif %}
+
+
+	{% if inscription_form_error %}
+		<div style="color: red; text-align: center;" >
+		  {% for key, error in inscription_form_error %}
+		  {% autoescape off %}
+		    {{ error }}
+		  {% endautoescape %}
+		  {% endfor %}
+		</div>
+	{% endif %}
+
 	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post" >
 		{% csrf_token %}
 		<div style="margin: auto; margin-top: 30px;" >{{ inscription_form.name }}</div>
@@ -17,7 +37,7 @@
 	<div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 50px;" >
 		<div style="border-top: solid rgb(163, 144, 144) 1px; border-bottom: solid rgb(163, 144, 144) 1px; display: flex; flex-direction: column; align-items: center;margin-bottom: 20px;" >
 			<div style="color: rgb(163, 144, 144); font-size: 70%; margin-top: 20px; margin-bottom: 10px;" >Ou créer le compte avec google</div>
-			<div class="g-signin2" data-onsuccess="onSignIn" style=" margin-top: 10px; margin-bottom: 20px;" ></div>
+			<div id="inscription_google" class="g-signin2" data-onsuccess="onSignIn" style=" margin-top: 10px; margin-bottom: 20px;" ></div>
 			<a href="#" onclick="signOut();" style="display: none;" >Sign out</a>
 		</div>
 		<div>
@@ -26,5 +46,42 @@
 	</div>
 	
 </div>
+
+<script>
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+</script>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script type="text/javascript">
+
+	inscription_google = document.querySelector('#inscription_google')
+
+	function onSignIn(googleUser) 
+	{
+		
+		inscription_google.addEventListener('click', function() 
+		{
+			var profile = googleUser.getBasicProfile();
+			console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+			console.log('Name: ' + profile.getName());
+			console.log('Image URL: ' + profile.getImageUrl());
+			console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+			window.location.href = "../initialisation_mot_de_passe/?name=" + profile.getName() + "&mail=" + profile.getEmail()  ;
+
+	    }, false);
+
+
+	}
+
+
+
+
+</script>
+
 
 {% endblock %}

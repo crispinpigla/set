@@ -11,6 +11,30 @@
 {% block description_content %}{{ set.description }}{% endblock %}
 
 
+
+
+
+
+
+
+
+
+{% block action_search_form %}../../../sets/search/{% endblock %}
+{% block link_home %}../home/{% endblock %}
+{% block link_deconnexion %}../deconnexion/{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% block specify_event %}
 
 
@@ -41,6 +65,15 @@
 {% endblock %}
 
 
-{% block content %}
-	no access
+{% block content_central_page %}
+
+
+
+	<div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; color: silver;" >
+
+		<img src="{% static 'sets/img/logo_no_access.png' %}">
+		
+	</div>
+
+
 {% endblock %}

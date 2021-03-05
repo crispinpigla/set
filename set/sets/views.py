@@ -1,8 +1,15 @@
 from django.shortcuts import render, get_object_or_404
 
+from django.template.loader import render_to_string
+
 # Create your views here.
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect
+
+from django.conf import settings
+from django.core.mail.backends.smtp import EmailBackend
+from django.core.mail import send_mail, EmailMessage
+import smtplib
 
 from user.auxilliaries_user.auxilliaries_user import AuxilliariesUser
 from .auxilliaries_sets.auxilliaries_sets import AuxilliariesSets
@@ -29,30 +36,42 @@ def creation_set(request):
 
     if user:
         # Utilisateur connecté
-        search_form = SearchForm()
-        if request.method == 'POST':
-            # Creation de set
-            create_set_form = CreateSetForm(request.POST, request.FILES)
-            if create_set_form.is_valid():
-                # formulaire valide
-                set0 = Sets.objects.create(
-                    nom=request.POST["name"],
-                    image_couverture=request.FILES["file"],
-                    type0=request.POST["type_set"],
-                    description=request.POST["description"],
-                )
-                set_user = SetUtilisateurs.objects.create(set0=set0, utilisateur=user, statut="administrateur")
-                return redirect("../../sets/set/" + str(set0.id) + "/")
-            else:
-                # formulaire pas valide
-                context = {"create_set_form": create_set_form, "search_form": search_form}
-                context['errors'] = create_set_form.errors.items()
-                return render(request, "creation_set.html", context)
+
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../../user/home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../../user/home/')
         else:
-            # Demande de page de création de set
-            create_set_form = CreateSetForm()
-            context = {"create_set_form": create_set_form, "search_form": search_form}
-            return render(request, "creation_set.html", context)
+            # le compte est activé et n'est pas bloqué
+            search_form = SearchForm()
+            if request.method == 'POST':
+                # Creation de set
+                create_set_form = CreateSetForm(request.POST, request.FILES)
+                if create_set_form.is_valid():
+                    # formulaire valide
+                    set0 = Sets.objects.create(
+                        nom=request.POST["name"],
+                        image_couverture=request.FILES["file"],
+                        type0=request.POST["type_set"],
+                        description=request.POST["description"],
+                    )
+                    set_user = SetUtilisateurs.objects.create(set0=set0, utilisateur=user, statut="administrateur")
+                    return redirect("../../sets/set/" + str(set0.id) + "/")
+                else:
+                    # formulaire pas valide
+                    context = {"create_set_form": create_set_form, "search_form": search_form}
+                    context['errors'] = create_set_form.errors.items()
+                    return render(request, "creation_set.html", context)
+            else:
+                # Demande de page de création de set
+                create_set_form = CreateSetForm()
+                context = {"create_set_form": create_set_form, "search_form": search_form, 'user':user}
+                return render(request, "creation_set.html", context)
     else:
         # Utilisateur non connecté
         return redirect("../../authentification/connexion/" )
@@ -77,47 +96,62 @@ def creation_evenement(request, set_id):
     if user:
         # Utilisateur connecté
         context['user'] = user
-        set0 = auxilliary_set.set_in_application(set0_id)
-        if set0 :
-            # Le set existe dans l'application
-            user_set = auxilliary_set.get_user_set(user, set0_id)
-            if user_set:
-                # L'utilisateur appartient au set
-                statut_user_in_set = user_set.statut
-                if statut_user_in_set == 'administrateur' or statut_user_in_set == 'dans_set' :
-                    # L'utilisateur n'est pas en attente
-                    search_form = SearchForm()
-                    if request.method == 'POST':
-                        # Creation d'un évènement
-                        create_event_form = CreateEventForm(request.POST)
-                        if create_event_form.is_valid():
-                            event = Evenements.objects.create(
-                                set0=set0,
-                                administrateur=user,
-                                nom=request.POST["name"],
-                                description=request.POST["description"],
-                            )
-                            return redirect("../../sets/event/" + str(event.id) + "/")
-                        else:
-                            # formulaire pas valide
-                            context = {"create_event_form": create_event_form,"search_form": search_form,"set": set0,}
-                            context['errors'] = create_event_form.errors.items()
-                            return render(request, "creation_evenement.html", context)
-                    else:
-                        # Page de création d'un évènement
-                        create_event_form = CreateEventForm()
+
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../../user/home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../../user/home/')
+        else:
+            # le compte est activé et n'est pas bloqué
+            set0 = auxilliary_set.set_in_application(set0_id)
+            if set0 :
+                # Le set existe dans l'application
+                user_set = auxilliary_set.get_user_set(user, set0_id)
+                if user_set:
+                    # L'utilisateur appartient au set
+                    statut_user_in_set = user_set.statut
+                    if statut_user_in_set == 'administrateur' or statut_user_in_set == 'dans_set' :
+                        # L'utilisateur n'est pas en attente
                         search_form = SearchForm()
-                        context = {"create_event_form": create_event_form,"search_form": search_form,"set": set0,}
-                        return render(request, "creation_evenement.html", context)
-                elif statut_user_in_set == 'attente_validation':
-                    # L'utilisateur est en attente
+                        if request.method == 'POST':
+                            # Creation d'un évènement
+                            create_event_form = CreateEventForm(request.POST)
+                            if create_event_form.is_valid():
+                                event = Evenements.objects.create(
+                                    set0=set0,
+                                    administrateur=user,
+                                    nom=request.POST["name"],
+                                    description=request.POST["description"],
+                                )
+                                return redirect("../../../sets/event/" + str(event.id) + "/")
+                            else:
+                                # formulaire pas valide
+                                context = {"create_event_form": create_event_form,"search_form": search_form,"set": set0,}
+                                context['errors'] = create_event_form.errors.items()
+                                return render(request, "creation_evenement.html", context)
+                        else:
+                            # Page de création d'un évènement
+                            create_event_form = CreateEventForm()
+                            search_form = SearchForm()
+                            context = {"create_event_form": create_event_form,"search_form": search_form,"set": set0, 'user':user }
+                            return render(request, "creation_evenement.html", context)
+                    elif statut_user_in_set == 'attente_validation':
+                        # L'utilisateur est en attente
+                        return redirect("../../sets/set/" + str(set0.id) + "/")
+                    else:
+                        # Autre statut dans le set
+                        raise Http404()
+                else:
+                    # L'utilisateur n'appartient pas au set
                     return redirect("../../sets/set/" + str(set0.id) + "/")
             else:
-                # L'utilisateur n'appartient pas au set
-                return redirect("../../sets/set/" + str(set0.id) + "/")
-        else:
-            # Le set n'existe pas dans l'application
-            raise Http404()
+                # Le set n'existe pas dans l'application
+                raise Http404()
     else:
         # Utilisateur non connecté
         return redirect("../../authentification/connexion/" )
@@ -149,47 +183,72 @@ def sets(request, set_id):
 
     # -)   Vérification inscription utilisateur
     if user :
+        # Utilisateur connecté
         context['user'] = user
-        # -)    Vérification si l'identifiant du set correspond à un set dans l'application
-        set0 = auxilliary_set.set_in_application(set0_id) #get_object_or_404(Sets, id=set_id)
-        if set0 :
-            context['set'] = set0
-            # -)   Vérification appartenance set utilisateur
-            user_set = auxilliary_set.get_user_set(user, set0_id)
-            if user_set:
-                # -)   statut de l'utilisateur dans le set
-                statut_user_in_set = user_set.statut
-                if statut_user_in_set == 'administrateur':
-                    # L'utilisateur est administrateur du set
-                    image_cover_form = SetCoverImageForm()
-                    set_description_form = SetDescriptionSetForm()
-                    new_post_form = PublicationSetForm()
-                    context['image_cover_form'] = image_cover_form
-                    context['set_description_form'] = set_description_form
-                    context['new_post_form'] = new_post_form
-                    context['administrator_status'] = True
-                elif statut_user_in_set == 'dans_set' :
-                    # L'utilisateur est simple membre du set
-                    new_post_form = PublicationSetForm()
-                    context['new_post_form'] = new_post_form
-                    context['administrator_status'] = False
-                elif statut_user_in_set == 'attente_validation' :
-                    # L'utilisateur est sur la liste d'attente du set
-                    context['administrator_status'] = False
-                return auxilliary_set.render_set_user_set(request, section_set, set0_id, context, statut_user_in_set)
-            else:
-                # l'utilisateur n'appartient pas au set
-                return auxilliary_set.render_set_user_no_set(request, section_set, set0_id, context)
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../../user/home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../../user/home/')
         else:
-            # Aucun set avec cet id dans l'application
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            #    Vérification si l'identifiant du set correspond à un set dans l'application
+            set0 = auxilliary_set.set_in_application(set0_id) #get_object_or_404(Sets, id=set_id)
+            if set0 :
+                # Le set existe dans l'application
+                context['set'] = set0
+
+                if set0.statut_fermeture_admin :
+                    # Le set est fermé
+                    return render(request, "set_ferme.html", context)
+                else:
+                    # Le set n'est pas fermé
+                    # Vérification appartenance set utilisateur
+                    user_set = auxilliary_set.get_user_set(user, set0)
+                    if user_set:
+                        # -)   statut de l'utilisateur dans le set
+                        statut_user_in_set = user_set.statut
+                        if statut_user_in_set == 'administrateur':
+                            # L'utilisateur est administrateur du set
+                            image_cover_form = SetCoverImageForm()
+                            set_description_form = SetDescriptionSetForm()
+                            new_post_form = PublicationSetForm()
+                            context['image_cover_form'] = image_cover_form
+                            context['set_description_form'] = set_description_form
+                            context['new_post_form'] = new_post_form
+                            context['administrator_status'] = True
+                        elif statut_user_in_set == 'dans_set' :
+                            # L'utilisateur est simple membre du set
+                            new_post_form = PublicationSetForm()
+                            context['new_post_form'] = new_post_form
+                            context['administrator_status'] = False
+                        elif statut_user_in_set == 'attente_validation' :
+                            # L'utilisateur est sur la liste d'attente du set
+                            context['administrator_status'] = False
+                        return auxilliary_set.render_set_user_set(request, section_set, set0_id, context, statut_user_in_set)
+                    else:
+                        # l'utilisateur n'appartient pas au set
+                        return auxilliary_set.render_set_user_no_set(request, section_set, set0_id, context)
+            else:
+                # Aucun set avec cet id dans l'application
+                raise Http404()
     else:
         #      Utilisateur non-inscrit
         # -)   Vérification si l'identifiant du set correspond à un set dans l'application
         set0 = get_object_or_404(Sets, id=set0_id)
         if set0 :
             #   Le set existe dans l'application
-            return auxilliary_set.render_set_user_no_registred(request, section_set, set0_id, context)
+            context['set'] = set0
+
+            if set0.statut_fermeture_admin :
+                # Le set est fermé
+                return render(request, "set_ferme.html", context)
+            else:
+                # Le set n'est pas fermé
+                return auxilliary_set.render_set_user_no_registred(request, section_set, set0_id, context)
         else:
             # Aucun set avec cet id dans l'application
             raise Http404()
@@ -220,45 +279,61 @@ def evenements(request, event_id):
     # -)   Vérification inscription utilisateur
     if user :
         context['user'] = user
-        # -)    Vérification si l'identifiant de l'évènement correspond à un évènement dans l'application
-        event0 = auxilliary_set.event_in_application(event_id)
-        context['event'] = event0
-        if event0 :
-            # L'évènement existe dans l'application
-            set0 = event0.set0
-            context['set'] = set0
-            # -)   Vérification appartenance set utilisateur
-            user_set = auxilliary_set.get_user_set(user, set0.id)
-            context['user_set'] = user_set
-            if user_set:
-                #   L'utilisateur appartient au set
-                publications = PublicationEvenement.objects.filter(evenement_id=event_id)
-                publications_likeurs = []
-                for publication in publications:
-                    publications_likeurs.append([publication, JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id), JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id, jaimeur_id=request.session["user_id"])])
-                context['publications_likeurs'] = publications_likeurs
-                statut_user_in_set = user_set.statut
-                if statut_user_in_set == 'attente_validation':
-                    # L'utilisateur est en attente de validation du set
-                    return render(request, "evenement_await_enter_set.html", context)
-                else:
-                    # L'utilisateur est membre entier du set
-                    new_post_form = PublicationEventForm()
-                    context['new_post_form'] = new_post_form
-                    if user == event0.administrateur :
-                        # L'utilisateur est administrateur de l'évènement
-                        event_description_form = SetDescriptionSetEvent()
-                        context['event_description_form'] = event_description_form
-                        return render(request, "evenement_administrator_event.html", context)
-                    else:
-                        # L'utilisateur n'est pas administrateur de l'évènement
-                        return render(request, "evenement_no_administrator_event.html", context)
-            else:
-                # l'utilisateur n'appartient pas au set
-                return render(request, "evenement_no_access_event.html", context)
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../../user/home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../../user/home/')
         else:
-            # Aucun Evènement avec cet id dans l'application
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            # Vérification si l'identifiant de l'évènement correspond à un évènement dans l'application
+            event0 = auxilliary_set.event_in_application(event_id)
+            context['event'] = event0
+            if event0 :
+                # L'évènement existe dans l'application
+                set0 = event0.set0
+                context['set'] = set0
+
+                if set0.statut_fermeture_admin or event0.statut_fermeture_admin :
+                    # Le set ou l'évènement sont fermés
+                    return render(request, "evenement_ferme.html", context)
+                else:
+                    # Le set et l'évènement ne sont pas fermés
+                    # Vérification appartenance set utilisateur
+                    user_set = auxilliary_set.get_user_set(user, set0.id)
+                    context['user_set'] = user_set
+                    if user_set:
+                        #   L'utilisateur appartient au set
+                        publications = PublicationEvenement.objects.filter(evenement_id=event_id)
+                        publications_likeurs = []
+                        for publication in publications:
+                            publications_likeurs.append([publication, JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id), JaimePublicationEvenement.objects.filter(publication_evenement_id=publication.id, jaimeur_id=request.session["user_id"])])
+                        context['publications_likeurs'] = publications_likeurs
+                        statut_user_in_set = user_set.statut
+                        if statut_user_in_set == 'attente_validation':
+                            # L'utilisateur est en attente de validation du set
+                            return render(request, "evenement_await_enter_set.html", context)
+                        else:
+                            # L'utilisateur est membre entier du set
+                            new_post_form = PublicationEventForm()
+                            context['new_post_form'] = new_post_form
+                            if user == event0.administrateur :
+                                # L'utilisateur est administrateur de l'évènement
+                                event_description_form = SetDescriptionSetEvent()
+                                context['event_description_form'] = event_description_form
+                                return render(request, "evenement_administrator_event.html", context)
+                            else:
+                                # L'utilisateur n'est pas administrateur de l'évènement
+                                return render(request, "evenement_no_administrator_event.html", context)
+                    else:
+                        # l'utilisateur n'appartient pas au set
+                        return render(request, "evenement_no_access_event.html", context)
+            else:
+                # Aucun Evènement avec cet id dans l'application
+                raise Http404()
     else:
         #      Utilisateur non-inscrit
         # -)   Vérification si l'identifiant du set correspond à un évènement dans l'application
@@ -266,7 +341,14 @@ def evenements(request, event_id):
         context['event'] = event0
         if event0 :
             #   L'évènement existe dans l'application
-            return render(request, "evenement_no_access_event.html", context)
+            set0 = event0.set0
+            context['set'] = set0
+            if set0.statut_fermeture_admin or event0.statut_fermeture_admin :
+                # Le set ou l'évènement sont fermés
+                return render(request, "evenement_ferme.html", context)
+            else:
+                # Le set et l'évènement ne sont pas fermés
+                return render(request, "evenement_no_access_event.html", context)
         else:
             # Aucun Evènement avec set id dans l'application
             raise Http404()
@@ -277,51 +359,73 @@ def evenements(request, event_id):
 def search(request):
     """"""
 
-
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
 
     context = { "recherche":request.GET["search_input"] }
-
     search_form = SearchForm()
     context['search_form'] = search_form
 
-    # section du set
+    # section de la recherche
     try:
         section = request.GET["section"]
     except Exception as e:
         section = "sets"
     context['section'] = section
 
-    try:
-        request.session["user_id"]
-        user = Utilisateurs.objects.get(id=request.session["user_id"])
-    except Exception as e:
-        user = False
-        
     context['user'] = user
 
-    if section == "personnes":
-        contenus = Utilisateurs.objects.filter(nom=request.GET["search_input"])
-        try:
-            owner = Utilisateurs.objects.get(id=request.session["user_id"])
-            contacts = Contact.objects.filter(contact_owner_id=request.session["user_id"])
-            users_in_contact = [ contact.contact for contact in contacts ]
-            context['is_connected'] = True
-        except Exception as e:
-            users_in_contact = []
-            owner = None
-        context['users_in_contact'] = users_in_contact
-        context['owner'] = owner
-    elif section == "evenements":
-        contenus = Evenements.objects.filter(nom=request.GET["search_input"])
-    elif section == "sets":
-        contenus = Sets.objects.filter(nom=request.GET["search_input"])
-    context['contenus'] = contenus
-
-
-    return render(request, "search.html", context)
-
-
-
+    if user:
+        # utilisateur connecté
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../../user/home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../../user/home/')
+        else:
+            # le compte est activé et n'est pas bloqué
+            if section == "personnes":
+                contenus = Utilisateurs.objects.filter(nom=request.GET["search_input"])
+                try:
+                    owner = Utilisateurs.objects.get(id=request.session["user_id"])
+                    contacts = Contact.objects.filter(contact_owner_id=request.session["user_id"])
+                    users_in_contact = [ contact.contact for contact in contacts ]
+                    context['is_connected'] = True
+                except Exception as e:
+                    users_in_contact = []
+                    owner = None
+                context['users_in_contact'] = users_in_contact
+                context['owner'] = owner
+            elif section == "evenements":
+                contenus = Evenements.objects.filter(nom=request.GET["search_input"])
+            elif section == "sets":
+                contenus = Sets.objects.filter(nom=request.GET["search_input"])
+            context['contenus'] = contenus
+            return render(request, "search.html", context)
+    else:
+        # Utilisateur non connecté
+        if section == "personnes":
+            contenus = Utilisateurs.objects.filter(nom=request.GET["search_input"])
+            try:
+                owner = Utilisateurs.objects.get(id=request.session["user_id"])
+                contacts = Contact.objects.filter(contact_owner_id=request.session["user_id"])
+                users_in_contact = [ contact.contact for contact in contacts ]
+                context['is_connected'] = True
+            except Exception as e:
+                users_in_contact = []
+                owner = None
+            context['users_in_contact'] = users_in_contact
+            context['owner'] = owner
+        elif section == "evenements":
+            contenus = Evenements.objects.filter(nom=request.GET["search_input"])
+        elif section == "sets":
+            contenus = Sets.objects.filter(nom=request.GET["search_input"])
+        context['contenus'] = contenus
+        return render(request, "search.html", context)
+    
 
 def update_cover(request):
     """"""
@@ -819,6 +923,117 @@ def exit_set(request, set_id):
     else:
         #      Utilisateur non-inscrit
         raise Http404()
+
+
+
+
+
+
+def delete_set(request, set_id):
+    """"""
+    
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    search_form = SearchForm()
+    context = {
+        "search_form": search_form,
+        "set": set0,
+        "user":user,
+    }
+
+    if user:
+        # l'utilisateur est connecté
+        context['user'] = user
+        set0 = auxilliary_set.set_in_application(set_id)
+        if set0:
+            # Le set existe
+            context['set'] = set0
+            user_set = auxilliary_set.get_user_set(user, set0)
+            context['user_set'] = user_set
+            if user_set:
+                # L'utilisateur appartient au set
+                if user_set.statut == 'administrateur' :
+                    # L'utilisateur est administrateur du set
+                    set0.delete()
+                    return redirect('../../../user/home/' )
+                else:
+                    # L'utilisateur n'est pas administrateur du set
+                    raise Http404()
+            else:
+                # L'utilisateur n'appartient pas au set
+                raise Http404()
+        else:
+            #L'évènement n'existe pas dans l'application
+            raise Http404()
+    else:
+        # L'utilisateur n'est pas connecté
+        raise Http404()
+
+
+def delete_event(request, event_id):
+    """"""
+
+
+    auxilliary_user = AuxilliariesUser()
+    auxilliary_set = AuxilliariesSets()
+    set0 = None
+    event0 = None
+    user_set = None
+    statut_user_in_set = None
+    user = auxilliary_user.get_user(request)
+
+    search_form = SearchForm()
+    context = {
+        "search_form": search_form,
+        "set": set0,
+        "user":user,
+    }
+
+    if user:
+        # l'utilisateur est connecté
+        context['user'] = user
+        event0 = auxilliary_set.event_in_application(event_id)
+        context['event'] = event0
+        if event0:
+            # L'évènement existe
+            set0 = event0.set0
+            context['set'] = set0
+            user_set = auxilliary_set.get_user_set(user, set0)
+            context['user_set'] = user_set
+            if user_set:
+                # L'utilisateur appartient au set
+                if event0.administrateur == user :
+                    # L'utilisateur est administrateur du set
+                    event0.delete()
+                    return redirect('../../set/' + str(set0.id) + '/' )
+                else:
+                    # L'utilisateur n'est pas administrateur du set
+                    raise Http404()
+            else:
+                # L'utilisateur n'appartient pas au set
+                raise Http404()
+        else:
+            #L'évènement n'existe pas dans l'application
+            raise Http404()
+    else:
+        # L'utilisateur n'est pas connecté
+        raise Http404()
+
+
+
+def delete_account(request):
+    """"""
+    pass
+
+
+
+
+
 
 
 

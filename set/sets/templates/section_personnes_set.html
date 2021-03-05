@@ -173,14 +173,15 @@
 					<div style=" display: flex;" >
 						<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
 							
-							<a href="../../../user/profil/{{user_set.utilisateur.id}}/" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+							<a href="../../../user/profil/{{user_set.utilisateur.id}}/?section_profil=coordonees" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
 								<img style="width: 80%;" src="{% if user_set.utilisateur.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{user_set.utilisateur.image_profil.url}}{% endif %}">
 							</a>
 
 						</div>
-						<a href="../../../user/profil/{{user_set.utilisateur.id}}/" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+						<a href="../../../user/profil/{{user_set.utilisateur.id}}/?section_profil=coordonees" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
 							{{  user_set.utilisateur.nom  }}
 						</a>
+
 					</div>
 
 					<!---------------   Autre  -------------------->
@@ -220,8 +221,9 @@
 						{% endif %}
 
 
-						<div style="display: flex; height: 65%;" >
 
+						{% if user %}
+						<div style="display: flex; height: 65%;" >
 
 							{% if  user_set.utilisateur == user %}	
 
@@ -245,25 +247,39 @@
 									
 								</div>
 
-
-
 							{% else %}	
 
-
 								<div id="manage_contact_{{ user_set.utilisateur.id }}" style=" width: 50%; display: flex; justify-content: center; align-items: center;" >
-									{% if user_set.utilisateur in contacts_list %}
-										<!------------            Bouton suppression contact   --------------->
-											<div style="border: solid red 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(255, 163, 163); cursor: pointer;" >
-												<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
-												<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: red;" >-</div>
-											</div>
-									{% else %}
-										<!------------            Bouton ajout contact   --------------->
-											<div style="border: solid blue 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(138, 208, 255); cursor: pointer;" >
-												<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
-												<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: blue;" >+</div>
-											</div>
-									{% endif %}
+
+
+
+										{% if user_set.utilisateur in contacts_list %}
+											<!------------            Bouton suppression contact   --------------->
+												<div id="delete_contact_{{user_set.utilisateur.id}}" style="border: solid red 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(255, 163, 163); cursor: pointer;" >
+													<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
+													<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: red;" >-</div>
+												</div>
+											<!------------            Bouton ajout contact   --------------->
+												<div id="add_contact_{{user_set.utilisateur.id}}" style="border: solid blue 1px; height: 40px; width: 40px; display: none; justify-content: center; border-radius: 50%; background: rgb(138, 208, 255); cursor: pointer;" >
+													<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
+													<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: blue;" >+</div>
+												</div>
+										{% else %}
+											<!------------            Bouton ajout contact   --------------->
+
+												<div id="add_contact_{{user_set.utilisateur.id}}" style="border: solid blue 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: rgb(138, 208, 255); cursor: pointer;" >
+													<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
+													<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: blue;" >+</div>
+												</div>
+
+												<!------------            Bouton suppression contact   --------------->
+												<div id="delete_contact_{{user_set.utilisateur.id}}" style="border: solid red 1px; height: 40px; width: 40px; display: none; justify-content: center; border-radius: 50%; background: rgb(255, 163, 163); cursor: pointer;" >
+													<img style="height: 100%;" src="{% static 'img/logo_contact.png' %}">
+													<div style="position: absolute; margin-top: 12px; margin-right: 2px; color: red;" >-</div>
+												</div>
+
+										{% endif %}
+
 								</div>
 
 								<script type="text/javascript">
@@ -283,7 +299,16 @@
 									        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
 								            { // Si le fichier est chargé sans erreur
 									        	console.log(xhr.response);
-									        	manage_contact_{{user_set.utilisateur.id}}.innerHTML = xhr.response;
+									        	if ( xhr.response == 'contact_added' ) 
+									        	{
+									        		document.querySelector('#add_contact_{{user_set.utilisateur.id}}').style.display = "none";
+									        		document.querySelector('#delete_contact_{{user_set.utilisateur.id}}').style.display = "flex";
+									        	}
+									        	else if ( xhr.response == 'contact_deleted' ) 
+									        	{
+									        		document.querySelector('#delete_contact_{{user_set.utilisateur.id}}').style.display = "none";
+									        		document.querySelector('#add_contact_{{user_set.utilisateur.id}}').style.display = "flex";
+									        	}
 									        }
 										});
 
@@ -296,12 +321,10 @@
 									</a>
 								</div>
 
-
 							{% endif %}	
 
-
 						</div>
-
+						{% endif %}	
 						
 					</div>
 					

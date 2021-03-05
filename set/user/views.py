@@ -24,47 +24,69 @@ from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 
 
+
 def home(request):
     """"""
 
-    try:
+    # Vérification de la connexion utilisateur
+    auxilliary_user = AuxilliariesUser()
+    user = auxilliary_user.get_user(request)
+
+    if user:
         # Utilisateur connecté
-        request.session["user_id"]
-        user = Utilisateurs.objects.get(pk=request.session["user_id"])
-        sets_user = SetUtilisateurs.objects.filter(utilisateur=user)
-        publications = []
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                search_form = SearchForm()
+                context = {
+                    "search_form": search_form,
+                    "user": user,
+                }
+                return render(request, "compte_inactif.html", context)
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                search_form = SearchForm()
+                context = {
+                    "search_form": search_form,
+                    "user": user,
+                }
+                return render(request, "compte_ferme.html", context)
+        else:
+            # le compte est activé et n'est pas bloqué
+            sets_user = SetUtilisateurs.objects.filter(utilisateur=user)
+            publications = []
 
-        for set_user in sets_user:
-            publications0 = PublicationSet.objects.filter(set0=set_user.set0)
-            for publication in publications0:
-                publications.append(publication)
+            for set_user in sets_user:
+                publications0 = PublicationSet.objects.filter(set0=set_user.set0)
+                for publication in publications0:
+                    publications.append(publication)
 
-        publications = publications[:10]
-        publications_likeurs = []
-        for publication in publications:
-            publications_likeurs.append(
-                [
-                    publication,
-                    JaimePublicationSet.objects.filter(
-                        publication_set_id=publication.id
-                    ),
-                    JaimePublicationSet.objects.filter(
-                        publication_set_id=publication.id,
-                        jaimeur_id=request.session["user_id"],
-                    ),
-                ]
-            )
+            publications = publications[:10]
+            publications_likeurs = []
+            for publication in publications:
+                publications_likeurs.append(
+                    [
+                        publication,
+                        JaimePublicationSet.objects.filter(
+                            publication_set_id=publication.id
+                        ),
+                        JaimePublicationSet.objects.filter(
+                            publication_set_id=publication.id,
+                            jaimeur_id=request.session["user_id"],
+                        ),
+                    ]
+                )
 
-        search_form = SearchForm()
-        context = {
-            "search_form": search_form,
-            "user": user,
-            "publications_likeurs": publications_likeurs,
-        }
-        return render(request, "acceuil.html", context)
-
-    except Exception as e:
-        # Utilisateur non connecté
+            search_form = SearchForm()
+            context = {
+                "search_form": search_form,
+                "user": user,
+                "publications_likeurs": publications_likeurs,
+            }
+            return render(request, "acceuil.html", context)
+    else:
+        # Utilisateur pas connecté
         return redirect("../authentification/connexion/")
 
 
@@ -78,12 +100,22 @@ def contacts(request):
 
     if user:
         # Utilisateur connecté
-        search_form = SearchForm()
-        contacts = Contact.objects.filter(contact_owner_id=request.session["user_id"])
-        contenus = [contact.contact for contact in contacts]
-        users_in_contact = list(contenus)
-        context = {"contenus": contenus, "users_in_contact":users_in_contact, "search_form": search_form, "user":user}
-        return render(request, "contact.html", context)
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../home/')
+        else:
+            # le compte est activé et n'est pas bloqué
+            search_form = SearchForm()
+            contacts = Contact.objects.filter(contact_owner_id=request.session["user_id"])
+            contenus = [contact.contact for contact in contacts]
+            users_in_contact = list(contenus)
+            context = {"contenus": contenus, "users_in_contact":users_in_contact, "search_form": search_form, "user":user}
+            return render(request, "contact.html", context)
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -98,14 +130,25 @@ def message(request):
 
     if user:
         # Utilisateur connecté
-        search_form = SearchForm()
-        request.session["user_id"]
-        user = Utilisateurs.objects.get(id=request.session["user_id"])
-        messages0 = Message.objects.filter(
-            Q(which_from=request.session["user_id"])
-            | Q(which_to=request.session["user_id"])
-        ).order_by("-date")
-        users_messages = []
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../home/')
+        else:
+            # le compte est activé et n'est pas bloqué
+            search_form = SearchForm()
+            request.session["user_id"]
+            user = Utilisateurs.objects.get(id=request.session["user_id"])
+            messages0 = Message.objects.filter(
+                Q(which_from=request.session["user_id"])
+                | Q(which_to=request.session["user_id"])
+            ).order_by("-date")
+            users_messages = []
 
         # rangement des messages par auteur du message
         for message in messages0:
@@ -140,30 +183,40 @@ def messages_exchanges(request, user_id):
 
     if user:
         # Utilisateur connecté
-        if correspondant:
-            # Le correspondant est un utilisateur existant dans l'application
-            if correspondant != user:
-                # Le correspondant est différent de l'utilisateur
-                search_form = SearchForm()
-                message_form = MessageForm()
-                messages = Message.objects.filter(
-                    (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
-                    | (Q(which_from=user_id) & Q(which_to=request.session["user_id"]))
-                ).order_by("date")
-                context = {
-                    "search_form": search_form,
-                    "message_form": message_form,
-                    "messages": messages,
-                    "user_to": correspondant,
-                    "user": user,
-                }
-                return render(request, "message_exchange.html", context)
-            else:
-                # Le correspondant est égal à l'utilisateur
-                raise Http404()
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../../user/home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../../user/home/')
         else:
-            # Le contact n'est pas un utilisateur existant de l'application
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            if correspondant:
+                # Le correspondant est un utilisateur existant dans l'application
+                if correspondant != user:
+                    # Le correspondant est différent de l'utilisateur
+                    search_form = SearchForm()
+                    message_form = MessageForm()
+                    messages = Message.objects.filter(
+                        (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
+                        | (Q(which_from=user_id) & Q(which_to=request.session["user_id"]))
+                    ).order_by("date")
+                    context = {
+                        "search_form": search_form,
+                        "message_form": message_form,
+                        "messages": messages,
+                        "user_to": correspondant,
+                        "user": user,
+                    }
+                    return render(request, "message_exchange.html", context)
+                else:
+                    # Le correspondant est égal à l'utilisateur
+                    raise Http404()
+            else:
+                # Le contact n'est pas un utilisateur existant de l'application
+                raise Http404()
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -301,16 +354,8 @@ def manage_contact(request, contact_id):
 
 
 
-
-
-
-
-
-
 def profil(request, user_id):
     """"""
-
-
     # Vérification de la connexion utilisateur
     auxilliary_user = AuxilliariesUser()
     user = auxilliary_user.get_user(request)
@@ -318,49 +363,59 @@ def profil(request, user_id):
 
     if user:
         # Utilisateur connecté
-        context = { "user": user }
-        if target:
-            # La cible est un utilisateur existant dans l'application
-            context['user_profil'] = target
-            search_form = SearchForm()
-            context['search_form'] = search_form
-            # section du profil
-            try:
-                section_profil = request.GET["section_profil"]
-            except Exception as e:
-                section_profil = "sets"
-            context['section_profil'] = section_profil
-
-            if target != user:
-                # La cible est différente de l'utilisateur
-                if section_profil == 'sets':
-                    sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=target)
-                    context['sets_user_profil'] = sets_user_profil
-                elif section_profil == 'coordonees':
-                    pass
-                else:
-                    raise Http404()
-            else:
-                # La cible est égal à l'utilisateur
-                image_cover_form = ProfilImageForm()
-                context['image_cover_form'] = image_cover_form
-                if section_profil == 'sets':
-                    sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=target)
-                    context['sets_user_profil'] = sets_user_profil
-                elif section_profil == 'coordonees':
-                    set_name_form = SetNameForm()
-                    set_mail_form = SetMailForm()
-                    context['set_name_form'] = set_name_form
-                    context['set_mail_form'] = set_mail_form
-                else:
-                    raise Http404()
-            return render(request, "profil.html", context)
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../home/')
         else:
-            # La cible n'est pas un utilisateur existant de l'application
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            context = { "user": user }
+            if target:
+                # La cible est un utilisateur existant dans l'application
+                context['user_profil'] = target
+                search_form = SearchForm()
+                context['search_form'] = search_form
+                # section du profil
+                try:
+                    section_profil = request.GET["section_profil"]
+                except Exception as e:
+                    section_profil = "sets"
+                context['section_profil'] = section_profil
+
+                if target != user:
+                    # La cible est différente de l'utilisateur
+                    if section_profil == 'sets':
+                        sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=target)
+                        context['sets_user_profil'] = sets_user_profil
+                    elif section_profil == 'coordonees':
+                        pass
+                    else:
+                        raise Http404()
+                else:
+                    # La cible est égal à l'utilisateur
+                    image_cover_form = ProfilImageForm()
+                    context['image_cover_form'] = image_cover_form
+                    if section_profil == 'sets':
+                        sets_user_profil = SetUtilisateurs.objects.filter(utilisateur=target)
+                        context['sets_user_profil'] = sets_user_profil
+                    elif section_profil == 'coordonees':
+                        set_name_form = SetNameForm()
+                        set_mail_form = SetMailForm()
+                        context['set_name_form'] = set_name_form
+                        context['set_mail_form'] = set_mail_form
+                    else:
+                        raise Http404()
+                return render(request, "profil.html", context)
+            else:
+                # La cible n'est pas un utilisateur existant de l'application
+                raise Http404()
     else:
         # Utilisateur non connecté
-        context = { }
+        context = { 'user':user }
         if target:
             # La cible est un utilisateur existant dans l'application
             context['user_profil'] = target

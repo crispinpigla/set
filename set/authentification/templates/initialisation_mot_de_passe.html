@@ -6,8 +6,39 @@
 {% block content %}
 
 <div class="col-10" style="margin: auto;" >
-	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" >
+
+	{% if already_mail_error %}
+		<div style="color: red; text-align: center;" >Un compte possédant cette adresse mail existe déjà</div>
+	{% endif %}
+
+
+	{% if no_match_password_error %}
+		<div style="color: red; text-align: center;" >Les mots de passe demandés doivent être identiques</div>
+	{% endif %}
+
+
+	{% if initialize_password_form_error %}
+		<div style="color: red; text-align: center;" >
+		  {% for key, error in initialize_password_form_error %}
+		  {% autoescape off %}
+		    {{ error }}
+		  {% endautoescape %}
+		  {% endfor %}
+		</div>
+	{% endif %}
+
+
+
+	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post" action="" >
 		{% csrf_token %}
+		<div>{{  initialize_form.name  }}</div>
+		<div>{{  initialize_form.email  }}</div>
+		<script type="text/javascript">
+			document.querySelector('#id_name').value = '{{ name }}';
+			document.querySelector('#id_email').value = '{{ mail }}';
+		</script>
+
+		<div style="text-align: center; margin-top: 30px;color: rgb(14, 194, 207);" >{{ mail }}</div>
 		<div style="margin: auto; margin-top: 30px;" >{{ initialize_form.password }}</div>
 		<div style="margin: auto; margin-top: 30px;" >{{ initialize_form.confirmation_password }}</div>
 		<button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Créer le compte</button>

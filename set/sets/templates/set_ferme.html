@@ -1,0 +1,122 @@
+
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="google-signin-client_id" content="672134652663-5hmqa4u9pc63aigfvu5dl2r491q7v60v.apps.googleusercontent.com">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>set</title>
+    </head>
+
+    <body>
+
+    	<div class="" style="">
+	    	<!-------------       partie_1          ----------->
+	    	<div class="col-12" style="position: fixed; height: 50px; background: rgb(0, 153, 255); display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0px; " >
+	    		<form style="width: 30%; margin-left: 50px;" method="get" action="{% block action_search_form %}{% endblock %}" >
+	    			<div style="width: 100%; " >{{ search_form.search_input }}</div>
+	    		</form>
+	    		<div style="height: 80%; display: flex;" >
+	    			<a href="../../../user/home/" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static '/img/logo_set.jpg' %}"></a>
+	    			{% if user %}
+	    			<a href="../../../user/deconnexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
+	    			{% endif %}
+	    		</div>
+	    	</div>
+	    	<!-------------       partie_1          ----------->
+	    	<!-------------       partie_2          ----------->
+	    	<div class="col-12" style="margin-top: 50px; width: 100%; min-height: 700px; " >
+
+	    		<div style="background: rgb(0,0,0,0.3); width: 100%; min-height: 400px;" >
+
+	    			<div style="height: 300px; overflow: hidden;" >
+	    				<img id="image_cover" style="width: 100%;" src="{% block cover_set_content %}{% endblock %}" original_src="{% block cover0_set_content %}{% endblock %}" >
+	    				<div style="position: absolute; top: 0px; width: 26%; height: 40px; margin-left: 0%; background: linear-gradient(rgb(0, 153, 255), white);" ></div>
+	    				<div style="position: absolute; top: 0px; margin: auto; width: 76%; height: 40px; margin-left: 23.5%;display: flex; justify-content: center; align-items: center; background: linear-gradient(rgb(0, 153, 255), white);" >
+	    				{% block name_set_content %}{% endblock %}
+	    				</div>
+	    				<!------->
+
+	    				{% if administrator_status %}
+	    					{% block update_cover %}{% endblock %}
+						{% endif %}
+
+	    				<!------->
+	    				<!------->
+	    				{% if administrator_status %}
+	    					{% block delete_set %}{% endblock %}
+						{% endif %}
+	    				
+	    				<!------->
+	    			</div>
+
+	    			<!------->
+	    				{% block type_and_description %}{% endblock %}
+	    				{% block specify_event %}{% endblock %}
+	    			<!------->
+	    			
+	    			
+	    		</div>
+
+	    		<div>
+		    		<!-------------       partie_2_1          ----------->
+		    		{% block sections %}{% endblock %}
+			    	<!-------------       partie_2_1          ----------->
+			    	<!-------------       partie_2_2          ----------->
+			    	<div style="position: absolute; left: 24.5%;  width: 51%; /*min-height: 100%;*/ display: inline;" ></div>
+			    	<!-------------       partie_2_2          -----------> 
+			    	<div style="width: 100%;" >
+						<div style="height: 40px; width: 40px; margin: auto; border-radius: 50%; overflow: hidden; margin-top: 10px; margin-bottom: 10px;" >
+							<img style="width: 100%;" src="{% static 'sets/img/logo_set.jpg' %}">
+						</div>
+					</div>
+
+					<div>
+						<div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; color: red; font-size: 300%;" >
+							<img src="{% static 'sets/img/logo_fermeture.jpg' %}">
+						</div>
+						<div style="text-align: center; color: gray; font-size: 80%;" >
+							Ce set a été fermé par les administrateurs du site<br>Cette suspension peut etre temporaire ou définitive
+						</div>
+					</div>
+
+			    	<!-------------       partie_2_3          ----------->
+			    	<div style="position: fixed; top: 470px; border: solid red 1px; width: 24%; height: 100%; right: 0px; display: none;" >
+			    		aaaaaaaaaaaaa
+			    	</div>
+			    	<!-------------       partie_2_3          -----------> 
+	    		</div>
+
+		    	
+	    	</div>
+	    	<!-------------       partie_2          ----------->
+	    	<div class="footer" style="width: 100%; height: 70px; background: rgb(235, 235, 235); display: flex; justify-content: center; align-items: center; color: rgb(150, 150, 150);" >
+
+	    		set-group
+	    		
+	    	</div>
+    	</div>
+
+
+
+
+
+    
+
+
+
+    </body>
+</html>
+
+                        
+
+
+
+
+
+

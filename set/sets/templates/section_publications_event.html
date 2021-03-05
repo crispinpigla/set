@@ -5,6 +5,8 @@
 
 <!--------------------------   creation de publication    ------------------------------------------>
 
+{%  if user_set.statut == 'dans_set' or user_set.statut == 'administrateur'  %}
+
 <div style="margin: auto; margin-bottom: 10px; width:500px;" >
 	<form enctype="multipart/form-data" id="publication_form" action="../../make_post_event/{{event.id}}/" method="post"  >
 		{% csrf_token %}
@@ -14,7 +16,7 @@
 		<div style="display: flex; justify-content: space-around;" >
 			<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px; display: flex; align-items: center;" >
 				<label id="label_for_id_file_1" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_1" >
-					<img style="max-width: 100%; max-height: 85%;" src="{% static 'img/logo_ajout_media.png' %}">
+					<img style="max-width: 100%; max-height: 85%;" src="{% static 'sets/img/logo_ajout_media.png' %}">
 					<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
 				</label>
 				<div id="preview_file_post_form_1" style=" width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
@@ -27,7 +29,7 @@
 			</div>
 			<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px;" >
 				<label id="label_for_id_file_2" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_2" >
-					<img style="max-width: 100%; max-height: 85%;" src="{% static 'img/logo_ajout_media.png' %}">
+					<img style="max-width: 100%; max-height: 85%;" src="{% static 'sets/img/logo_ajout_media.png' %}">
 					<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
 				</label>
 				<div id="preview_file_post_form_2" style=" width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
@@ -46,6 +48,7 @@
 	</form>
 </div>
 
+{% endif %}
 
 
 <!--------------------------   affichage de publications    ------------------------------------------>

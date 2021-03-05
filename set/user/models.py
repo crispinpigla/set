@@ -16,7 +16,11 @@ class Utilisateurs(models.Model):
 	adresse_mail = models.CharField(max_length=200, null=True)
 	mot_de_passe = models.CharField(max_length=200, null=True)
 	image_profil = models.FileField(upload_to='', null=True)
-	code_de_reinitialisation_de_mot_de_passe = models.CharField(max_length=200, null=True)
+	cle_de_reinitialisation_de_mot_de_passe = models.CharField(max_length=200, null=True)
+	cle_dactivation_de_compte = models.CharField(max_length=200, null=True)
+	statut_activation_compte = models.BooleanField(default=False)
+
+	statut_blocage_admin = models.BooleanField(default=False)
 
 
 class Contact(models.Model):

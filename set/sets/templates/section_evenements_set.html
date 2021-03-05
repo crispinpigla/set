@@ -34,7 +34,7 @@
 
 		{% for event in events %}
 
-			<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+			<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px; cursor: pointer;" onmouseover="this.style.background='rgb(242, 242, 242)';" onmouseout="this.style.background='white';" onclick="window.location.replace('../../event/{{event.id}}/')" >
 
 				<div style=" display: flex; justify-content: center; " >
 					<div style="height: 100px; width: 100px;" >

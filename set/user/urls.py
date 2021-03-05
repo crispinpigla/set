@@ -25,7 +25,7 @@ urlpatterns = [
 	
 
     url('home/', views.home), # "/store" will call the method "index" in "views.py"
-    #url('', views.redirect_home), # "/store" will call the method "index" in "views.py"
+    url('', views.redirect_home), # "/store" will call the method "index" in "views.py"
 ]
 
 

@@ -78,7 +78,7 @@ class AuxilliariesSets():
 		""""""
 		if section_set == 'publications' :
 			# Récupération des publications
-			publications = PublicationSet.objects.filter(set0_id=set_id)
+			publications = PublicationSet.objects.filter(set0_id=set_id).order_by('-date')
 			publications_likeurs = []
 			for publication in publications:
 				publications_likeurs.append([publication, JaimePublicationSet.objects.filter(publication_set_id=publication.id), JaimePublicationSet.objects.filter(publication_set_id=publication.id, jaimeur_id=request.session["user_id"])])

@@ -41,6 +41,11 @@ class SearchForm(forms.Form):
 class InitializePasswordForm(forms.Form):
     """Inscription form"""
 
+
+    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={"placeholder": "Nom", "style": "display: none;"}))
+    
+    email = forms.EmailField( widget=forms.TextInput(attrs={"placeholder": "Adresse e-mail", "style": "display: none;"}))
+
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "Créer un mot de passe", "style": "width: 300px;"})
     )
@@ -62,6 +67,14 @@ class LinkResetPasswordForm(forms.Form):
 class ResetPasswordForm(forms.Form):
     """Search form"""
 
+    reset_key = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Entrez l'adresse e-mail du compte", "style": "display: none;"}),
+    )
+
+    email = forms.EmailField(
+        label="Adresse e-mail",
+        widget=forms.TextInput(attrs={"placeholder": "Entrez l'adresse e-mail du compte", "style": "display: none;"}),
+    )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "Entrez le nouveau mot de passe", "style": "width: 300px;"})
     )

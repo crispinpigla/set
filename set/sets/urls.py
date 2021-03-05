@@ -27,6 +27,10 @@ urlpatterns = [
     url(r"^delete_add_user_set/(?P<set_id>\w+)/(?P<user_delete_add_id>\w+)/$", views.delete_add_user_set),
     url(r"^manage_enter_user_set/(?P<set_id>\w+)/$", views.manage_enter_user_set),
     url(r"^exit_set/(?P<set_id>\w+)/$", views.exit_set),
+
+    url(r"^delete_set/(?P<set_id>\w+)/$", views.delete_set),
+    url(r"^delete_event/(?P<event_id>\w+)/$", views.delete_event),
+
     
     path("", views.redirect_home),
 ]

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'set.urls'
@@ -140,9 +142,12 @@ MEDIA_URL = '/media/'
 
 
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'testing@example.com'
+# Django Emails
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEBUG_EMAIL = 'set@mailinator.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'crispinpigla@gmail.com'
+EMAIL_HOST_PASSWORD = 'Bbbbbb0.'
+EMAIL_USE_TLS = True

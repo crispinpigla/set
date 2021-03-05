@@ -11,6 +11,28 @@
 {% block description_content %}{{ set.description }}{% endblock %}
 
 
+
+
+
+
+
+
+
+{% block action_search_form %}../../../sets/search/{% endblock %}
+{% block link_home %}../home/{% endblock %}
+{% block link_deconnexion %}../deconnexion/{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
 {% block specify_event %}
 
 
@@ -25,7 +47,7 @@
 		</div>
 
 		<div style="display: flex; position: absolute; top: 348px; right: 100px; " >
-			<a id="submit_suppression_event" href="" style="background: rgb(255, 117, 117); color: white; text-align: center; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; padding:7px;  font-size: 80%; display: none;" >Confirmer</a>
+			<a id="submit_suppression_event" href="../../delete_event/{{ event.id }}/" style="background: rgb(255, 117, 117); color: white; text-align: center; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; padding:7px;  font-size: 80%; display: none;" >Confirmer</a>
 			<div id="cancel_suppression_event" style="background: rgb(163, 163, 163); color: white; text-align: center; margin:10px; border-radius: 5px; cursor: pointer; padding:7px; font-size: 80%; display: none;" >Annuler</div>
 		</div>
 
@@ -63,6 +85,6 @@
 {% endblock %}
 
 
-{% block content %}
+{% block content_central_page %}
 	{% include "section_publications_event.html" %}
 {% endblock %}

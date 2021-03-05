@@ -24,7 +24,9 @@
 	    		</form>
 	    		<div style="height: 80%; display: flex;" >
 	    			<a href="{% block link_home %}{% endblock %}" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_set.jpg' %}"></a>
+	    			{% if user %}
 	    			<a href="{% block link_deconnexion %}{% endblock %}" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
+	    			{% endif %}
 	    		</div>
 	    	</div>
 	    	<!-------------       partie_1          ----------->
@@ -33,15 +35,16 @@
 		    	<!-------------       partie_2_1          ----------->
 		    	<div style="position: fixed; top: 50px; width: 24%; height: 100%; " >
 		    		<div style=" margin: auto; width: 200px; height: 200px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
+		    			{% if user %}
 		    			<a href="{% block profil_user_account_link_image %}{% endblock %}" style=" width: 100px; height: 100px; border-radius: 50%; border: solid 1px; overflow: hidden; display: flex; justify-content: center; align-items: center; color: black;" >
 		    				<img style="max-width: 70%; max-height: 70%;" src="{% block profil_cover_src %}{% endblock %}" >
 		    			</a>
 		    			<a href="{% block profil_user_account_link %}{% endblock %}">{{  user.nom  }}</a>
+		    			{% endif %}
 		    		</div>
-
-
+					
 		    		{% block sections_profil %}{% endblock %}
-
+					
 		    	</div>
 		    	<!-------------       partie_2_1          ----------->
 		    	<!-------------       partie_2_2          ----------->
@@ -56,10 +59,11 @@
 		    		<div style="position: fixed; top: 50px; width: 24%; height: 100%; " >
 			    		<div style=" margin: auto; width: 100%; height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;" >
 
-
+						{% if user %}
 		    				{% block sections_user_connected %}
 							{% endblock %}
-
+						{% endif %}
+						
 			    		</div>
 			    	</div>
 		    	</div>

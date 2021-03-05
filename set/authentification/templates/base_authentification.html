@@ -21,7 +21,7 @@
 	    		<form style="width: 30%; margin-left: 50px;" method="get" action="../../../sets/search/" >
 	    			<div style="width: 100%; " >{{ search_form.search_input }}</div>
 	    		</form>
-	    		<a href="" style="height: 80%; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'authentification/img/logo_set.jpg' %}"></a>
+	    		<a href="../../../authentification/connexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_set.jpg' %}"></a>
 	    	</div>
 	    	<!-------------       partie_1          ----------->
 	    	<!-------------       partie_2          ----------->
@@ -50,26 +50,7 @@
 
     	
 
-		<script>
-		  function signOut() {
-		    var auth2 = gapi.auth2.getAuthInstance();
-		    auth2.signOut().then(function () {
-		      console.log('User signed out.');
-		    });
-		  }
-		</script>
-
-		<script src="https://apis.google.com/js/platform.js" async defer></script>
-		<script type="text/javascript">
-			function onSignIn(googleUser) 
-			{
-				var profile = googleUser.getBasicProfile();
-				console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-				console.log('Name: ' + profile.getName());
-				console.log('Image URL: ' + profile.getImageUrl());
-				console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-			}
-		</script>
+    	<!--       Script    -->
     
 
 

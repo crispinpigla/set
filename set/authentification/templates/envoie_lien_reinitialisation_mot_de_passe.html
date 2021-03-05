@@ -5,7 +5,16 @@
 {% block content %}
 
 <div class="col-10" style="margin: auto;" >
-	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" >
+
+	{% if send_mail %}
+	<div style="width: 100%; color: green; text-align: center;" > Un lien de réinitialisation de mot de passe a été envoyé à {{user.adresse_mail}} </div>
+	{% endif %}
+
+	{% if no_user_with_mail_error %}
+	<div style="width: 100%; color: red; text-align: center;" > Aucun utilisateur ne possède l'adresse email {{ mail }}</div>
+	{% endif %}
+
+	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post"  >
 		{% csrf_token %}
 		<div style="margin: auto; margin-top: 30px;" >{{ link_reset_form.email }}</div>
 		<button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Envoyer le lien</button>

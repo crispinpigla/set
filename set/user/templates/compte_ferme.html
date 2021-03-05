@@ -1,0 +1,59 @@
+{% extends 'base_user.html' %}
+
+{% load static %}
+
+
+{% block action_search_form %}../../sets/search/{% endblock %}
+{% block link_home %}../home/{% endblock %}
+{% block link_deconnexion %}../deconnexion/{% endblock %}
+
+
+{% block profil_user_account_link %}../profil/{{user.id}}/{% endblock %}
+{% block profil_user_account_link_image %}../profil/{{user.id}}/{% endblock %}
+
+
+{% block profil_cover_src %}
+
+	{% if user.image_profil == '' %}
+		{% static 'img/default_user_profil.png' %}
+	{% else %}
+		..{{user.image_profil.url}}
+	{% endif %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block content %}
+
+
+
+
+	<!--------------------------   affichage de publications    ------------------------------------------>
+
+
+
+
+		<div>
+			<div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; color: red; font-size: 300%;" >
+				<img src="{% static 'img/logo_fermeture.jpg' %}">
+			</div>
+			<div style="text-align: center; color: gray; font-size: 80%;" >
+				Votre compte a été bloqué par les administrateurs du site<br>Cette suspension peut etre temporaire ou définitive
+			</div>
+		</div>
+		
+
+
+
+{% endblock %}
+
+
+
