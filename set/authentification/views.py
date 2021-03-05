@@ -3,6 +3,8 @@ import random, string
 import requests
 import json
 
+import os
+
 import google
 from google.oauth2 import id_token
 from google.auth.transport import requests as grequests
@@ -185,7 +187,11 @@ def inscription(request):
                     activation_key = "".join([random.choice('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') for _ in range(24)])
                     user = Utilisateurs.objects.create(nom=request.POST["name"], adresse_mail=request.POST["email"], mot_de_passe=request.POST["password"], cle_dactivation_de_compte=activation_key)
                     # Envoie de mail
-                    html_message = render_to_string('activation_compte.html', {'user': user})
+                    if os.environ.get("ENV") == "PRODUCTION":
+                        host = 'http://34.105.144.166'
+                    else:
+                        host = 'http://localhost:8000'
+                    html_message = render_to_string('activation_compte.html', {'user': user, 'host':host})
                     msg = EmailMessage(subject='Activation du compte', body=html_message, from_email='', bcc=[user.adresse_mail])
                     msg.content_subtype = "html"
                     msg.send()
@@ -231,7 +237,11 @@ def envoie_activation_compte(request):
         user.cle_dactivation_de_compte = activation_key
         user.save()
 
-        html_message = render_to_string('activation_compte.html', {'user': user})
+        if os.environ.get("ENV") == "PRODUCTION":
+            host = 'http://34.105.144.166'
+        else:
+            host = 'http://localhost:8000'
+        html_message = render_to_string('activation_compte.html', {'user': user, 'host':host})
         msg = EmailMessage(subject='Activation du compte', body=html_message, from_email='', bcc=[user.adresse_mail])
         msg.content_subtype = "html"
         msg.send()
@@ -269,7 +279,11 @@ def envoie_lien_reinitialisation_password(request):
                 user.cle_de_reinitialisation_de_mot_de_passe = reinitialisation_password_key
                 user.save()
 
-                html_message = render_to_string('mail_reinitialisation_mot_de_passe.html', {'user': user})
+                if os.environ.get("ENV") == "PRODUCTION":
+                    host = 'http://34.105.144.166'
+                else:
+                    host = 'http://localhost:8000'
+                html_message = render_to_string('mail_reinitialisation_mot_de_passe.html', {'user': user, 'host':host})
                 msg = EmailMessage(subject='Réinitialisation du mot de passe', body=html_message, from_email='', bcc=[user.adresse_mail])
                 msg.content_subtype = "html"
                 sent_mail_statut = msg.send()
@@ -382,7 +396,11 @@ def initialisation_mot_de_passe(request):
                     activation_key = "".join([random.choice('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') for _ in range(24)])
                     user = Utilisateurs.objects.create(nom=request.POST["name"], adresse_mail=request.POST["email"], mot_de_passe=request.POST["password"], cle_dactivation_de_compte=activation_key)
                     # Envoie de mail
-                    html_message = render_to_string('activation_compte.html', {'user': user})
+                    if os.environ.get("ENV") == "PRODUCTION":
+                        host = 'http://34.105.144.166'
+                    else:
+                        host = 'http://localhost:8000'
+                    html_message = render_to_string('activation_compte.html', {'user': user, 'host':host})
                     msg = EmailMessage(subject='Activation du compte', body=html_message, from_email='', bcc=[user.adresse_mail])
                     msg.content_subtype = "html"
                     msg.send()
