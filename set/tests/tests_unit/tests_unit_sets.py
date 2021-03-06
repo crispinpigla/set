@@ -2116,14 +2116,6 @@ class TestsVueSet(TestCase):
 		self.assertTemplateUsed(response, '404.html')
 		self.assertTrue( response.status_code == 404 )
 
-
-
-		#_____________________________________________
-
-
-		#_____________________________________________
-
-
 	def test_sets_add_user_set_user_unactivate(self):
 		""""""
     	#   Demande d'ajout d'un utilisateur dans un set par un compte non activé
@@ -2155,15 +2147,6 @@ class TestsVueSet(TestCase):
 		self.assertTrue( response.status_code == 302 )
 
 
-
-
-
-
-
-
-
-
-
 	#  ----- Delete user in set
 
 
@@ -2177,7 +2160,6 @@ class TestsVueSet(TestCase):
 		self.assertTemplateUsed(response, '404.html')
 		self.assertTrue( response.status_code == 404 )
 
-
 	def test_sets_delete_user_set_utilisateur_inscrit_no_set(self):
 		""""""
 		#  Demande de suppression d'un utilisateur dans un set par un utilsateur inscrit n'appartenant pas au set
@@ -2187,7 +2169,6 @@ class TestsVueSet(TestCase):
 		self.assertTrue( users_after == users_before )
 		self.assertTemplateUsed(response, '404.html')
 		self.assertTrue( response.status_code == 404 )
-
 
 	def test_sets_delete_user_set_utilisateur_inscrit_admin_set(self):
 		""""""
@@ -2259,15 +2240,37 @@ class TestsVueSet(TestCase):
 		self.assertTemplateUsed(response, '404.html')
 		self.assertTrue( response.status_code == 404 )
 
+	def test_sets_delete_user_set_user_unactivate(self):
+		""""""
+    	#   Demande de suppression d'un utilisateur dans un set par un compte non activé
+		users_before = len( SetUtilisateurs.objects.all() )
+		response = self.client_unactivate_user.post('/sets/delete_add_user_set/'  + str(self.set.id) + '/'  + str(self.user_registred_member_set.id) + '/' )
+		users_after = len( SetUtilisateurs.objects.all() )
+		self.assertTrue( users_after == ( users_before ) )
+		self.assertTrue( response.url == '../../../../user/home/' )
+		self.assertTrue( response.status_code == 302 )
+
+	def test_sets_delete_user_set_user_locked(self):
+		""""""
+    	#   Demande de suppression d'un utilisateur dans un set par un compte bloqué
+		users_before = len( SetUtilisateurs.objects.all() )
+		response = self.client_locked_user.post('/sets/delete_add_user_set/'  + str(self.set.id) + '/'  + str(self.user_registred_member_set.id) + '/' )
+		users_after = len( SetUtilisateurs.objects.all() )
+		self.assertTrue( users_after == ( users_before ) )
+		self.assertTrue( response.url == '../../../../user/home/' )
+		self.assertTrue( response.status_code == 302 )
+
+	def test_sets_delete_user_set_locked(self):
+		""""""
+    	#   Demande de suppression d'un utilisateur dans un set fermé
+		users_before = len( SetUtilisateurs.objects.all() )
+		response = self.client_registred_administrator_set.post('/sets/delete_add_user_set/'  + str(self.set_locked.id) + '/'  + str(self.user_registred_member_set.id) + '/' )
+		users_after = len( SetUtilisateurs.objects.all() )
+		self.assertTrue( users_after == ( users_before ) )
+		self.assertTrue( response.url == "../../../../sets/set/" + str(self.set_locked.id) + "/" )
+		self.assertTrue( response.status_code == 302 )
 
 
-
-		#_____________________________________________
-
-		#   Demande de suppression d'un utilisateur dans un set par un compte non activé
-		#   Demande de suppression d'un utilisateur dans un set par un compte bloqué
-		#   Demande de suppression d'un utilisateur dans un set fermé
-		#_____________________________________________
 
 
 
@@ -2328,20 +2331,12 @@ class TestsVueSet(TestCase):
 		self.assertTrue( SetUtilisateurs.objects.get(id=self.set_user_wait.id).statut == 'attente_validation'  )
 		self.assertTrue( response.status_code == 404 )
 
-
-	
-	
-
 		#_____________________________________________
 
 		#   Confirmation de l'entrée dans un set par un compte non activé
 		#   Confirmation de l'entrée dans un set par un compte bloqué
 		#   Confirmation de l'entrée dans un set fermé
 		#_____________________________________________
-
-
-
-
 
 
 	#  ----- Refus de l'entrée d'un utilisateur dans un set
@@ -2400,16 +2395,12 @@ class TestsVueSet(TestCase):
 		self.assertTrue( response.status_code == 404 )
 
 
-
-
 		#_____________________________________________
 
 		#   Refus d'entrée dans un set par un compte non activé
 		#   Refus d'entrée dans un set par un compte bloqué
 		#   Refus d'entrée dans un set fermé
 		#_____________________________________________
-
-
 
 
 
@@ -2500,10 +2491,6 @@ class TestsVueSet(TestCase):
 		self.assertTrue( response.content == b'delete_done' )
 		self.assertTrue( response.status_code == 200 )
 
-
-
-
-
 		#_____________________________________________
 
 		#   sortie d'un utilisateur dans un set par un compte non activé
@@ -2513,5 +2500,7 @@ class TestsVueSet(TestCase):
 
 
 
+		#  Suppression de set
 
+		# Suppression d'évènement
 

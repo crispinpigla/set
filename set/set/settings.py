@@ -14,6 +14,9 @@ import os
 
 from pathlib import Path
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,6 +35,16 @@ SECRET_KEY = 'e_a4p0n6e9u2+q_!(!!e1c&f8$f36xczgthby!p(l_s9899!h3'
 if os.environ.get("ENV") == "PRODUCTION":
     DEBUG = False
     ALLOWED_HOSTS = ['34.105.144.166']
+
+    sentry_sdk.init(
+        dsn="https://bcb7258835684a05a4951c3c16af2987@o486074.ingest.sentry.io/5665071",
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
 
 else:
     DEBUG = True
