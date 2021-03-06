@@ -20,7 +20,7 @@
 {% block profil_cover_src %}
 
 	{% if user.image_profil == '' %}
-		{% static 'img/default_user_profil.png' %}
+		{% static 'user/img/default_user_profil.png' %}
 	{% else %}
 		../..{{user.image_profil.url}}
 	{% endif %}
@@ -74,7 +74,7 @@
 
 						<div style="width: 100%;" >
 							<div style="height: 40px; width: 40px; margin: auto; border-radius: 50%; overflow: hidden; margin-top: 10px; margin-bottom: 10px;" >
-								<img style="width: 100%;" src="{% static 'img/logo_set.jpg' %}">
+								<img style="width: 100%;" src="{% static 'user/img/logo_set.jpg' %}">
 							</div>
 						</div>
 
@@ -112,7 +112,7 @@
 
 								<div style=" margin: auto; width: 200px; height: 200px; border: solid 1px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
 					    			<div style=" width: 100px; height: 100px; border-radius: 50%; border: solid 1px; overflow: hidden; display: flex; justify-content: center; align-items: center; " >
-					    				<img id="profil_image" style="max-width: 70%; max-height: 70%;" src="{% if user_profil.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{user_profil.image_profil.url}}{% endif %}" original_src="{% if user_profil.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{ user_profil.image_profil.url }}{% endif %}" >
+					    				<img id="profil_image" style="max-width: 70%; max-height: 70%;" src="{% if user_profil.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../..{{user_profil.image_profil.url}}{% endif %}" original_src="{% if user_profil.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../..{{ user_profil.image_profil.url }}{% endif %}" >
 					    			</div>
 					    		</div>
 
@@ -164,7 +164,7 @@
 								</div>
 								<div style="min-width: 10%; min-height: 100%; display: flex; justify-content: space-around; align-items: center; margin-top: 10px;  margin: auto; margin-top: 10px;" >
 									<div id="modification_name" style="background: white; border-radius: 50%; overflow: hidden; width: 50px; height: 50px; display: block; cursor: pointer;" >
-										<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+										<img style="width: 100%;" src="{% static 'sets/img/logo_modification.jpg' %}">
 									</div>
 									<button id="submit_change_name" type="submit" class="btn btn-success" style=" display: none;" >Mettre à jour</button>
 									<div id="cancel_change_name" style="background: rgb(255, 153, 153); border-radius: 5px; padding: 9px; font-size: 80%; cursor: pointer;display: none; color: white;" >Annuler</div>
@@ -201,7 +201,7 @@
 								</div>
 								<div style="min-width: 10%; min-height: 100%; display: flex; justify-content: space-around; align-items: center; margin-top: 10px;  margin: auto;  margin-top: 10px;" >
 									<div id="modification_mail" style="background: white; border-radius: 50%; overflow: hidden; width: 50px; height: 50px; display: block; cursor: pointer;" >
-										<img style="width: 100%;" src="{% static 'img/logo_modification.jpg' %}">
+										<img style="width: 100%;" src="{% static 'sets/img/logo_modification.jpg' %}">
 									</div>
 									<button id="submit_change_mail" type="submit" class="btn btn-success" style=" display: none;" >Mettre à jour</button>
 									<div id="cancel_change_mail" style="background: rgb(255, 153, 153); border-radius: 5px; padding: 9px; font-size: 80%; cursor: pointer;display: none; color: white;" >Annuler</div>

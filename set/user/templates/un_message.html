@@ -22,7 +22,7 @@
 
 						<div style="" >
 							<div style="height: 50px; width: 50px; border: solid 1px; border-radius: 50%; background: white; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-								<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.which_from.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}{{  message.which_from.image_profil  }}{% endif %}"></a>
+								<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.which_from.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../..{{  message.which_from.image_profil.url  }}{% endif %}"></a>
 							</div>
 						</div>
 					</div>
@@ -37,7 +37,7 @@
 					<div style="display: flex; max-width: 80%;" >
 						<div style="" >
 							<div style="height: 50px; width: 50px; border: solid 1px; border-radius: 50%; background: white; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-								<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.which_from.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{  message.which_from.image_profil.url  }}{% endif %}"></a>
+								<a href="" style="width: 85%; display: block;" ><img style=" width: 100%;" src="{% if message.which_from.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../..{{  message.which_from.image_profil.url  }}{% endif %}"></a>
 							</div>
 						</div>
 						<div style="max-width: 90%; margin-left: 5px; display: flex; flex-direction: column;" >

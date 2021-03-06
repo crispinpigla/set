@@ -21,9 +21,9 @@
 	    			<div style="width: 100%; " >{{ search_form.search_input }}</div>
 	    		</form>
 	    		<div style="height: 80%; display: flex;" >
-	    			<a href="../../../authentification/connexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_set.jpg' %}"></a>
+	    			<a href="../../../authentification/connexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'sets/img/logo_set.jpg' %}"></a>
 					{% if user %}
-	    			<a href="../../user/deconnexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'img/logo_deconnexion.jpg' %}"></a>
+	    			<a href="../../user/deconnexion/" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'sets/img/logo_deconnexion.jpg' %}"></a>
 	    			{% endif %}
 	    		</div>
 	    		
@@ -71,23 +71,23 @@
 				    		<div style="margin: auto; width: 100%; height: 100px;  display: flex; justify-content: space-around; align-items: center;" >
 				    			
 								{% if section == 'sets' %}
-									<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=sets">Sets</a>
+									<a style="border: solid 1px; background: white; color: #007bff; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=sets">Sets</a>
 								{% else %}
-					    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=sets">Sets</a>
+					    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=sets">Sets</a>
 								{% endif %}
 
 
 								{% if section == 'evenements' %}
-									<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=evenements">Evènements</a>
+									<a style="border: solid 1px; background: white; color: #007bff; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=evenements">Evènements</a>
 								{% else %}
-					    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=evenements">Evènements</a>
+					    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=evenements">Evènements</a>
 								{% endif %}
 
 				    			
 				    			{% if section == 'personnes' %}
-									<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=personnes">Personnes</a>
+									<a style="border: solid 1px; background: white; color: #007bff; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=personnes">Personnes</a>
 								{% else %}
-					    			<a style="border: solid 1px; background: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=personnes">Personnes</a>
+					    			<a style="border: solid 1px; background: #007bff; color: white; border-radius: 10px; margin-top: 10px; width: 30%; height: 45px;  display: flex; justify-content: center; align-items: center;" href="?search_input={{ recherche }}&section=personnes">Personnes</a>
 								{% endif %}
 				    		</div>
 				    	</div>

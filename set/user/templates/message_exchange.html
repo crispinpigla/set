@@ -24,7 +24,7 @@
 {% block profil_cover_src %}
 
 	{% if user.image_profil == '' %}
-		{% static 'img/default_user_profil.png' %}
+		{% static 'user/img/default_user_profil.png' %}
 	{% else %}
 		../..{{user.image_profil.url}}
 	{% endif %}
@@ -55,13 +55,13 @@
 
 
 	<div style="width: 100%; height: 3%; display: flex; justify-content: center; align-items: center;" >
-		<div id="chargement" style="height: 90%; display: none; justify-content: center; align-items: center;" ><img style="height: 100%; background: white; " src="{% static 'img/chargement.png' %}"></div>
+		<div id="chargement" style="height: 90%; display: none; justify-content: center; align-items: center;" ><img style="height: 100%; background: white; " src="{% static 'user/img/chargement.png' %}"></div>
 	</div>
 
 	<div style="width: 90%; height: 7%; display: flex; justify-content: center; align-items: center;" >
 		{{ message_form.message }}
 		<div style=" width: 10%; height: 100%; display: flex; justify-content: center; align-items: center;" >
-			<img id="envoie_message" src="{% static 'img/envoyer.png' %}" style="height: 100%; border: solid rgb(199, 199, 199); border-radius: 50%; cursor: pointer;" title="Envoyer" last_message_id="{% if messages|length == 0 %}0{% else %}{{ messages.last.id }}{% endif %}" >
+			<img id="envoie_message" src="{% static 'user/img/envoyer.png' %}" style="height: 100%; border: solid rgb(199, 199, 199); border-radius: 50%; cursor: pointer;" title="Envoyer" last_message_id="{% if messages|length == 0 %}0{% else %}{{ messages.last.id }}{% endif %}" >
 		</div>
 	</div>
 

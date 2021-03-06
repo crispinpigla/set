@@ -21,7 +21,7 @@
 {% block profil_cover_src %}
 
 	{% if user.image_profil == '' %}
-		{% static 'img/default_user_profil.png' %}
+		{% static 'user/img/default_user_profil.png' %}
 	{% else %}
 		..{{user.image_profil.url}}
 	{% endif %}
@@ -61,7 +61,7 @@
 							<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
 								
 								<a href="../profil/{{contenu.id}}/?section_profil=coordonees" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-									<img style="width: 80%;" src="{% if contenu.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}..{{contenu.image_profil.url}}{% endif %}">
+									<img style="width: 80%;" src="{% if contenu.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}..{{contenu.image_profil.url}}{% endif %}">
 								</a>
 
 							</div>
@@ -122,7 +122,7 @@
 								<!---------------   Message  -------------------->
 								<div style="width: 50%; display: flex; justify-content: center; align-items: center;" >
 									<a href="../messages_exchanges/{{ contenu.id }}/" style="border: solid 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: ; cursor: pointer;" >
-										<img style="height: 100%;" src="{% static 'img/logo_message.png' %}">
+										<img style="height: 100%;" src="{% static 'user/img/logo_message.png' %}">
 									</a>
 								</div>
 							</div>

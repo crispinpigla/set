@@ -67,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'set.urls'
@@ -163,3 +164,18 @@ EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'crispinpigla@gmail.com'
 EMAIL_HOST_PASSWORD = 'UGS4DHhbcqWgmN7'
 EMAIL_USE_TLS = True
+
+
+
+
+
+
+# Static files settings
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
+
+# Extra places for collectstatic to find static files.
+#STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "static"),)
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
