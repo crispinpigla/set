@@ -16,7 +16,6 @@ class Sets(models.Model):
 	type0 = models.CharField(max_length=200)
 	description = models.CharField(max_length=200)
 	date = models.DateTimeField(auto_now=True, null=True)
-
 	statut_fermeture_admin = models.BooleanField(default=False)
 
 
@@ -29,7 +28,6 @@ class Evenements(models.Model):
 	nom = models.CharField(max_length=200)
 	description = models.CharField(max_length=200)
 	date = models.DateTimeField(auto_now=True, null=True)
-
 	statut_fermeture_admin = models.BooleanField(default=False)
 
 
@@ -54,7 +52,6 @@ class PublicationSet(models.Model):
 	media1 = models.FileField(upload_to='')
 	media2 = models.FileField(upload_to='')
 	date = models.DateTimeField(auto_now=True, null=True)
-
 	control_admin = models.BooleanField(default=False)
 	masquage_admin = models.BooleanField(default=False)
 
@@ -102,7 +99,6 @@ class PublicationEvenement(models.Model):
 	media1 = models.FileField(upload_to='')
 	media2 = models.FileField(upload_to='')
 	date = models.DateTimeField(auto_now=True, null=True)
-
 	control_admin = models.BooleanField(default=False)
 	masquage_admin = models.BooleanField(default=False)
 

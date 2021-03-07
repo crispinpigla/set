@@ -137,7 +137,7 @@
 			{ // On gère ici une requête asynchrone
 		        if (xhr0.readyState === XMLHttpRequest.DONE && xhr0.status === 200) 
 		        { // Si le fichier est chargé sans erreur
-		        	if ( (xhr0.response).trim() == "" ) 
+		        	if ( (xhr0.response).trim() == "" || (xhr0.response).trim() == "account_unactivate" || (xhr0.response).trim() == "account_locked" ) 
 		        	{
 		        		// rien
 		        	}

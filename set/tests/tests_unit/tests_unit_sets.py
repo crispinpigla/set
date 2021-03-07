@@ -426,7 +426,7 @@ class TestsVueSet(TestCase):
 		self.assertTrue(Sets.objects.get(id=self.set_locked.id).image_couverture == self.image_cover_set_locked)
 		response = self.client_registred_administrator_set.post('/sets/update_cover/?set_id=' + str(self.set_locked.id), {'file': image} )
 		self.assertTrue(Sets.objects.get(id=self.set_locked.id).image_couverture == self.image_cover_set_locked)
-		self.assertEqual(response.url, '../../../user/home/')
+		self.assertEqual(response.url, '../../sets/set/' + str(self.set_locked.id) + '/')
 		self.assertEqual(response.status_code, 302)
 
 
@@ -2273,9 +2273,6 @@ class TestsVueSet(TestCase):
 
 
 
-
-
-
 	#  ----- Confirmation de l'entrée d'un utilisateur dans un set
 
 	def test_sets_confirmation_enter_user_set_utilisateur_non_inscrit(self):
@@ -2462,23 +2459,6 @@ class TestsVueSet(TestCase):
 		self.assertTemplateUsed(response, '404.html')
 		self.assertTrue( response.status_code == 404 )
 
-	def test_sets_exit_user_set_utilisateur_inscrit_user_set_last_user_set(self):
-		""""""
-		#  sortie d'un utilisateur dans un set par un utilisateur inscrit appartenant au set etant admministrateur et dernier membre du set
-		users_before = len(SetUtilisateurs.objects.all())
-		self.assertTrue( len(SetUtilisateurs.objects.filter(id=self.set_user_wait.id) ) == 1  )
-		response0 = self.client_registred_member_set.post('/sets/exit_set/' + str(self.set.id) + '/' )
-		response1 = self.client_registred_wait_set.post('/sets/exit_set/' + str(self.set.id) + '/' )
-		response2 = self.client_registred_administrator_set.post('/sets/exit_set/' + str(self.set.id) + '/' )
-		users_after = len(SetUtilisateurs.objects.all())
-		self.assertTrue( users_after == users_before - 3 )
-		self.assertTrue( len(SetUtilisateurs.objects.filter(set0=self.set)) == 0 )
-		self.assertTrue( response0.content == b'delete_done' )
-		self.assertTrue( response1.content == b'delete_done' )
-		self.assertTrue( response2.content == b'delete_done_and_set_delete_done' )
-		self.assertTrue( response0.status_code == 200 )
-		self.assertTrue( response1.status_code == 200 )
-		self.assertTrue( response2.status_code == 200 )
 
 	def test_sets_exit_user_set_utilisateur_inscrit_wait_set(self):
 		""""""
@@ -2500,7 +2480,142 @@ class TestsVueSet(TestCase):
 
 
 
-		#  Suppression de set
+	#  ----- Suppression de set
 
-		# Suppression d'évènement
+	def test_set_delete_set_utilisateur_non_inscrit(self):
+		""""""
+		#  Suppression de set par un utilisateur non inscrit
+		response = self.client_not_registred.post('/sets/delete_set/' + str(self.set.id) + '/')
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_set_utilisateur_inscrit_no_set(self):
+		""""""
+		#  Suppression de set par un utilisateur inscrit n'appartenant pas au set
+		response = self.client_registred_no_set.post('/sets/delete_set/' + str(self.set.id) + '/' )
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_set_inscrit_wait_set(self):
+		""""""
+		#  Suppression de set par un utilisateur inscrit en attente d'entree dans le set
+		response = self.client_registred_wait_set.post('/sets/delete_set/' + str(self.set.id) + '/' )
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_sett_simple_member(self):
+		""""""
+		#  Suppression de set par un utilisateur inscrit simple membre du set
+		response = self.client_registred_member_set.post('/sets/delete_set/' + str(self.set.id) + '/' )
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_set_admin_set(self):
+		""""""
+		#  Suppression de set par un utilisateur inscrit administrateur du set
+		sets_before = len(Sets.objects.all())
+		response = self.client_registred_administrator_set.post('/sets/delete_set/' + str(self.set.id) + '/' )
+		sets_after = len(Sets.objects.all())
+		self.assertTrue( sets_after == sets_before - 1 )
+		self.assertTrue( response.url == "../../../user/home/" )
+		self.assertTrue( response.status_code == 302 )
+
+	def test_set_delete_set_user_unactivate(self):
+		""""""
+		#  Suppression de set par un utilisateur inscrit avec un compte inactif
+		response = self.client_unactivate_user.post('/sets/delete_set/'  + str(self.set.id) +'/' )
+		self.assertTrue( response.url == "../../../user/home/" )
+		self.assertTrue( response.status_code == 302 )
+
+	def test_set_delete_set_user_locked(self):
+		""""""
+		#  Suppression de set par un utilisateur inscrit administrateur du set avec un compte fermé
+		response = self.client_locked_user.post('/sets/delete_set/'  + str(self.set.id) + '/' )
+		self.assertTrue( response.url == "../../../user/home/" )
+		self.assertTrue( response.status_code == 302 )
+
+	def test_set_delete_set_set_locked(self):
+		""""""
+		#  Suppression de set par un utilisateur inscrit administrateur du set avec un compte fermé
+		response = self.client_registred_administrator_set.post('/sets/delete_set/'  + str(self.set_locked.id) + '/' )
+		self.assertTrue( response.url == "../../sets/set/" + str(self.set_locked.id) + "/" )
+		self.assertTrue( response.status_code == 302 )
+
+
+
+	#  ----- Suppression d'un évènement de set
+
+
+	def test_set_delete_event_utilisateur_non_inscrit(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur non inscrit
+		response = self.client_not_registred.post('/sets/delete_event/' + str(self.event_administrator.id) + '/')
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_event_utilisateur_inscrit_no_set(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit n'appartenant pas au set
+		response = self.client_registred_no_set.post('/sets/delete_event/' + str(self.event_administrator.id) + '/' )
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_event_inscrit_wait_set(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit en attente d'entree dans le set
+		response = self.client_registred_wait_set.post('/sets/delete_event/' + str(self.event_administrator.id) + '/' )
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_eventt_simple_member(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit membre du set et pas administrateur de lévènement
+		response = self.client_registred_member_set.post('/sets/delete_event/' + str(self.event_administrator.id) + '/' )
+		self.assertTemplateUsed(response, '404.html')
+		self.assertTrue( response.status_code == 404 )
+
+	def test_set_delete_event_admin_event(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit membre du set et administrateur de lévènement
+		events_before = len(Evenements.objects.all())
+		response = self.client_registred_administrator_set.post('/sets/delete_event/' + str(self.event_administrator.id) + '/' )
+		events_after = len(Evenements.objects.all())
+		self.assertTrue( events_after == events_before - 1 )
+		self.assertTrue( response.url == '../../set/' + str(self.event_administrator.id) + '/' )
+		self.assertTrue( response.status_code == 302 )
+
+
+	def test_set_delete_event_user_unactivate(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit avec un compte inactif
+		response = self.client_unactivate_user.post('/sets/delete_event/'  + str(self.event_administrator.id) + '/' )
+		self.assertTrue( response.url == "../../../user/home/" )
+		self.assertTrue( response.status_code == 302 )
+
+
+	def test_set_delete_event_user_locked(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit administrateur de lévènement avec un compte fermé
+		response = self.client_locked_user.post('/sets/delete_event/'  + str(self.event_administrator.id) + '/' )
+		self.assertTrue( response.url == "../../../user/home/" )
+		self.assertTrue( response.status_code == 302 )
+
+
+	def test_set_delete_event_set_locked(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit administrateur de lévènement avec un set fermé
+		response = self.client_registred_member_set.post('/sets/delete_event/'  + str(self.event_set_locked_member.id) + '/' )
+		self.assertTrue("../../sets/set/" + str(self.set_locked.id) + "/")
+		self.assertTrue( response.status_code == 302 )
+
+	def test_set_delete_event_event_locked(self):
+		""""""
+		#  Suppression d'un évènement par un utilisateur inscrit administrateur d'un évènement fermé
+		response = self.client_registred_administrator_set.post('/sets/delete_event/'  + str(self.event_locked_member.id) + '/' )
+		self.assertTrue("../../../sets/event/" + str(self.event_locked_member.id) + "/")
+		self.assertTrue( response.status_code == 302 )
+
+
+
+
 

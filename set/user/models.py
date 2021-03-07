@@ -4,11 +4,6 @@ from django.db import models
 
 
 
-
-
-
-
-
 class Utilisateurs(models.Model):
 	""""""
 
@@ -19,7 +14,6 @@ class Utilisateurs(models.Model):
 	cle_de_reinitialisation_de_mot_de_passe = models.CharField(max_length=200, null=True)
 	cle_dactivation_de_compte = models.CharField(max_length=200, null=True)
 	statut_activation_compte = models.BooleanField(default=False)
-
 	statut_blocage_admin = models.BooleanField(default=False)
 
 

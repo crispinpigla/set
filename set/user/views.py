@@ -234,43 +234,55 @@ def updates_messages(request, user_id):
 
     if user:
         # Utilisateur connecté
-        if correspondant:
-            # Le correspondant est un utilisateur existant dans l'application
-            if correspondant != user:
-                # Le correspondant est différent de l'utilisateur
-                last_message = auxilliary_user.message_in_application(request.GET["last_message_id"])
-                if last_message:
-                    # Un dernier message n'existe pas avec l'id recu
-                    #last_message = last_message[0]
-                    messages = Message.objects.filter(
-                        (
-                            (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
-                            | (
-                                Q(which_from=user_id)
-                                & Q(which_to=request.session["user_id"])
-                            )
-                        )
-                        & Q(date__gt=last_message.date)
-                    ).order_by("date")
-                else:
-                    # Un dernier message existe avec l'id recu
-                    messages = Message.objects.filter(
-                        (
-                            (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
-                            | (
-                                Q(which_from=user_id)
-                                & Q(which_to=request.session["user_id"])
-                            )
-                        )
-                    ).order_by("date")
-                context = {"messages": messages, "user": user}
-                return render(request, "un_message.html", context)
-            else:
-                # Le correspondant est égal à l'utilisateur
-                raise Http404()
+
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return HttpResponse('account_unactivate')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return HttpResponse('account_locked')
         else:
-            # Le contact n'est pas un utilisateur existant de l'application
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            if correspondant:
+                # Le correspondant est un utilisateur existant dans l'application
+                if correspondant != user:
+                    # Le correspondant est différent de l'utilisateur
+                    last_message = auxilliary_user.message_in_application(request.GET["last_message_id"])
+                    if last_message:
+                        # Un dernier message n'existe pas avec l'id recu
+                        #last_message = last_message[0]
+                        messages = Message.objects.filter(
+                            (
+                                (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
+                                | (
+                                    Q(which_from=user_id)
+                                    & Q(which_to=request.session["user_id"])
+                                )
+                            )
+                            & Q(date__gt=last_message.date)
+                        ).order_by("date")
+                    else:
+                        # Un dernier message existe avec l'id recu
+                        messages = Message.objects.filter(
+                            (
+                                (Q(which_from=request.session["user_id"]) & Q(which_to=user_id))
+                                | (
+                                    Q(which_from=user_id)
+                                    & Q(which_to=request.session["user_id"])
+                                )
+                            )
+                        ).order_by("date")
+                    context = {"messages": messages, "user": user}
+                    return render(request, "un_message.html", context)
+                else:
+                    # Le correspondant est égal à l'utilisateur
+                    raise Http404()
+            else:
+                # Le contact n'est pas un utilisateur existant de l'application
+                raise Http404()
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -287,21 +299,32 @@ def send_message(request, user_id):
 
     if user:
         # Utilisateur connecté
-        if correspondant:
-            # Le correspondant est un utilisateur existant dans l'application
-            if correspondant != user:
-                # Le correspondant est différent de l'utilisateur
-                message_text = request.GET["message_text"]
-                message = Message.objects.create(
-                    which_from=user, which_to=correspondant, contenu_text=message_text
-                )
-                return HttpResponse('send')
-            else:
-                # Le correspondant est égal à l'utilisateur
-                raise Http404()
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return HttpResponse('account_unactivate')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return HttpResponse('account_locked')
         else:
-            # Le contact n'est pas un utilisateur existant de l'application
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            if correspondant:
+                # Le correspondant est un utilisateur existant dans l'application
+                if correspondant != user:
+                    # Le correspondant est différent de l'utilisateur
+                    message_text = request.GET["message_text"]
+                    message = Message.objects.create(
+                        which_from=user, which_to=correspondant, contenu_text=message_text
+                    )
+                    return HttpResponse('send')
+                else:
+                    # Le correspondant est égal à l'utilisateur
+                    raise Http404()
+            else:
+                # Le contact n'est pas un utilisateur existant de l'application
+                raise Http404()
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -335,18 +358,29 @@ def manage_contact(request, contact_id):
 
     if user:
         # Utilisateur connecté
-        if contact:
-            # Le contact est un utilisateur existant dans l'application
-            check = Contact.objects.filter(contact_owner_id=user.id, contact_id=contact.id)
-            if len(check) == 0:
-                new_contact = Contact.objects.create(contact_owner=user, contact=contact)
-                return HttpResponse("contact_added")
-            else:
-                check[0].delete()
-                return HttpResponse("contact_deleted")
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return HttpResponse('account_unactivate')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return HttpResponse('account_locked')
         else:
-            # Le contact n'est pas un utilisateur existant de l'application
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            if contact:
+                # Le contact est un utilisateur existant dans l'application
+                check = Contact.objects.filter(contact_owner_id=user.id, contact_id=contact.id)
+                if len(check) == 0:
+                    new_contact = Contact.objects.create(contact_owner=user, contact=contact)
+                    return HttpResponse("contact_added")
+                else:
+                    check[0].delete()
+                    return HttpResponse("contact_deleted")
+            else:
+                # Le contact n'est pas un utilisateur existant de l'application
+                raise Http404()
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -455,15 +489,25 @@ def update_image_cover(request):
 
     if user:
         # Utilisateur connecté
-        form = ProfilImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = Utilisateurs.objects.get(id=request.session["user_id"])
-            user.image_profil = request.FILES["file"]
-            user.save()
-            return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../home/')
         else:
-            # Formulaire invalide
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            form = ProfilImageForm(request.POST, request.FILES)
+            if form.is_valid():
+                user = Utilisateurs.objects.get(id=request.session["user_id"])
+                user.image_profil = request.FILES["file"]
+                user.save()
+                return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
+            else:
+                # Formulaire invalide
+                raise Http404()
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -479,14 +523,25 @@ def update_profil_name(request):
 
     if user:
         # Utilisateur connecté
-        form = SetNameForm(request.POST)
-        if form.is_valid():
-            user.nom = request.POST["name"]
-            user.save()
-            return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../home/')
         else:
-            # Formulaire invalide
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            form = SetNameForm(request.POST)
+            if form.is_valid():
+                user.nom = request.POST["name"]
+                user.save()
+                return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
+            else:
+                # Formulaire invalide
+                raise Http404()
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -502,14 +557,24 @@ def update_profil_mail(request):
 
     if user:
         # Utilisateur connecté
-        form = SetMailForm(request.POST)
-        if form.is_valid():
-            user.adresse_mail = request.POST["mail"]
-            user.save()
-            return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../home/')
         else:
-            # Formulaire invalide
-            raise Http404()
+            # le compte est activé et n'est pas bloqué
+            form = SetMailForm(request.POST)
+            if form.is_valid():
+                user.adresse_mail = request.POST["mail"]
+                user.save()
+                return redirect("../../user/profil/" + str(request.session["user_id"]) + "/?section_profil=coordonees" )
+            else:
+                # Formulaire invalide
+                raise Http404()
     else:
         # Utilisateur non connecté
         raise Http404()
@@ -525,9 +590,20 @@ def suppression_compte(request):
 
     if user:
         # Utilisateur connecté
-        del request.session["user_id"]
-        user.delete()
-        return redirect("../../authentification/connexion/")
+
+        if not user.statut_activation_compte or user.statut_blocage_admin:
+            # Le compte n'est pas activé ou a été bloqué
+            if not user.statut_activation_compte:
+                # Le compte n'est pas activé
+                return redirect('../../home/')
+            elif user.statut_blocage_admin :
+                # Le compte a été bloqué
+                return redirect('../../home/')
+        else:
+            # le compte est activé et n'est pas bloqué
+            del request.session["user_id"]
+            user.delete()
+            return redirect("../../authentification/connexion/")
     else:
         # Utilisateur non connecté
         raise Http404()
