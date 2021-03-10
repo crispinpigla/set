@@ -15,7 +15,7 @@
 {% block profil_cover_src %}
 
 	{% if user.image_profil == '' %}
-		{% static 'img/default_user_profil.png' %}
+		{% static 'user/img/default_user_profil.png' %}
 	{% else %}
 		..{{user.image_profil.url}}
 	{% endif %}
@@ -43,7 +43,7 @@
 
 		<div>
 			<div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; color: red; font-size: 300%;" >
-				<img src="{% static 'img/logo_fermeture.jpg' %}">
+				<img src="{% static 'user/img/logo_fermeture.jpg' %}">
 			</div>
 			<div style="text-align: center; color: gray; font-size: 80%;" >
 				Votre compte a été bloqué par les administrateurs du site<br>Cette suspension peut etre temporaire ou définitive

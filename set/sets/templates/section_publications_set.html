@@ -23,7 +23,7 @@
 				<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px; display: flex; align-items: center;" >
 					<label id="label_for_id_file_1" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_1" >
 						<img style="max-width: 100%; max-height: 85%;" src="{% static 'sets/img/logo_ajout_media.png' %}">
-						<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
+						<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image</div> 
 					</label>
 					<div id="preview_file_post_form_1" style="border: solid 1px; width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
 						<img id="image_preview_file_post_form_1" style="max-width: 100%; max-height: 85%;" src=""> 
@@ -36,7 +36,7 @@
 				<div style="border: solid rgb(224, 224, 224) 1px; border-radius: 5px;" >
 					<label id="label_for_id_file_2" style="width: 100px; height: 100px; cursor:pointer; display: flex; flex-direction: column; align-items: center;" for="id_file_2" >
 						<img style="max-width: 100%; max-height: 85%;" src="{% static 'sets/img/logo_ajout_media.png' %}">
-						<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image ou une video</div> 
+						<div style="color: gray; font-size: 65%; text-align: center; height: 15%;" >Image</div> 
 					</label>
 					<div id="preview_file_post_form_2" style="border: solid 1px; width: 100px; height: 100px; display: none; flex-direction: column; justify-content: space-between;" >
 						<img id="image_preview_file_post_form_2" style="max-width: 100%; max-height: 85%;" src=""> 
@@ -70,7 +70,7 @@
 					<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
 						
 						<a href="../../../user/profil/{{publication_likeurs.0.auteur.id}}/?section_profil=coordonees" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-							<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'img/default_user_profil.png' %}{% else %}../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+							<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'sets/img/default_user_profil.png' %}{% else %}../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
 						</a>
 
 					</div>
