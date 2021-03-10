@@ -23,9 +23,10 @@ services:
    - postgresql
 
 env: 
-   - DJANGO_SETTINGS_MODULE=pure_beurre_django.travis_settings
+   - DJANGO_SETTINGS_MODULE=set.set.travis_settings
    - global: MOZ_HEADLESS=1
 
 
 script: 
+   - cd set
    - ./manage.py test tests
