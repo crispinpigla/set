@@ -12,7 +12,7 @@ from user.models import Utilisateurs
 class Sets(models.Model):
 	""""""
 	nom = models.CharField(max_length=200)
-	image_couverture = models.FileField(upload_to="upload")
+	image_couverture = models.FileField(upload_to="")
 	type0 = models.CharField(max_length=200)
 	description = models.CharField(max_length=200)
 	date = models.DateTimeField(auto_now=True, null=True)
