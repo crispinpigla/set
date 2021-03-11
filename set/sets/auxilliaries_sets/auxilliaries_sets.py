@@ -23,7 +23,6 @@ from sets.forms import (
     CreateEventForm,
     SetDescriptionSetForm,
     PublicationSetForm,
-    PublicationSetForm,
     SetCoverImageForm,
     PublicationEventForm,
     SetDescriptionSetEvent,

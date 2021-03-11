@@ -97,13 +97,13 @@
 							{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
 
 							{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
-							    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../sets/media/{{  publication_likeurs.0.media1  }}"></div>
-								<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../sets/media/{{  publication_likeurs.0.media2  }}"></div>
+							    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+								<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
 							{% else %}
 							    {%  if publication_likeurs.0.media1 != '' %}
-							    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../sets/media/{{  publication_likeurs.0.media1  }}"></div>
+							    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
 							    {%  elif publication_likeurs.0.media2 != ''  %}
-							    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../sets/media/{{  publication_likeurs.0.media2  }}"></div>
+							    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
 							    {%  endif  %}
 							{% endif %}
 

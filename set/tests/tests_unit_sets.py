@@ -14,7 +14,7 @@ from sets.models import (
     PublicationEvenement,
     JaimePublicationEvenement,
 )
-from user.models import Utilisateurs, Contact, Message
+from user.models import Utilisateurs
 
 
 class TestsVueSet(TestCase):
