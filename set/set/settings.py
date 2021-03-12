@@ -33,7 +33,7 @@ SECRET_KEY = 'e_a4p0n6e9u2+q_!(!!e1c&f8$f36xczgthby!p(l_s9899!h3'
 
 if os.environ.get("ENV") == "PRODUCTION":
     DEBUG = False
-    ALLOWED_HOSTS = ['34.105.144.166']
+    ALLOWED_HOSTS = ['34.105.144.166', 'https://sets0.herokuapp.com/']
 
     sentry_sdk.init(
         dsn="https://bcb7258835684a05a4951c3c16af2987@o486074.ingest.sentry.io/5665071",

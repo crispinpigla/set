@@ -19,6 +19,7 @@ sorl-thumbnail = "*"
 whitenoise = "*"
 sentry-sdk = "*"
 newrelic = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.8"

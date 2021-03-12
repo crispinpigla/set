@@ -25,7 +25,7 @@
 	    		<div style="height: 80%; display: flex;" >
 	    			<a href="{% block link_home %}{% endblock %}" style="height: 40px; width: 40px; display: block; border-radius: 50%;overflow: hidden; margin-right: 50px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'user/img/logo_set.jpg' %}"></a>
 	    			{% if user %}
-	    			<a href="{% block link_deconnexion %}{% endblock %}" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'user/img/logo_deconnexion.jpg' %}"></a>
+	    			<a id="deconnexion_button" href="{% block link_deconnexion %}{% endblock %}" style="height: 40px; width: 40px; display: block; border-radius: 50%; overflow: hidden;  margin-right: 130px; border: solid white 1px;" ><img style="height: 100%;" src="{% static 'user/img/logo_deconnexion.jpg' %}"></a>
 	    			{% endif %}
 	    		</div>
 	    	</div>

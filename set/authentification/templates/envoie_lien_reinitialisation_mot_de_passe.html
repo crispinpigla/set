@@ -7,11 +7,11 @@
 <div class="col-10" style="margin: auto;" >
 
 	{% if send_mail %}
-	<div style="width: 100%; color: green; text-align: center;" > Un lien de réinitialisation de mot de passe a été envoyé à {{user.adresse_mail}} </div>
+	<div class="send_mail" style="width: 100%; color: green; text-align: center;" > Un lien de réinitialisation de mot de passe a été envoyé à {{user.adresse_mail}} </div>
 	{% endif %}
 
 	{% if no_user_with_mail_error %}
-	<div style="width: 100%; color: red; text-align: center;" > Aucun utilisateur ne possède l'adresse email {{ mail }}</div>
+	<div class="no_user_with_mail_error" style="width: 100%; color: red; text-align: center;" > Aucun utilisateur ne possède l'adresse email {{ mail }}</div>
 	{% endif %}
 
 	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post"  >

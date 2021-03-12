@@ -9,11 +9,11 @@
 
 
 	{% if state_reinitialisation %}
-	<div style="width: 100%; color: green; text-align: center;" > Le mot de passe du compte {{user.adresse_mail}} a été mis à jour </div>
+	<div class="confirmation_reinitilisation" style="width: 100%; color: green; text-align: center;" > Le mot de passe du compte {{user.adresse_mail}} a été mis à jour </div>
 	{% endif %}
 
 	{% if password_different_to_confirmation %}
-	<div style="width: 100%; color: red; text-align: center;" > Les mots de passe doivent être identiques</div>
+	<div class="password_different_to_confirmation" style="width: 100%; color: red; text-align: center;" > Les mots de passe doivent être identiques</div>
 	{% endif %}
 
 

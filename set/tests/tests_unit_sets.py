@@ -1104,7 +1104,7 @@ class TestsVueSet(TestCase):
         self.assertTemplateUsed(response, "creation_set.html")
 
     def test_sets_creation_set_utilisateur_inscrit_user_set(self):
-        """#  Demande de creation d'un set par un utilisateur non inscrit  
+        """#  Demande de creation d'un set par un utilisateur inscrit  
         appartenant au set et etant simple membre du set"""
         sets_before = len(Sets.objects.all())
         image = open(os.path.join(os.getcwd(), "tests/test.png"), "rb")

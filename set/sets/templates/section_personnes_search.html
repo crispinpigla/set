@@ -8,125 +8,141 @@
 <!--------------------------   affichage des utilisateurs    ------------------------------------------>
 
 
-{% if contenus|length == 0 %}
-
-	{% include 'aucun_resultat.html' %}
-
-{% else %}
-
-
-
-
-	{% for contenu in contenus %}
-
-
-
-
-		<div style="margin: auto; width:500px; min-height:80px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
-
-
-			<div style="height: 80px; display: flex; justify-content: space-between;" >
-				<div style=" display: flex;" >
-					<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
-						
-
-						<a href="../../../user/profil/{{contenu.id}}/?section_profil=coordonees" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-							<img style="width: 80%;" src="{% if contenu.image_profil == '' %}{% static 'sets/img/default_user_profil.png' %}{% else %}..{{contenu.image_profil.url}}{% endif %}">
-						</a>
-
-					</div>
-					<a href="../../../user/profil/{{contenu.id}}/?section_profil=coordonees" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
-						{{  contenu.nom  }}
-					</a>
-				</div>
-
-
-				{% if is_connected %}
-
-					{% if owner.id == contenu.id %}
-
-						<!---------------   Soi  -------------------->
-						<!--  rien  -->
-					{% else %}
-
-						<!---------------   Autres  -------------------->
-						<div style=" width: 140px; display: block;" >
-
-							<div style="display: flex; height: 100%;" >
-								<!---------------   Contact  -------------------->
-								<div id="manage_contact_{{ contenu.id }}" style="width: 50%; display: flex; justify-content: center; align-items: center;" >
-									{%  include 'delete_add_contact.html'  %}
-								</div>
-								<script type="text/javascript">
-								    var //contain_button_manage_contact = document.querySelector('#contain_button_manage_contact_{{ contenu.id }}'),
-								        manage_contact = document.querySelector('#manage_contact_{{ contenu.id }}');
-								    manage_contact.addEventListener('click', function() {
-
-								    	// envoie de la requete d'ajout/suppression contact 
-										var xhr = new XMLHttpRequest();
-										xhr.open('GET', '../../../user/manage_contact/' + '{{ contenu.id }}' + '/' );
-										xhr.send(null);
-
-
-										xhr.addEventListener('readystatechange', function()
-										{ // On gère ici une requête asynchrone
-
-									        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-								            { // Si le fichier est chargé sans erreur
-									        	console.log(xhr.response);
-									        	if ( xhr.response == 'contact_added' ) 
-									        	{
-									        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "none";
-									        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "flex";
-									        	}
-									        	else if ( xhr.response == 'contact_deleted' ) 
-									        	{
-									        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "none";
-									        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "flex";
-									        	}
-									        }
-										});
-
-								    }, false);
-								</script>
-
-
-								<!---------------   Message  -------------------->
-								<div style="width: 50%; display: flex; justify-content: center; align-items: center;" >
-									<a href="../../user/messages_exchanges/{{ contenu.id }}/" style="border: solid 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: ; cursor: pointer;" >
-										<img style="height: 100%;" src="{% static 'sets/img/logo_message.png' %}">
-									</a>
-								</div>
-							</div>
-							
-						</div>
-
-					{% endif %}
-
-				{% endif %}
-
-				
-			</div>
-
-
-		</div>
-
-	{% endfor %}
-
-
-
-
-
-
-{% endif %}
-
-
-
-
-
-
-<script type="text/javascript">
+<div id="users_container" >
 	
 
 
-</script>
+
+
+	{% if contenus|length == 0 %}
+
+		{% include 'aucun_resultat.html' %}
+
+	{% else %}
+
+
+
+
+		{% for contenu in contenus %}
+
+
+
+
+			<div style="margin: auto; width:500px; min-height:80px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+
+
+				<div style="height: 80px; display: flex; justify-content: space-between;" >
+					<div style=" display: flex;" >
+						<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
+							
+
+							<a href="../../../user/profil/{{contenu.id}}/?section_profil=coordonees" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+								<img style="width: 80%;" src="{% if contenu.image_profil == '' %}{% static 'sets/img/default_user_profil.png' %}{% else %}..{{contenu.image_profil.url}}{% endif %}">
+							</a>
+
+						</div>
+						<a href="../../../user/profil/{{contenu.id}}/?section_profil=coordonees" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+							{{  contenu.nom  }}
+						</a>
+					</div>
+
+
+					{% if is_connected %}
+
+						{% if owner.id == contenu.id %}
+
+							<!---------------   Soi  -------------------->
+							<!--  rien  -->
+						{% else %}
+
+							<!---------------   Autres  -------------------->
+							<div style=" width: 140px; display: block;" >
+
+								<div style="display: flex; height: 100%;" >
+									<!---------------   Contact  -------------------->
+									<div id="manage_contact_{{ contenu.id }}" style="width: 50%; display: flex; justify-content: center; align-items: center;" >
+										{%  include 'delete_add_contact.html'  %}
+									</div>
+									<script type="text/javascript">
+									    var //contain_button_manage_contact = document.querySelector('#contain_button_manage_contact_{{ contenu.id }}'),
+									        manage_contact = document.querySelector('#manage_contact_{{ contenu.id }}');
+									    manage_contact.addEventListener('click', function() {
+
+									    	// envoie de la requete d'ajout/suppression contact 
+											var xhr = new XMLHttpRequest();
+											xhr.open('GET', '../../../user/manage_contact/' + '{{ contenu.id }}' + '/' );
+											xhr.send(null);
+
+
+											xhr.addEventListener('readystatechange', function()
+											{ // On gère ici une requête asynchrone
+
+										        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+									            { // Si le fichier est chargé sans erreur
+										        	console.log(xhr.response);
+										        	if ( xhr.response == 'contact_added' ) 
+										        	{
+										        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "none";
+										        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "flex";
+										        	}
+										        	else if ( xhr.response == 'contact_deleted' ) 
+										        	{
+										        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "none";
+										        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "flex";
+										        	}
+										        }
+											});
+
+									    }, false);
+									</script>
+
+
+									<!---------------   Message  -------------------->
+									<div style="width: 50%; display: flex; justify-content: center; align-items: center;" >
+										<a href="../../user/messages_exchanges/{{ contenu.id }}/" style="border: solid 1px; height: 40px; width: 40px; display: flex; justify-content: center; border-radius: 50%; background: ; cursor: pointer;" >
+											<img style="height: 100%;" src="{% static 'sets/img/logo_message.png' %}">
+										</a>
+									</div>
+								</div>
+								
+							</div>
+
+						{% endif %}
+
+					{% endif %}
+
+					
+				</div>
+
+
+			</div>
+
+		{% endfor %}
+
+
+
+
+
+
+	{% endif %}
+
+
+
+
+
+
+	<script type="text/javascript">
+		
+
+
+	</script>
+
+
+
+
+
+
+
+
+</div>
+

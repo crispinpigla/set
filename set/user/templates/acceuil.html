@@ -61,182 +61,190 @@
 	<!--------------------------   affichage de publications    ------------------------------------------>
 
 
+		<div id="publication_home_contain" >
+			
 
 
+			{% if publications_likeurs|length == 0 %}
 
-		{% if publications_likeurs|length == 0 %}
+				{% include 'aucun_resultat.html' %}
 
-			{% include 'aucun_resultat.html' %}
+			{% else %}
 
-		{% else %}
+				{% for publication_likeurs in publications_likeurs %}
 
-			{% for publication_likeurs in publications_likeurs %}
-
-				<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
+					<div style="margin: auto; width:500px; min-height:140px; border: solid silver 1px; margin-bottom: 30px; border-radius: 5px;" >
 
 
-					<div style="height: 80px; display: flex;" >
-						<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
-							
-							<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-								<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+						<div style="height: 80px; display: flex;" >
+							<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
+								
+								<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
+									<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+								</a>
+
+							</div>
+							<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
+								{{  publication_likeurs.0.auteur.nom  }}
 							</a>
-
-						</div>
-						<a href="" style=" display: flex; align-items: center; overflow: hidden; color: black;" >
-							{{  publication_likeurs.0.auteur.nom  }}
-						</a>
-					</div>
-
-					<div style="margin: auto; width: 100%; margin-top: 10px;" >
-						<div style=" margin: auto; width: 80%; margin-top: 10px; word-wrap: break-word;" >
-							{{  publication_likeurs.0.contenu_text  }}
 						</div>
 
-						<div style="margin: auto; width: 80%; margin-top: 10px;" >
-							{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
+						<div style="margin: auto; width: 100%; margin-top: 10px;" >
+							<div style=" margin: auto; width: 80%; margin-top: 10px; word-wrap: break-word;" >
+								{{  publication_likeurs.0.contenu_text  }}
+							</div>
 
-							{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
-							    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
-								<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+							<div style="margin: auto; width: 80%; margin-top: 10px;" >
+								{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
+
+								{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
+								    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+									<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+								{% else %}
+								    {%  if publication_likeurs.0.media1 != '' %}
+								    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+								    {%  elif publication_likeurs.0.media2 != ''  %}
+								    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+								    {%  endif  %}
+								{% endif %}
+
+							</div>
+						</div>
+
+						<div style="display: flex; flex-direction: column; align-items: center;" >
+
+
+							{% if publication_likeurs.2|length  == 0 %}
+								<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
+									J'aime
+								</div>
+								<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
+									Je n'aime plus
+								</div>
 							{% else %}
-							    {%  if publication_likeurs.0.media1 != '' %}
-							    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
-							    {%  elif publication_likeurs.0.media2 != ''  %}
-							    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
-							    {%  endif  %}
+								<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
+									J'aime
+								</div>
+								<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
+									Je n'aime plus
+								</div>
 							{% endif %}
 
+							
+							<div style="font-size: 80%; color: rgb(0, 204, 255);" >
+								{{  publication_likeurs.1|length  }}
+							</div>
+							
+							
+						</div>
+
+						<div style="text-align: center; font-size: 80%; color: silver;" >
+							{{  publication_likeurs.0.date  }}
 						</div>
 					</div>
 
-					<div style="display: flex; flex-direction: column; align-items: center;" >
+				{% endfor %}
 
-
-						{% if publication_likeurs.2|length  == 0 %}
-							<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
-								J'aime
-							</div>
-							<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
-								Je n'aime plus
-							</div>
-						{% else %}
-							<div id="make_like_{{publication_likeurs.0.id}}" class="make_like" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: rgb(0, 204, 255); background: white; border: solid; border-radius: 3px;  text-align: center; cursor: pointer; margin: 10px; font-size: 80%; display: none;" >
-								J'aime
-							</div>
-							<div id="make_unlike_{{publication_likeurs.0.id}}" class="make_unlike" post_id="{{publication_likeurs.0.id}}" style="width: 130px; min-height: 20px; color: white; border: solid rgb(0, 204, 255); border-radius: 3px; background: rgb(0, 204, 255); text-align: center; cursor: pointer; margin: 10px; font-size: 80%;" >
-								Je n'aime plus
-							</div>
-						{% endif %}
-
-						
-						<div style="font-size: 80%; color: rgb(0, 204, 255);" >
-							{{  publication_likeurs.1|length  }}
-						</div>
-						
-						
-					</div>
-
-					<div style="text-align: center; font-size: 80%; color: silver;" >
-						{{  publication_likeurs.0.date  }}
-					</div>
-				</div>
-
-			{% endfor %}
-
-			<script type="text/javascript" >
-				
+				<script type="text/javascript" >
+					
 
 
 
-				    //--------------------------        Gestionnaire de like     ----------------------------//
+					    //--------------------------        Gestionnaire de like     ----------------------------//
 
-				    var likes = document.querySelectorAll('.make_like'),
-				    	un_likes = document.querySelectorAll('.make_unlike');
-
-
-					for (var i = 0; i < likes.length; i++) 
-					{
-						
-						likes[i].addEventListener('click', function() {
-
-				        	var post_id = this.getAttribute('post_id');
-
-				        	console.log(post_id);
-
-				        	// envoie de la requete ajax et reinitialisation du formulaire
-							var xhr = new XMLHttpRequest();
-							xhr.open('GET', '../../sets/manage_like_post_set/' + post_id + '/' );
-							xhr.send(null);
+					    var likes = document.querySelectorAll('.make_like'),
+					    	un_likes = document.querySelectorAll('.make_unlike');
 
 
-							xhr.addEventListener('readystatechange', function()
-							{ // On gère ici une requête asynchrone
+						for (var i = 0; i < likes.length; i++) 
+						{
+							
+							likes[i].addEventListener('click', function() {
 
-						        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-				                { // Si le fichier est chargé sans erreur
-						        	
-				                	if ( xhr.response == "like_make" ) 
-				                	{
-				                		console.log('#make_like_' + post_id);
-				                		document.querySelector('#make_like_' + post_id).style.display = "none";
-				                		document.querySelector('#make_unlike_' + post_id).style.display = "block";
-				                	}
-				                	else if ( xhr.response == "like_make" ) 
-				                	{
-				                		// rien
-				                	}
-						        }
-							});
+					        	var post_id = this.getAttribute('post_id');
+
+					        	console.log(post_id);
+
+					        	// envoie de la requete ajax et reinitialisation du formulaire
+								var xhr = new XMLHttpRequest();
+								xhr.open('GET', '../../sets/manage_like_post_set/' + post_id + '/' );
+								xhr.send(null);
 
 
-				        }, false);
+								xhr.addEventListener('readystatechange', function()
+								{ // On gère ici une requête asynchrone
 
-					}
-
-
-					for (var i = 0; i < un_likes.length; i++) 
-					{
-						
-						un_likes[i].addEventListener('click', function() {
-
-				        	var post_id = this.getAttribute('post_id');
-
-				        	console.log(post_id);
-
-				        	// envoie de la requete ajax et reinitialisation du formulaire
-							var xhr = new XMLHttpRequest();
-							xhr.open('GET', '../../sets/manage_like_post_set/' + post_id + '/' );
-							xhr.send(null);
-
-
-							xhr.addEventListener('readystatechange', function()
-							{ // On gère ici une requête asynchrone
-
-						        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-				                { // Si le fichier est chargé sans erreur
-						        	
-				                	if ( xhr.response == "unlike_make" ) 
-				                	{
-				                		console.log('#make_unlike_' + post_id);
-				                		document.querySelector('#make_unlike_' + post_id).style.display = "none";
-				                		document.querySelector('#make_like_' + post_id).style.display = "block";
-				                	}
-				                	else if ( xhr.response == "like_make" ) 
-				                	{
-				                		// rien
-				                	}
-						        }
-							});
+							        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+					                { // Si le fichier est chargé sans erreur
+							        	
+					                	if ( xhr.response == "like_make" ) 
+					                	{
+					                		console.log('#make_like_' + post_id);
+					                		document.querySelector('#make_like_' + post_id).style.display = "none";
+					                		document.querySelector('#make_unlike_' + post_id).style.display = "block";
+					                	}
+					                	else if ( xhr.response == "like_make" ) 
+					                	{
+					                		// rien
+					                	}
+							        }
+								});
 
 
-				        }, false);
+					        }, false);
 
-					}
+						}
 
-			</script>
 
-		{% endif %}
+						for (var i = 0; i < un_likes.length; i++) 
+						{
+							
+							un_likes[i].addEventListener('click', function() {
+
+					        	var post_id = this.getAttribute('post_id');
+
+					        	console.log(post_id);
+
+					        	// envoie de la requete ajax et reinitialisation du formulaire
+								var xhr = new XMLHttpRequest();
+								xhr.open('GET', '../../sets/manage_like_post_set/' + post_id + '/' );
+								xhr.send(null);
+
+
+								xhr.addEventListener('readystatechange', function()
+								{ // On gère ici une requête asynchrone
+
+							        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+					                { // Si le fichier est chargé sans erreur
+							        	
+					                	if ( xhr.response == "unlike_make" ) 
+					                	{
+					                		console.log('#make_unlike_' + post_id);
+					                		document.querySelector('#make_unlike_' + post_id).style.display = "none";
+					                		document.querySelector('#make_like_' + post_id).style.display = "block";
+					                	}
+					                	else if ( xhr.response == "like_make" ) 
+					                	{
+					                		// rien
+					                	}
+							        }
+								});
+
+
+					        }, false);
+
+						}
+
+				</script>
+
+			{% endif %}
+
+
+
+
+		</div>
+
+
 
 
 {% endblock %}
