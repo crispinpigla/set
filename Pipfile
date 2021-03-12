@@ -20,6 +20,7 @@ whitenoise = "*"
 sentry-sdk = "*"
 newrelic = "*"
 selenium = "*"
+dj-database-url = "*"
 
 [requires]
 python_version = "3.8"

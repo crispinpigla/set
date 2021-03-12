@@ -3745,7 +3745,7 @@ class TestsVueSet(TestCase):
         events_after = len(Evenements.objects.all())
         self.assertTrue(events_after == events_before - 1)
         self.assertTrue(
-            response.url == "../../set/" + str(self.event_administrator.id) + "/"
+            response.url == "../../set/" + str(self.event_administrator.set0.id) + "/"
         )
         self.assertTrue(response.status_code == 302)
 

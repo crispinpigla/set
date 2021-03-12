@@ -237,7 +237,7 @@ class TestsIntegrations(TestCase):
         ).cle_dactivation_de_compte
         response = client_user.post(
             "/authentification/envoie_activation_compte/"
-        )
+        )   # Envoie du lien d'activation
         activation_key_after = Utilisateurs.objects.get(
             adresse_mail="user@mail.mail"
         ).cle_dactivation_de_compte

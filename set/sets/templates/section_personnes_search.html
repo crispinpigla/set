@@ -66,34 +66,33 @@
 									<script type="text/javascript">
 									    var //contain_button_manage_contact = document.querySelector('#contain_button_manage_contact_{{ contenu.id }}'),
 									        manage_contact = document.querySelector('#manage_contact_{{ contenu.id }}');
-									    manage_contact.addEventListener('click', function() {
+										    manage_contact.addEventListener('click', function() {
 
-									    	// envoie de la requete d'ajout/suppression contact 
-											var xhr = new XMLHttpRequest();
-											xhr.open('GET', '../../../user/manage_contact/' + '{{ contenu.id }}' + '/' );
-											xhr.send(null);
+										    	// envoie de la requete d'ajout/suppression contact 
+												var xhr = new XMLHttpRequest();
+												xhr.open('GET', '../../../user/manage_contact/' + '{{ contenu.id }}' + '/' );
+												xhr.send(null);
 
+												xhr.addEventListener('readystatechange', function()
+												{ // On gère ici une requête asynchrone
 
-											xhr.addEventListener('readystatechange', function()
-											{ // On gère ici une requête asynchrone
+											        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
+										            { // Si le fichier est chargé sans erreur
+											        	console.log(xhr.response);
+											        	if ( xhr.response == 'contact_added' ) 
+											        	{
+											        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "none";
+											        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "flex";
+											        	}
+											        	else if ( xhr.response == 'contact_deleted' ) 
+											        	{
+											        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "none";
+											        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "flex";
+											        	}
+											        }
+												});
 
-										        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) 
-									            { // Si le fichier est chargé sans erreur
-										        	console.log(xhr.response);
-										        	if ( xhr.response == 'contact_added' ) 
-										        	{
-										        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "none";
-										        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "flex";
-										        	}
-										        	else if ( xhr.response == 'contact_deleted' ) 
-										        	{
-										        		document.querySelector('#delete_contact_{{contenu.id}}').style.display = "none";
-										        		document.querySelector('#add_contact_{{contenu.id}}').style.display = "flex";
-										        	}
-										        }
-											});
-
-									    }, false);
+										    }, false);
 									</script>
 
 
