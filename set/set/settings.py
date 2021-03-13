@@ -104,7 +104,7 @@ DATABASES = {
 
 if os.environ.get("ENV") == "PRODUCTION":
     DEBUG = False
-    ALLOWED_HOSTS = ['34.105.144.166', 'https://sets0.herokuapp.com/']
+    ALLOWED_HOSTS = ['34.105.144.166', 'sets0.herokuapp.com']
 
     sentry_sdk.init(
         dsn="https://bcb7258835684a05a4951c3c16af2987@o486074.ingest.sentry.io/5665071",
@@ -119,7 +119,7 @@ if os.environ.get("ENV") == "PRODUCTION":
 
 elif os.environ.get("ENV") == "HEROKU_PRODUCTION":
     DEBUG = False
-    ALLOWED_HOSTS = ['https://sets0.herokuapp.com/']
+    ALLOWED_HOSTS = ['sets0.herokuapp.com']
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
