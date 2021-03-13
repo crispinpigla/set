@@ -21,6 +21,7 @@ sentry-sdk = "*"
 newrelic = "*"
 selenium = "*"
 dj-database-url = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
