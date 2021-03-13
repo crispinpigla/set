@@ -1,1 +1,1 @@
-web: ./set/manage.py runserver
+web: cd set; ./manage.py runserver
