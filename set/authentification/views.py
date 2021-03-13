@@ -153,10 +153,8 @@ def envoie_activation_compte(request):
     """Envoie un lien d'activation de compte"""
     # Vérification connexion utilisateur
     user = AuxilliariesUser().get_user(request)
-    print(0)
     if user:
         # Utilisateur connecté
-        print(1)
         activation_key = "".join(
             [
                 random.choice(
@@ -165,15 +163,11 @@ def envoie_activation_compte(request):
                 for _ in range(24)
             ]
         )
-        print(2)
         user.cle_dactivation_de_compte = activation_key
-        print(3)
         user.save()
-        print(4)
         sent_mail_statut = AuxilliariesAuthentification().send_mail(
             "activation_account", user
         )
-        print(5)
         return redirect("../../user/home/")
     else:
         # Utilisateur non connecté
