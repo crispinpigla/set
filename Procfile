@@ -1,1 +1,1 @@
-web: cd set; ./manage.py runserver
+web: gunicorn set.wsgi
