@@ -33,24 +33,34 @@ class AuxilliariesAuthentification:
 
     def send_mail(self, service, user):
         """Envoie les mails d'activation de compte et de réinitialisation de mot de passe"""
+        print('s_0')
         if os.environ.get("ENV") == "PRODUCTION":
+            print('s_1')
             host = "http://34.105.144.166"
         elif os.environ.get("ENV") == "HEROKU_PRODUCTION":
+            print('s_2')
             host = "https://sets0.herokuapp.com"
         else:
+            print('s_3')
             host = "http://localhost:8000"
-
+        print('s_4')
         if service == "reinitialisation_password":
+            print('s_5')
             template = "mail_reinitialisation_mot_de_passe.html"
             subject = "Réinitialisation du mot de passe"
         elif service == "activation_account":
+            print('s_6')
             template = "activation_compte.html"
             subject = "Activation du compte"
+        print('s_7')
         html_message = render_to_string(template, {"user": user, "host": host})
+        print('s_8')
         msg = EmailMessage(
             subject=subject, body=html_message, from_email="", bcc=[user.adresse_mail]
         )
+        print('s_9')
         msg.content_subtype = "html"
+        print('s_10')
         return msg.send()
 
     def make_connexion(self, users_in_database, request):
