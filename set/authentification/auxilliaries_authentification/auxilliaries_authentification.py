@@ -35,6 +35,8 @@ class AuxilliariesAuthentification:
         """Envoie les mails d'activation de compte et de réinitialisation de mot de passe"""
         if os.environ.get("ENV") == "PRODUCTION":
             host = "http://34.105.144.166"
+        elif os.environ.get("ENV") == "HEROKU_PRODUCTION":
+            host = "https://sets0.herokuapp.com"
         else:
             host = "http://localhost:8000"
 
