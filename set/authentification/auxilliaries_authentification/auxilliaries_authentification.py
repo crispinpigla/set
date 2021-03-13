@@ -62,6 +62,7 @@ class AuxilliariesAuthentification:
         msg.content_subtype = "html"
         print('s_10')
         out = msg.send()
+        print('s_11')
         return out
 
     def make_connexion(self, users_in_database, request):
