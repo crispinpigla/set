@@ -61,7 +61,8 @@ class AuxilliariesAuthentification:
         print('s_9')
         msg.content_subtype = "html"
         print('s_10')
-        return msg.send()
+        out = msg.send()
+        return out
 
     def make_connexion(self, users_in_database, request):
         """Vérifie si l'utilisateur existe dans l'application et crée la connexion"""
