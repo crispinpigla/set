@@ -14,6 +14,8 @@ import os
 
 from pathlib import Path
 
+import dj_database_url
+
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -30,24 +32,6 @@ SECRET_KEY = 'e_a4p0n6e9u2+q_!(!!e1c&f8$f36xczgthby!p(l_s9899!h3'
 
 
 
-
-if os.environ.get("ENV") == "PRODUCTION":
-    DEBUG = False
-    ALLOWED_HOSTS = ['34.105.144.166', 'https://sets0.herokuapp.com/']
-
-    sentry_sdk.init(
-        dsn="https://bcb7258835684a05a4951c3c16af2987@o486074.ingest.sentry.io/5665071",
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
-
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True
-    )
-
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 
@@ -116,6 +100,33 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
+if os.environ.get("ENV") == "PRODUCTION":
+    DEBUG = False
+    ALLOWED_HOSTS = ['34.105.144.166', 'https://sets0.herokuapp.com/']
+
+    sentry_sdk.init(
+        dsn="https://bcb7258835684a05a4951c3c16af2987@o486074.ingest.sentry.io/5665071",
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
+
+
+elif os.environ.get("ENV") == "HEROKU_PRODUCTION":
+    DEBUG = False
+    ALLOWED_HOSTS = ['https://sets0.herokuapp.com/']
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
+
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Password validation
