@@ -112,7 +112,7 @@
 
 								<div style=" margin: auto; width: 200px; height: 200px; border: solid 1px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;" >
 					    			<div style=" width: 100px; height: 100px; border-radius: 50%; border: solid 1px; overflow: hidden; display: flex; justify-content: center; align-items: center; " >
-					    				<img id="profil_image" style="max-width: 70%; max-height: 70%;" src="{% if user_profil.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../..{{user_profil.image_profil.url}}{% endif %}" original_src="{% if user_profil.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../../..{{ user_profil.image_profil.url }}{% endif %}" >
+					    				<img id="profil_image" style="max-width: 70%; max-height: 70%;" src="{% if user_profil.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../../..{{user_profil.image_profil.url}}{% endif %}" original_src="{% if user_profil.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../../..{{ user_profil.image_profil.url }}{% endif %}" >
 					    			</div>
 					    		</div>
 
