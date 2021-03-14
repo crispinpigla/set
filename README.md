@@ -1,5 +1,3 @@
-# set
-Create your interaction spaces of communication
 # Set
 Site de création d'espace d'interactions entre plusieurs utilisateurs
 # Installation de l'application en local
