@@ -26,7 +26,7 @@
 	{% if user.image_profil == '' %}
 		{% static 'user/img/default_user_profil.png' %}
 	{% else %}
-		../..{{user.image_profil.url}}
+		../../..{{user.image_profil.url}}
 	{% endif %}
 
 {% endblock %}

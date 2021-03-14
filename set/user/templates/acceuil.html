@@ -80,7 +80,7 @@
 							<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
 								
 								<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-									<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+									<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'user/img/default_user_profil.png' %}{% else %}../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
 								</a>
 
 							</div>
