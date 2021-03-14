@@ -30,7 +30,7 @@
 					<div style=" height: 80px; width: 80px; display: flex; justify-content: center; align-items: center;">
 						
 						<a href="" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-							<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'sets/img/default_user_profil.png' %}{% else %}../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
+							<img style="width: 80%;" src="{% if publication_likeurs.0.auteur.image_profil == '' %}{% static 'sets/img/default_user_profil.png' %}{% else %}../../..{{publication_likeurs.0.auteur.image_profil.url}}{% endif %}">
 						</a>
 
 					</div>
@@ -48,13 +48,13 @@
 						{% if publication_likeurs.0.media1 == '' and publication_likeurs.0.media2 == '' %}
 
 						{% elif publication_likeurs.0.media1 != '' and publication_likeurs.0.media2 != '' %}
-						    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
-							<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+						    <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../../media/{{  publication_likeurs.0.media1  }}"></div>
+							<div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../../media/{{  publication_likeurs.0.media2  }}"></div>
 						{% else %}
 						    {%  if publication_likeurs.0.media1 != '' %}
-						    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media1  }}"></div>
+						    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../../media/{{  publication_likeurs.0.media1  }}"></div>
 						    {%  elif publication_likeurs.0.media2 != ''  %}
-						    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../media/{{  publication_likeurs.0.media2  }}"></div>
+						    	 <div style="width: 100%; margin-bottom: 5px;" ><img style="width: 100%;" src="../../../media/{{  publication_likeurs.0.media2  }}"></div>
 						    {%  endif  %}
 						{% endif %}
 
