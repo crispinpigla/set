@@ -39,7 +39,6 @@ class AuxilliariesAuthentification:
             host = "https://sets0.herokuapp.com"
         else:
             host = "http://localhost:8000"
-        print('s_4')
         if service == "reinitialisation_password":
             template = "mail_reinitialisation_mot_de_passe.html"
             subject = "Réinitialisation du mot de passe"
