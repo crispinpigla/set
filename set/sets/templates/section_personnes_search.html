@@ -37,7 +37,7 @@
 							
 
 							<a href="../../../user/profil/{{contenu.id}}/?section_profil=coordonees" style="border: solid black 1px; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;" >
-								<img style="width: 80%;" src="{% if contenu.image_profil == '' %}{% static 'sets/img/default_user_profil.png' %}{% else %}..{{contenu.image_profil.url}}{% endif %}">
+								<img style="width: 80%;" src="{% if contenu.image_profil == '' %}{% static 'sets/img/default_user_profil.png' %}{% else %}../..{{contenu.image_profil.url}}{% endif %}">
 							</a>
 
 						</div>
