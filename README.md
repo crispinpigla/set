@@ -1,5 +1,5 @@
 # Set
-Site de création d'espace d'interactions entre plusieurs utilisateurs
+Site de création d'espace d'interactions entre plusieurs utilisateurs.
 # Installation de l'application en local
 ## Téléchager le code source de l'application
 Creer un dossier qui devra contenir l'application. Nous l'appelerons ici `contain_application`  
