@@ -1509,3 +1509,275 @@ JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-c
 JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
 1615680521706	Marionette	INFO	Stopped listening on port 43283
 JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1615713785049	geckodriver	INFO	Listening on 127.0.0.1:52701
+1615713786046	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilec10j1z"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:474497): GLib-GObject-CRITICAL **: 09:23:15.451: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:474522): GLib-GObject-CRITICAL **: 09:23:15.975: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:474573): GLib-GObject-CRITICAL **: 09:23:17.498: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713799255	Marionette	INFO	Listening on port 38309
+1615713799392	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713803018	Marionette	INFO	Stopped listening on port 38309
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x1F0011,name=PBackgroundStorage::Msg_Observe) Channel error: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x1F0011,name=PBackgroundStorage::Msg_Observe) Channel error: cannot send/recv
+
+1615713806437	geckodriver	INFO	Listening on 127.0.0.1:49683
+1615713806442	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilezzXqN1"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:474701): GLib-GObject-CRITICAL **: 09:23:29.053: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:474720): GLib-GObject-CRITICAL **: 09:23:29.228: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713811052	Marionette	INFO	Listening on port 35363
+1615713811113	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:474789): GLib-GObject-CRITICAL **: 09:23:31.121: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713813815	Marionette	INFO	Stopped listening on port 35363
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/whats-new-panel Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1615713817272	geckodriver	INFO	Listening on 127.0.0.1:57247
+1615713817279	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile1URBCa"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:474903): GLib-GObject-CRITICAL **: 09:23:39.132: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:474920): GLib-GObject-CRITICAL **: 09:23:39.289: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713821011	Marionette	INFO	Listening on port 46781
+
+(/usr/lib/firefox/firefox:474990): GLib-GObject-CRITICAL **: 09:23:41.095: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713821134	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713825072	Marionette	INFO	Stopped listening on port 46781
+JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 691: TypeError: this.tablesData[table] is undefined
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1615713828177	geckodriver	INFO	Listening on 127.0.0.1:43675
+1615713828182	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilecmM9NU"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:475104): GLib-GObject-CRITICAL **: 09:23:50.105: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:475121): GLib-GObject-CRITICAL **: 09:23:50.200: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713832073	Marionette	INFO	Listening on port 35479
+1615713832127	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:475190): GLib-GObject-CRITICAL **: 09:23:52.153: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713836815	Marionette	INFO	Stopped listening on port 35479
+1615713839990	geckodriver	INFO	Listening on 127.0.0.1:47327
+1615713839995	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileMCruWT"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:475314): GLib-GObject-CRITICAL **: 09:24:01.872: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:475331): GLib-GObject-CRITICAL **: 09:24:02.084: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713844008	Marionette	INFO	Listening on port 34343
+
+(/usr/lib/firefox/firefox:475400): GLib-GObject-CRITICAL **: 09:24:04.096: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713844139	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713847431	Marionette	INFO	Stopped listening on port 34343
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1615713850435	geckodriver	INFO	Listening on 127.0.0.1:46645
+1615713850442	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileEPgVno"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:475518): GLib-GObject-CRITICAL **: 09:24:12.430: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:475538): GLib-GObject-CRITICAL **: 09:24:12.579: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713856868	Marionette	INFO	Listening on port 37517
+
+(/usr/lib/firefox/firefox:475627): GLib-GObject-CRITICAL **: 09:24:16.887: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713857004	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713859533	Marionette	INFO	Stopped listening on port 37517
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1615713864081	geckodriver	INFO	Listening on 127.0.0.1:53581
+1615713864085	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile0EGK9d"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:475752): GLib-GObject-CRITICAL **: 09:24:26.546: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:475769): GLib-GObject-CRITICAL **: 09:24:26.662: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713868689	Marionette	INFO	Listening on port 40151
+1615713868733	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:475837): GLib-GObject-CRITICAL **: 09:24:28.770: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:475839): GLib-GObject-CRITICAL **: 09:24:28.796: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713872274	Marionette	INFO	Stopped listening on port 40151
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1615713875980	geckodriver	INFO	Listening on 127.0.0.1:59199
+1615713875985	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileJnam6R"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:475974): GLib-GObject-CRITICAL **: 09:24:37.974: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:475991): GLib-GObject-CRITICAL **: 09:24:38.099: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713880028	Marionette	INFO	Listening on port 37355
+
+(/usr/lib/firefox/firefox:476061): GLib-GObject-CRITICAL **: 09:24:40.106: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713880135	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713884525	Marionette	INFO	Stopped listening on port 37355
+JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 691: TypeError: this.tablesData[table] is undefined
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1615713888645	geckodriver	INFO	Listening on 127.0.0.1:34615
+1615713888648	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileMg6wgg"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:476202): GLib-GObject-CRITICAL **: 09:24:50.694: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:476219): GLib-GObject-CRITICAL **: 09:24:50.801: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713892700	Marionette	INFO	Listening on port 36317
+
+(/usr/lib/firefox/firefox:476286): GLib-GObject-CRITICAL **: 09:24:52.778: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713892797	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713896297	Marionette	INFO	Stopped listening on port 36317
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x1F0011,name=PBackgroundStorage::Msg_Observe) Channel error: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x1F0011,name=PBackgroundStorage::Msg_Observe) Channel error: cannot send/recv
+
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1615713899849	geckodriver	INFO	Listening on 127.0.0.1:47641
+1615713899853	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileFULaqL"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:476409): GLib-GObject-CRITICAL **: 09:25:01.798: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:476426): GLib-GObject-CRITICAL **: 09:25:01.904: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713903714	Marionette	INFO	Listening on port 41705
+
+(/usr/lib/firefox/firefox:476495): GLib-GObject-CRITICAL **: 09:25:03.827: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713903856	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713909422	Marionette	INFO	Stopped listening on port 41705
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1615713912588	geckodriver	INFO	Listening on 127.0.0.1:54363
+1615713912593	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilektcWqN"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:476628): GLib-GObject-CRITICAL **: 09:25:14.618: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:476645): GLib-GObject-CRITICAL **: 09:25:14.724: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713917125	Marionette	INFO	Listening on port 44413
+
+(/usr/lib/firefox/firefox:476714): GLib-GObject-CRITICAL **: 09:25:17.219: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713917239	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713922018	Marionette	INFO	Stopped listening on port 44413
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 691: TypeError: this.tablesData[table] is undefined
+1615713927157	geckodriver	INFO	Listening on 127.0.0.1:56611
+1615713927161	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileTpy2DK"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:476845): GLib-GObject-CRITICAL **: 09:25:30.075: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:476862): GLib-GObject-CRITICAL **: 09:25:30.238: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713933288	Marionette	INFO	Listening on port 33153
+
+(/usr/lib/firefox/firefox:476935): GLib-GObject-CRITICAL **: 09:25:33.306: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713933416	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713937541	Marionette	INFO	Stopped listening on port 33153
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 691: TypeError: this.tablesData[table] is undefined
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1615713942801	geckodriver	INFO	Listening on 127.0.0.1:33569
+1615713942805	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilevadapb"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:477051): GLib-GObject-CRITICAL **: 09:25:45.256: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:477068): GLib-GObject-CRITICAL **: 09:25:45.366: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+
+(/usr/lib/firefox/firefox:477128): GLib-GObject-CRITICAL **: 09:25:47.006: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713948443	Marionette	INFO	Listening on port 43877
+1615713948543	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713952271	Marionette	INFO	Stopped listening on port 43877
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1615713957858	geckodriver	INFO	Listening on 127.0.0.1:53147
+1615713957864	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileVgCGNC"
+*** You are running in headless mode.
+
+(/usr/lib/firefox/firefox:477263): GLib-GObject-CRITICAL **: 09:26:00.445: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+
+(/usr/lib/firefox/firefox:477282): GLib-GObject-CRITICAL **: 09:26:00.602: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615713963028	Marionette	INFO	Listening on port 35677
+
+(/usr/lib/firefox/firefox:477366): GLib-GObject-CRITICAL **: 09:26:03.094: g_object_set: assertion 'G_IS_OBJECT (object)' failed
+1615713963110	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+JavaScript error: https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.fr.-cMzeOPtfdw.O/m=signin2/rt=j/sv=1/d=1/ed=1/am=wQ/rs=AGLTcCOh0zVQlLmOEBUPqrAJhHMG4e9dlw/cb=gapi.loaded_0, line 222: uncaught exception: [object Object]
+1615713966977	Marionette	INFO	Stopped listening on port 35677
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 988: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+JavaScript error: resource://gre/modules/UrlClassifierListManager.jsm, line 691: TypeError: this.tablesData[table] is undefined
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+

@@ -183,8 +183,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEBUG_EMAIL = 'set@mailinator.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'crispinpigla@gmail.com'
-EMAIL_HOST_PASSWORD = 'OGOOOTJGOT'
+EMAIL_HOST_USER = 'crispinpublicproject@gmail.com'
+EMAIL_HOST_PASSWORD = 'GIIBIBoho'
 EMAIL_USE_TLS = True
 
 
