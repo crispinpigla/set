@@ -1,8 +1,7 @@
 
 
-from django.conf.urls import url
 
-from django.urls import path
+from django.urls import path, re_path
 
 
 from django.conf import settings
@@ -12,24 +11,24 @@ from . import views
 
 
 urlpatterns = [
-    #url('set/', views.sets),
-    url('creation_set/', views.creation_set),
-    url(r"^creation_evenement/(?P<set_id>\w+)/$", views.creation_evenement),
-    url("search/", views.search),
-    url(r"^set/(?P<set_id>\w+)/$", views.sets),
-    url(r"^event/(?P<event_id>\w+)/$", views.evenements),
-    url("update_cover/", views.update_cover),
-    url("update_description_set/", views.update_description_set), 
-    url(r"^make_post_set/(?P<set_id>\w+)/$", views.make_post_set),
-    url(r"^make_post_event/(?P<event_id>\w+)/$", views.make_post_event),
-    url(r"^manage_like_post_set/(?P<post_id>\w+)/$", views.manage_like_post_set),
-    url(r"^manage_like_post_event/(?P<post_id>\w+)/$", views.manage_like_post_event),
-    url(r"^delete_add_user_set/(?P<set_id>\w+)/(?P<user_delete_add_id>\w+)/$", views.delete_add_user_set),
-    url(r"^manage_enter_user_set/(?P<set_id>\w+)/$", views.manage_enter_user_set),
-    url(r"^exit_set/(?P<set_id>\w+)/$", views.exit_set),
+    #re_path('set/', views.sets),
+    re_path('creation_set/', views.creation_set),
+    re_path(r"^creation_evenement/(?P<set_id>\w+)/$", views.creation_evenement),
+    re_path("search/", views.search),
+    re_path(r"^set/(?P<set_id>\w+)/$", views.sets),
+    re_path(r"^event/(?P<event_id>\w+)/$", views.evenements),
+    re_path("update_cover/", views.update_cover),
+    re_path("update_description_set/", views.update_description_set),
+    re_path(r"^make_post_set/(?P<set_id>\w+)/$", views.make_post_set),
+    re_path(r"^make_post_event/(?P<event_id>\w+)/$", views.make_post_event),
+    re_path(r"^manage_like_post_set/(?P<post_id>\w+)/$", views.manage_like_post_set),
+    re_path(r"^manage_like_post_event/(?P<post_id>\w+)/$", views.manage_like_post_event),
+    re_path(r"^delete_add_user_set/(?P<set_id>\w+)/(?P<user_delete_add_id>\w+)/$", views.delete_add_user_set),
+    re_path(r"^manage_enter_user_set/(?P<set_id>\w+)/$", views.manage_enter_user_set),
+    re_path(r"^exit_set/(?P<set_id>\w+)/$", views.exit_set),
 
-    url(r"^delete_set/(?P<set_id>\w+)/$", views.delete_set),
-    url(r"^delete_event/(?P<event_id>\w+)/$", views.delete_event),
+    re_path(r"^delete_set/(?P<set_id>\w+)/$", views.delete_set),
+    re_path(r"^delete_event/(?P<event_id>\w+)/$", views.delete_event),
 
     
     path("", views.redirect_home),

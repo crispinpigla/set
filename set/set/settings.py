@@ -104,7 +104,7 @@ DATABASES = {
 
 if os.environ.get("ENV") == "PRODUCTION":
     DEBUG = False
-    ALLOWED_HOSTS = ['34.105.144.166', 'sets0.herokuapp.com']
+    ALLOWED_HOSTS = ['34.105.144.166', 'sets0.herokuapp.com', '173.249.30.179', 'set.devcris.com']
 
     sentry_sdk.init(
         dsn="https://bcb7258835684a05a4951c3c16af2987@o486074.ingest.sentry.io/5665071",
@@ -119,14 +119,14 @@ if os.environ.get("ENV") == "PRODUCTION":
 
 elif os.environ.get("ENV") == "HEROKU_PRODUCTION":
     DEBUG = False
-    ALLOWED_HOSTS = ['sets0.herokuapp.com']
+    ALLOWED_HOSTS = ['sets0.herokuapp.com', 'set.devcris.com']
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
 
 else:
     DEBUG = True
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '173.249.30.179', 'set.devcris.com']
 
 
 # Password validation
@@ -184,7 +184,8 @@ DEBUG_EMAIL = 'set@mailinator.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'crispinpublicproject@gmail.com'
-EMAIL_HOST_PASSWORD = 'GIIBIBoho'
+# EMAIL_HOST_PASSWORD = 'GIIBIBoho'
+EMAIL_HOST_PASSWORD = 'uyqc spud pucb yjjz'
 EMAIL_USE_TLS = True
 
 

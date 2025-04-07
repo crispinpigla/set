@@ -61,6 +61,22 @@ def index(request):
     """Index."""
     if "authentification/" in request.build_absolute_uri():
         return redirect("connexion/")
+    elif "media/" in request.build_absolute_uri():
+        import os
+        from django.conf import settings
+        image_path = os.path.join(
+            settings.MEDIA_ROOT,
+            request.build_absolute_uri().replace('http://173.249.30.179:8002', '/home/shard2/github_projects/set/set/').replace('//', '/')
+        )
+        # print(image_path)
+        with open(image_path, 'rb') as f:
+            # Read the image data
+            image_data = f.read()
+
+        # Create an HTTP response with the image data
+        response = HttpResponse(image_data, content_type='image/jpeg')
+        return response
+
     else:
         return redirect("authentification/connexion/")
 

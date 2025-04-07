@@ -24,6 +24,7 @@ def home(request):
         if not user.statut_activation_compte or user.statut_blocage_admin:
             # Le compte n'est pas activé ou a été bloqué
             return auxilliary_user.render_unactivate_or_locked_account(user, request)
+            # return auxilliary_user.render_home(user, request)
         else:
             # le compte est activé et n'est pas bloqué
             return auxilliary_user.render_home(user, request)

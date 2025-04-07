@@ -17,25 +17,27 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf import settings
-from django.conf.urls import include, url
+from django.urls import include, re_path
 
 from django.conf.urls.static import static
 
 #handler404 = 'substitutor.auxilliaries.home.my_custom_page_not_found_view'
 
 urlpatterns = [
-	url('authentification/', include('authentification.urls')),
-	url('sets/', include('sets.urls')),
-	url('user/', include('user.urls')),
-    url('admin/', admin.site.urls),
+    re_path('authentification/', include('authentification.urls')),
+    re_path('sets/', include('sets.urls')),
+    re_path('user/', include('user.urls')),
+    re_path('admin/', admin.site.urls),
 
-    url('', include('authentification.urls')),
+    path('', include('authentification.urls')),  # all paths not listed before enter here
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+print(urlpatterns)
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        re_path(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns

@@ -1,4 +1,5 @@
 import os
+import pdb
 
 from django.core.files import File
 
@@ -22,7 +23,8 @@ class TestsVueSet(TestCase):
 
     def setUp(self):
         """"""
-        image = File(open(os.path.join(settings.BASE_DIR, "media/test.png"), "rb"))
+        # image = File(open(os.path.join(settings.BASE_DIR, "media/test.png"), "rb"))
+        image = os.path.join(settings.BASE_DIR, "media/test.png")
 
         self.client_not_registred = Client()
         self.client_registred_no_set = Client()

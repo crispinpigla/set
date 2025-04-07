@@ -7,46 +7,46 @@
 
 <div class="col-10" style="margin: auto;" >
 
-	{% if no_mail_in_application_error %}
-		<div style="color: red; text-align: center;" > Aucun utilisateur avec l'adresse mail indiquée </div>
-	{% endif %}
+    {% if no_mail_in_application_error %}
+        <div style="color: red; text-align: center;" > Aucun utilisateur avec l'adresse mail indiquée </div>
+    {% endif %}
 
-	{% if password_error %}
-		<div style="color: red; text-align: center;" > Mot de passe incorrect </div>
-	{% endif %}
+    {% if password_error %}
+        <div style="color: red; text-align: center;" > Mot de passe incorrect </div>
+    {% endif %}
 
 
-	{% if form_errors %}
-	<div style="color: red; text-align: center;" >
-	  {% for key, error in form_errors %}
-	  {% autoescape off %}
-	    {{ error }}
-	  {% endautoescape %}
-	  {% endfor %}
-	</div>
-	{% endif %}
-	
+    {% if form_errors %}
+    <div style="color: red; text-align: center;" >
+      {% for key, error in form_errors %}
+      {% autoescape off %}
+        {{ error }}
+      {% endautoescape %}
+      {% endfor %}
+    </div>
+    {% endif %}
 
-	<form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post" action="../connexion/" >
-		{% csrf_token %}
-		<div style="margin: auto; margin-top: 30px;" >{{ connexion_form.email }}</div>
-		<div style="margin: auto; margin-top: 30px;" >{{ connexion_form.password }}</div>
-		<button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Se connecter</button>
-	</form>
-	
-	<div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 50px;" >
-		<div style="border-top: solid rgb(163, 144, 144) 1px; border-bottom: solid rgb(163, 144, 144) 1px; display: flex; flex-direction: column; align-items: center;margin-bottom: 20px;" >
-			<div style="color: rgb(163, 144, 144); font-size: 70%; margin-top: 20px; margin-bottom: 10px;" >Ou se connecter avec google</div>
-			<div id="connexion_google" class="g-signin2" data-onsuccess="onSignIn" style=" margin-top: 10px; margin-bottom: 20px;" ></div>
-			<div id="google_connexion_response" style="color: rgb(255, 133, 133); margin-bottom: 15px;" ></div>
-			<a href="#" onclick="signOut();" style="display: none;" >Sign out</a>
-		</div>
-		<div style="display: flex; flex-direction: column;" >
-			<a href="../envoie_lien_reinitialisation_password/" style="font-size: 80%; text-align: center; margin-top: 20px;" >Mot de passe oublié</a>
-			<a href="../inscription/" style="font-size: 80%; text-align: center; margin-top: 20px;" >S'inscrire</a>
-		</div>
-	</div>
-	
+
+    <form class="row" style="display: flex; flex-direction: column; margin-bottom: 30px" method="post" action="../connexion/" >
+        {% csrf_token %}
+        <div style="margin: auto; margin-top: 30px;" >{{ connexion_form.email }}</div>
+        <div style="margin: auto; margin-top: 30px;" >{{ connexion_form.password }}</div>
+        <button type="submit" class="btn btn-success" style="margin: auto; margin-top: 30px;" >Se connecter</button>
+    </form>
+
+    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 50px;" >
+        <div style="border-top: solid rgb(163, 144, 144) 1px; border-bottom: solid rgb(163, 144, 144) 1px; display: none; flex-direction: column; align-items: center;margin-bottom: 20px;" >
+            <div style="color: rgb(163, 144, 144); font-size: 70%; margin-top: 20px; margin-bottom: 10px;" >Ou se connecter avec google</div>
+            <div id="connexion_google" class="g-signin2" data-onsuccess="onSignIn" style=" margin-top: 10px; margin-bottom: 20px;" ></div>
+            <div id="google_connexion_response" style="color: rgb(255, 133, 133); margin-bottom: 15px;" ></div>
+            <a href="#" onclick="signOut();" style="display: none;" >Sign out</a>
+        </div>
+        <div style="display: flex; flex-direction: column;" >
+            <a href="../envoie_lien_reinitialisation_password/" style="font-size: 80%; text-align: center; margin-top: 20px;" >Mot de passe oublié</a>
+            <a href="../inscription/" style="font-size: 80%; text-align: center; margin-top: 20px;" >S'inscrire</a>
+        </div>
+    </div>
+
 </div>
 
 
@@ -55,40 +55,40 @@
 
 <script type="text/javascript">
 
-	connexion_google = document.querySelector('#connexion_google')
+    connexion_google = document.querySelector('#connexion_google')
 
-	function onSignIn(googleUser) 
-	{
-		connexion_google.addEventListener('click', function() 
-		{
+    function onSignIn(googleUser)
+    {
+        connexion_google.addEventListener('click', function()
+        {
 
-			var id_token = googleUser.getAuthResponse().id_token;
+            var id_token = googleUser.getAuthResponse().id_token;
 
-			// envoie de la requete ajax et reinitialisation du formulaire
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', '../google_connect/' + '?token=' + id_token );
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			xhr.send(null);
+            // envoie de la requete ajax et reinitialisation du formulaire
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../google_connect/' + '?token=' + id_token );
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send(null);
 
-			xhr.addEventListener('readystatechange', function()
-			{ // On gère ici une requête asynchrone
+            xhr.addEventListener('readystatechange', function()
+            { // On gère ici une requête asynchrone
 
-		        console.log(xhr.response);
-		        if ( xhr.response == 'Connexion done' ) 
-		        {
-		        	window.location.href = "../../user/home/"  ;
-		        }
-		        else
-		        {
-		        	document.querySelector('#google_connexion_response').innerHTML = xhr.response ;
-		        }
-
-
-			});
+                console.log(xhr.response);
+                if ( xhr.response == 'Connexion done' )
+                {
+                    window.location.href = "../../user/home/"  ;
+                }
+                else
+                {
+                    document.querySelector('#google_connexion_response').innerHTML = xhr.response ;
+                }
 
 
-	    }, false);
-	}
+            });
+
+
+        }, false);
+    }
 
 </script>
 

@@ -1,6 +1,7 @@
 """   """
 
 import os
+import requests
 
 from django.template.loader import render_to_string
 
@@ -33,8 +34,11 @@ class AuxilliariesAuthentification:
 
     def send_mail(self, service, user):
         """Envoie les mails d'activation de compte et de réinitialisation de mot de passe"""
+        # print(1, os.environ.get("ENV"))
         if os.environ.get("ENV") == "PRODUCTION":
-            host = "http://34.105.144.166"
+            host = 'http://%s:8002' % requests.get('https://ifconfig.me').text  # Old ip: "http://34.105.144.166"
+            # host = requests.get('https://ifconfig.me').text
+            # print(host)
         elif os.environ.get("ENV") == "HEROKU_PRODUCTION":
             host = "https://sets0.herokuapp.com"
         else:
@@ -102,7 +106,7 @@ class AuxilliariesAuthentification:
             sent_mail_statut = self.send_mail(
                 "activation_account", user
             )  # Envoie de mail
-            request.session["user_id"] = user.id  # Création de la session
+            request.session["user_id"] = user.id  # Création de la session # TO FIX
             return redirect("../../user/home/")
         else:
             inscription_form = InscriptionForm()
