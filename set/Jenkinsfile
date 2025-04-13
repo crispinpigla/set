@@ -9,7 +9,9 @@ pipeline {
         stage("Launchin tests ...") {
             steps {
                 sh "pipenv install"
-                sh "pipenv run ./manage.py test tests"
+                dir('set/'){
+                    sh "pipenv run ./manage.py test tests"
+                }
             }
         }
     }
