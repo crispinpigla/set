@@ -5,6 +5,7 @@ import random
 
 import requests
 
+import pdb
 
 from django.shortcuts import get_object_or_404
 
@@ -64,11 +65,7 @@ def index(request):
     elif "media/" in request.build_absolute_uri():
         import os
         from django.conf import settings
-        image_path = os.path.join(
-            settings.MEDIA_ROOT,
-            request.build_absolute_uri().replace('http://173.249.30.179:8002', '/home/shard2/github_projects/set/set/').replace('//', '/')
-        )
-        # print(image_path)
+        image_path = request.build_absolute_uri().replace(request._current_scheme_host, settings.MEDIA_ROOT[:-6])
         with open(image_path, 'rb') as f:
             # Read the image data
             image_data = f.read()
